@@ -23,3 +23,11 @@
 # RMI:
 # ----
 # Remove all local images
+
+import fire
+from modules.pipelines.docker_deploy_pipeline import DockerDeployPipeline
+
+if __name__ == '__main__':
+    fire.Fire({
+        'docker': DockerDeployPipeline
+        })

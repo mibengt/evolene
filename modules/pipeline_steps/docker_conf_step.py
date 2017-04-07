@@ -1,6 +1,6 @@
 __author__ = 'tinglev'
 
-from abstract_pipeline_step import AbstractPipelineStep
+from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 
 class DockerConfPipelineStep(AbstractPipelineStep):
 

@@ -1,7 +1,6 @@
 __author__ = 'tinglev'
 
-import fire
-from docker_conf_step import DockerConfPipelineStep
+from modules.pipeline_steps.docker_conf_step import DockerConfPipelineStep
 
 class DockerDeployPipeline(object):
 
@@ -12,7 +11,4 @@ class DockerDeployPipeline(object):
 
     def run_pipeline(self):
         self.dcp1.run_pipeline({'counter': 0})
-
-if(__name__) == '__main__':
-    fire.Fire(DockerDeployPipeline)
         
