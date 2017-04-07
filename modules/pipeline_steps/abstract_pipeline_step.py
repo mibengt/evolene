@@ -48,19 +48,21 @@ class AbstractPipelineStep:
                 return False
         return True
 
-    def _handle_step_error(self, message, ex=None):
+    def _handle_step_error(self, message, ex=None, fatal=True):
         if ex:
             self.log.error(message, exc_info=True)
         else:
             self.log.error(message)
         # TODO: Report error to Slack
-        exit(1)
+        if fatal:
+            exit(1)
 
     def run_pipeline_step(self, data):
         if not self._step_environment_ok():
             return data
         if not self._step_data_is_ok(data):
             return data
+        self.log.debug('Running "%s"', self.get_step_name())
         self.run_step(data)
         if self.next_step:
             self.next_step.run_pipeline_step(data)
