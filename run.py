@@ -14,7 +14,7 @@
 # Run tests on image
 # Tag image
 # Get size of image
-# Push image to registryv
+# Push image to registryv2
 #   - Env req: registry url and login
 #   - Only push certain branches
 # Send info to Slack
