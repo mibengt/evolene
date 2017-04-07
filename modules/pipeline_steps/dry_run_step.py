@@ -7,6 +7,9 @@ class DryRunStep(AbstractPipelineStep):
     def get_required_env_variables(self):
         return []
 
+    def get_required_data_keys(self):
+        return []
+
     def run_step(self, data):
         data['dry_run'] = True
         data['c'] = data['c'] + 1
