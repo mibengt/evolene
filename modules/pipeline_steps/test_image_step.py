@@ -11,6 +11,4 @@ class TestImageStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        data['test_image'] = True
-        data['c'] = data['c'] + 1
         return data

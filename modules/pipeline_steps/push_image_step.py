@@ -11,6 +11,4 @@ class PushImageStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        data['pushed'] = True
-        data['c'] = data['c'] + 1
         return data

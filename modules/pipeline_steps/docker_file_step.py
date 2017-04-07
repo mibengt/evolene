@@ -11,6 +11,4 @@ class DockerFileStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        data['dockerfile'] = True
-        data['c'] = data['c'] + 1
         return data

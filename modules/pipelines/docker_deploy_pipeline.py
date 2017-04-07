@@ -35,6 +35,6 @@ class DockerDeployPipeline(object):
             .set_next_step(self.push_image_step)
 
     def run_pipeline(self):
-        data = self.conf_step.run_pipeline_step({'c': 0})
+        data = self.conf_step.run_pipeline_step({})
         print data
         

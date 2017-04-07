@@ -11,6 +11,4 @@ class ImageInfoStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        data['image_info'] = True
-        data['c'] = data['c'] + 1
         return data

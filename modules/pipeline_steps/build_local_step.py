@@ -11,6 +11,4 @@ class BuildLocalStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        data['build_local'] = True
-        data['c'] = data['c'] + 1
         return data

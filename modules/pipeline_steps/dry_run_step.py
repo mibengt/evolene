@@ -11,6 +11,4 @@ class DryRunStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        data['dry_run'] = True
-        data['c'] = data['c'] + 1
         return data
