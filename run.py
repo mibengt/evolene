@@ -26,8 +26,10 @@
 
 import fire
 from modules.pipelines.docker_deploy_pipeline import DockerDeployPipeline
+import modules.util.log as log
 
 if __name__ == '__main__':
+    log.init_logging()
     fire.Fire({
         'docker': DockerDeployPipeline
         })

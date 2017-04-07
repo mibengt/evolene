@@ -1,16 +1,13 @@
 __author__ = 'tinglev'
 
-import os
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 
-class DockerConfPipelineStep(AbstractPipelineStep):
+class TestImageStep(AbstractPipelineStep):
 
     def get_required_env_variables(self):
-        return ['PROJECT_ROOT_PATH']
+        return []
 
     def run_step(self, data):
-        data['path'] = os.environ['PROJECT_ROOT_PATH']
-        data['conf'] = True
+        data['test_image'] = True
         data['c'] = data['c'] + 1
         return data
-
