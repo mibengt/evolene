@@ -10,8 +10,9 @@ python run.py docker run-pipeline
 
 To create dist:
 ```bash
-Work in progess
+./create_dist.sh
 ```
+The version of the dist is defined in `setup.py`
 
 To run tests:
 ```bash

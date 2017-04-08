@@ -1,0 +1,6 @@
+recursive-include modules *.*
+recursive-include test *.*
+include run.py
+include run_tests.sh
+include requirements.txt
+include README.md
