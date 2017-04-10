@@ -14,7 +14,7 @@ class DockerFileStep(AbstractPipelineStep):
         return []
 
     def _get_docker_file_path(self):
-        return '{}/Dockerfile'.format(os.environ[Environment.PROJECT_ROOT])
+        return '{}/Dockerfile'.format(Environment.get_project_root())
 
     def _docker_file_exists(self):
         return os.path.isfile(self._get_docker_file_path())

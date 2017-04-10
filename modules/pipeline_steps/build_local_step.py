@@ -22,9 +22,6 @@ class BuildLocalStep(AbstractPipelineStep):
         data[Data.LOCAL_IMAGE_ID] = image_id
         return data
 
-    def _get_project_root(self):
-        return os.environ[Environment.PROJECT_ROOT]
-
     def _format_image_id(self, image_id):
         self.log.debug('Full image id is "%s"', image_id)
         image_id = image_id.replace('sha256:', '')
@@ -46,7 +43,7 @@ class BuildLocalStep(AbstractPipelineStep):
 
     def _run_build(self):
         image_id = Process.run_with_output('docker build -q {}'
-                                           .format(self._get_project_root()))
+                                           .format(Environment.get_project_root()))
         return self._format_image_id(image_id)
 
 

@@ -1,6 +1,5 @@
 __author__ = 'tinglev'
 
-import os
 import re
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
@@ -34,7 +33,7 @@ class DockerConfPipelineStep(AbstractPipelineStep):
         return data
 
     def _get_docker_conf_path(self):
-        return os.environ[Environment.PROJECT_ROOT] + '/docker.conf'
+        return Environment.get_project_root() + '/docker.conf'
 
     def _get_docker_conf_env_lines(self, raw_lines):
         return [line for line in raw_lines if re.match(r'^([a-zA-Z0-9_]+)=(.+)$', line)]

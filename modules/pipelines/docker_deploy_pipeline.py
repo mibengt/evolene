@@ -7,7 +7,7 @@ from modules.pipeline_steps.docker_file_step import DockerFileStep
 from modules.pipeline_steps.build_local_step import BuildLocalStep
 from modules.pipeline_steps.dry_run_step import DryRunStep
 from modules.pipeline_steps.test_image_step import TestImageStep
-from modules.pipeline_steps.image_info_step import ImageInfoStep
+from modules.pipeline_steps.tag_image_step import TagImageStep
 from modules.pipeline_steps.push_image_step import PushImageStep
 from modules.util.exceptions import PipelineException
 
@@ -24,7 +24,7 @@ class DockerDeployPipeline(object):
         self.build_local_step = BuildLocalStep()
         self.dry_run_step = DryRunStep()
         self.test_image_step = TestImageStep()
-        self.image_info_step = ImageInfoStep()
+        self.tag_image_step = TagImageStep()
         self.push_image_step = PushImageStep()
 
         # Configure pipeline
@@ -35,7 +35,7 @@ class DockerDeployPipeline(object):
             .set_next_step(self.build_local_step) \
             .set_next_step(self.dry_run_step) \
             .set_next_step(self.test_image_step) \
-            .set_next_step(self.image_info_step) \
+            .set_next_step(self.tag_image_step) \
             .set_next_step(self.push_image_step)
 
     def run_pipeline(self):
