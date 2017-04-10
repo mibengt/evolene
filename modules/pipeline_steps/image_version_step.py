@@ -1,6 +1,7 @@
 __author__ = 'tinglev'
 
 import os
+import re
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 
@@ -13,16 +14,22 @@ class ImageVersionStep(AbstractPipelineStep):
         return [Environment.IMAGE_VERSION]
 
     def _create_image_version(self, image_version):
-        # 2.2, 2.3.0
-        nr_punctuations = image_version.count('.')
-        if nr_punctuations != 1:
+        self._check_image_version(image_version)
+        build_number = os.environ[Environment.BUILD_NUMBER]
+        commit_hash = self._get_clamped_commit_hash()
+        return self._format_image_version(image_version, build_number, commit_hash)
+
+    def _check_image_version(self, image_version):
+        match = re.match(r'^[0-9]+\.[0-9]$', image_version)
+        if not match:
             self._handle_step_error('docker.conf IMAGE_VERSION is "{}", should be "Major.Minor"'
                                     .format(image_version))
-        build_number = os.environ[Environment.BUILD_NUMBER]
+
+    def _get_clamped_commit_hash(self, length=7):
         commit_hash = os.environ[Environment.GIT_COMMIT]
-        if len(commit_hash) > 7:
-            commit_hash = commit_hash[:7]
-        return self._format_image_version(image_version, build_number, commit_hash)
+        if len(commit_hash) > length:
+            commit_hash = commit_hash[:length]
+        return commit_hash
 
     def _format_image_version(self, image_version, build_number, commit_hash):
         return '{}.{}_{}'.format(image_version, build_number, commit_hash)

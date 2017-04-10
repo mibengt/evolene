@@ -1,3 +1,5 @@
+__author__ = 'tinglev'
+
 class Environment(object):
 
     IMAGE_NAME = 'IMAGE_NAME'
@@ -5,3 +7,5 @@ class Environment(object):
     PROJECT_ROOT = 'PROJECT_ROOT_PATH'
     GIT_COMMIT = 'GIT_COMMIT'
     BUILD_NUMBER = 'BUILD_NUMBER'
+    SLACK_WEB_HOOK = 'SLACK_WEB_HOOK'
+    SLACK_CHANNELS = 'SLACK_CHANNELS'

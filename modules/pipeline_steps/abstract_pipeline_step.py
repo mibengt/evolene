@@ -3,6 +3,7 @@ __author__ = 'tinglev'
 from abc import ABCMeta, abstractmethod
 import os
 import logging
+from modules.util.slack import Slack
 
 class AbstractPipelineStep:
     __metaclass__ = ABCMeta
@@ -49,13 +50,23 @@ class AbstractPipelineStep:
         return True
 
     def _handle_step_error(self, message, ex=None, fatal=True):
-        if ex:
-            self.log.error(message, exc_info=True)
-        else:
-            self.log.error(message)
-        # TODO: Report error to Slack
+        error_func = self.log.error
+        if fatal:
+            error_func = self.log.fatal
+        self._log_error(error_func, message, ex)
+        self._report_error_to_slack(message)
         if fatal:
             exit(1)
+
+    def _log_error(self, error_func, message, ex):
+        if ex:
+            error_func(message, exc_info=True)
+        else:
+            error_func(message)
+
+    def _report_error_to_slack(self, message):
+        #Slack.send_to_slack(channel, message)
+        pass
 
     def run_pipeline_step(self, data):
         if not self._step_environment_ok():

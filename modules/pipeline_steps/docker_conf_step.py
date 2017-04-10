@@ -4,6 +4,7 @@ import os
 import re
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
+from modules.util.data import Data
 
 class DockerConfPipelineStep(AbstractPipelineStep):
 
@@ -21,6 +22,7 @@ class DockerConfPipelineStep(AbstractPipelineStep):
             self._handle_step_error('Missing the following environment variables in docker.conf: {}'
                                     .format(missing_conf_vars))
         data = self._add_env_lines_to_data(env_lines, data)
+        data[Data.DOCKER_CONF_FILE] = self._get_docker_conf_path()
         return data
 
     def _clean_variable_value(self, value):
@@ -35,7 +37,7 @@ class DockerConfPipelineStep(AbstractPipelineStep):
         return os.environ[Environment.PROJECT_ROOT] + '/docker.conf'
 
     def _get_docker_conf_env_lines(self, raw_lines):
-        return [line for line in raw_lines if re.match('^([a-zA-Z0-9_]+)=(.+)$', line)]
+        return [line for line in raw_lines if re.match(r'^([a-zA-Z0-9_]+)=(.+)$', line)]
 
     def _get_docker_conf_lines(self):
         try:
