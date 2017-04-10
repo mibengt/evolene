@@ -11,4 +11,6 @@ class PushImageStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
+        # docker push $REGISTRY_IMAGE_NAME
+        # REGISTRY_IMAGE_NAME = REPO_HOST/IMAGE_NAME
         return data

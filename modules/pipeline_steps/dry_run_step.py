@@ -58,4 +58,5 @@ class DryRunStep(AbstractPipelineStep):
                                         .format(container_status))
         finally:
             self._stop_container(container_id)
+        self.log.info('Dry run of image with id "%s" successful', data[Data.LOCAL_IMAGE_ID])
         return data

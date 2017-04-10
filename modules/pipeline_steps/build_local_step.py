@@ -18,8 +18,10 @@ class BuildLocalStep(AbstractPipelineStep):
     def run_step(self, data):
         image_id = self._run_build()
         image_grep_output = self._verify_built_image(image_id)
-        data[Data.IMAGE_SIZE] = self._get_image_size(image_grep_output)
+        size = self._get_image_size(image_grep_output)
+        data[Data.IMAGE_SIZE] = size
         data[Data.LOCAL_IMAGE_ID] = image_id
+        self.log.info('Built image with id "%s" and size "%s"', image_id, size)
         return data
 
     def _format_image_id(self, image_id):

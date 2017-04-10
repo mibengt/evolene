@@ -14,11 +14,12 @@ class TagImageStep(AbstractPipelineStep):
         return [Data.LOCAL_IMAGE_ID, Data.IMAGE_VERSION]
 
     def run_step(self, data):
-        #docker tag $DOCKER_IMAGE_ID $REGISTRY_IMAGE_NAME:$IMAGE_VERSION
-        #REGISTRY_IMAGE_NAME=$REGISTRY_HOST/$IMAGE_NAME
-        Process.run_with_output('docker tag {} {}/{}:{}'
-                                .format(data[Data.LOCAL_IMAGE_ID],
-                                        Environment.get_registry_host(),
-                                        Environment.get_image_name(),
-                                        data[Data.IMAGE_VERSION]))
+        image_id = data[Data.LOCAL_IMAGE_ID]
+        image_version = data[Data.IMAGE_VERSION]
+        image_name = Environment.get_image_name()
+        registry = Environment.get_registry_host()
+        tag = '{}/{}:{}'.format(registry, image_name, image_version)
+        cmd = 'docker tag {} {}'.format(data[Data.LOCAL_IMAGE_ID], tag)
+        Process.run_with_output(cmd)
+        self.log.info('Tagged image "%s" with "%s"', image_id, tag)
         return data
