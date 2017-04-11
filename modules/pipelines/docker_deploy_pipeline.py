@@ -1,6 +1,7 @@
 __author__ = 'tinglev'
 
 import logging
+from modules.pipeline_steps.setup_step import SetupStep
 from modules.pipeline_steps.docker_conf_step import DockerConfPipelineStep
 from modules.pipeline_steps.image_version_step import ImageVersionStep
 from modules.pipeline_steps.docker_file_step import DockerFileStep
@@ -18,6 +19,7 @@ class DockerDeployPipeline(object):
         self.log = logging.getLogger(__name__)
 
         # Create pipeline steps
+        self.setup_step = SetupStep()
         self.conf_step = DockerConfPipelineStep()
         self.image_version_step = ImageVersionStep()
         self.docker_file_step = DockerFileStep()
@@ -28,8 +30,9 @@ class DockerDeployPipeline(object):
         self.push_image_step = PushImageStep()
 
         # Configure pipeline
-        self.first_step = self.conf_step
+        self.first_step = self.setup_step
         self.first_step \
+            .set_next_step(self.conf_step) \
             .set_next_step(self.image_version_step) \
             .set_next_step(self.docker_file_step) \
             .set_next_step(self.build_local_step) \
@@ -40,7 +43,7 @@ class DockerDeployPipeline(object):
 
     def run_pipeline(self):
         try:
-            data = self.conf_step.run_pipeline_step({})
+            data = self.first_step.run_pipeline_step({})
         except PipelineException as p_ex:
             self.log.fatal('Caught exception: %s', p_ex, exc_info=True)
         else:

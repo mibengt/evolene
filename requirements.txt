@@ -3,3 +3,4 @@ mock == 2.0.0
 coloredlogs == 6.0 # https://github.com/xolox/python-coloredlogs
 green == 2.7.3 # https://github.com/CleanCut/green
 coverage == 4.3.4
+requests == 2.13.0

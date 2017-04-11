@@ -18,8 +18,14 @@ class TagImageStep(AbstractPipelineStep):
         image_version = data[Data.IMAGE_VERSION]
         image_name = Environment.get_image_name()
         registry = Environment.get_registry_host()
-        tag = '{}/{}:{}'.format(registry, image_name, image_version)
-        cmd = 'docker tag {} {}'.format(data[Data.LOCAL_IMAGE_ID], tag)
-        Process.run_with_output(cmd)
+        tag = self.format_tag(registry, image_name, image_version)
+        self.run_tag_command(tag, data)
         self.log.info('Tagged image "%s" with "%s"', image_id, tag)
         return data
+
+    def run_tag_command(self, tag, data):
+        cmd = 'docker tag {} {}'.format(data[Data.LOCAL_IMAGE_ID], tag)
+        Process.run_with_output(cmd)
+
+    def format_tag(self, registry, image_name, image_version):
+        return '{}/{}:{}'.format(registry, image_name, image_version)

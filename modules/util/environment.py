@@ -12,27 +12,46 @@ class Environment(object):
     SLACK_WEB_HOOK = 'SLACK_WEB_HOOK'
     SLACK_CHANNELS = 'SLACK_CHANNELS'
     REGISTRY_HOST = 'REGISTRY_HOST'
+    REGISTRY_USER = 'REGISTRY_USER'
+    REGISTRY_PASSWORD = 'REGISTRY_PASSWORD'
 
     @staticmethod
     def get_registry_host():
-        return os.environ[Environment.REGISTRY_HOST]
+        return os.environ.get(Environment.REGISTRY_HOST)
+
+    @staticmethod
+    def get_registry_user():
+        return os.environ.get(Environment.REGISTRY_USER)
+
+    @staticmethod
+    def get_registry_password():
+        return os.environ.get(Environment.REGISTRY_PASSWORD)
 
     @staticmethod
     def get_image_name():
-        return os.environ[Environment.IMAGE_NAME]
+        return os.environ.get(Environment.IMAGE_NAME)
 
     @staticmethod
     def get_image_version():
-        return os.environ[Environment.IMAGE_VERSION]
+        return os.environ.get(Environment.IMAGE_VERSION)
 
     @staticmethod
     def get_git_commit():
-        return os.environ[Environment.GIT_COMMIT]
+        return os.environ.get(Environment.GIT_COMMIT)
 
     @staticmethod
     def get_project_root():
-        return os.environ[Environment.PROJECT_ROOT]
+        return os.environ.get(Environment.PROJECT_ROOT)
 
     @staticmethod
     def get_build_number():
-        return os.environ[Environment.BUILD_NUMBER]
+        return os.environ.get(Environment.BUILD_NUMBER)
+
+    @staticmethod
+    def get_slack_channels():
+        channels = os.environ.get(Environment.SLACK_CHANNELS)
+        return [channel.rstrip() for channel in channels.split(',')]
+
+    @staticmethod
+    def get_slack_web_hook():
+        return os.environ.get(Environment.SLACK_WEB_HOOK)
