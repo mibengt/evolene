@@ -2,4 +2,4 @@
 
 virtualenv env
 env/bin/pip install -r requirements.txt
-python setup.py sdist
+env/bin/python setup.py sdist
