@@ -1,3 +1,3 @@
 #!/bin/sh
 
-env/bin/green -vv --run-coverage
+env/bin/green "test" -vv --run-coverage

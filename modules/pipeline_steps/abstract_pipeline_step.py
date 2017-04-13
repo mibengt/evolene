@@ -2,6 +2,7 @@ __author__ = 'tinglev'
 
 from abc import ABCMeta, abstractmethod
 import os
+import sys
 import logging
 from modules.util.slack import Slack
 
@@ -13,18 +14,18 @@ class AbstractPipelineStep:
         self.next_step = None
 
     @abstractmethod
-    def run_step(self, data):
+    def run_step(self, data): #pragma: no cover
         """ Should return data """
         pass
 
     @abstractmethod
-    def get_required_env_variables(self):
+    def get_required_env_variables(self): #pragma: no cover
         """ Should return a string array with the names of the environment
             variables required by the current step """
         pass
 
     @abstractmethod
-    def get_required_data_keys(self):
+    def get_required_data_keys(self): #pragma: no cover
         """ Should return a string array with the names of the keys
             that has to exist and have values in the data-object that
             is passed between build steps """
@@ -33,45 +34,47 @@ class AbstractPipelineStep:
     def get_step_name(self):
         return self.__class__.__name__
 
-    def _step_data_is_ok(self, data):
+    def step_data_is_ok(self, data):
         for key in self.get_required_data_keys():
-            if not key in data:
+            if not data or not key in data:
                 err = '"{}" missing data key "{}"'.format(self.get_step_name(), key)
-                self._handle_step_error(err)
+                self.handle_step_error(err)
                 return False
         return True
 
-    def _step_environment_ok(self):
+    def step_environment_ok(self):
         for env in self.get_required_env_variables():
             if not env in os.environ:
                 err = '"{}" missing env variable "{}"'.format(self.get_step_name(), env)
-                self._handle_step_error(err)
+                self.handle_step_error(err)
                 return False
+            if not os.environ.get(env):
+                self.log.warn('Environment variable "%s" exists but is empty', env)
         return True
 
-    def _handle_step_error(self, message, ex=None, fatal=True):
+    def handle_step_error(self, message, ex=None, fatal=True):
         error_func = self.log.error
         if fatal:
             error_func = self.log.fatal
-        self._log_error(error_func, message, ex)
-        self._report_error_to_slack(message)
+        self.log_error(error_func, message, ex)
+        self.report_error_to_slack(message)
         if fatal:
-            exit(1)
+            sys.exit(1)
 
-    def _log_error(self, error_func, message, ex):
+    def log_error(self, error_func, message, ex): #pragma: no cover
         if ex:
             error_func(message, exc_info=True)
         else:
             error_func(message)
 
-    def _report_error_to_slack(self, message):
+    def report_error_to_slack(self, message):
         #Slack.send_to_slack(channel, message)
         pass
 
     def run_pipeline_step(self, data):
-        if not self._step_environment_ok():
+        if not self.step_environment_ok():
             return data
-        if not self._step_data_is_ok(data):
+        if not self.step_data_is_ok(data):
             return data
         self.log.debug('Running "%s"', self.get_step_name())
         self.run_step(data)
