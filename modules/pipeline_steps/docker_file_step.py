@@ -14,7 +14,8 @@ class DockerFileStep(AbstractPipelineStep):
         return []
 
     def get_docker_file_path(self):
-        return '{}/Dockerfile'.format(Environment.get_project_root())
+        stripped_root = Environment.get_project_root().rstrip('/')
+        return '{}/Dockerfile'.format(stripped_root)
 
     def docker_file_exists(self):
         return os.path.isfile(self.get_docker_file_path())
