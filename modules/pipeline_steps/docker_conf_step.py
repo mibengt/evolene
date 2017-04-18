@@ -1,6 +1,7 @@
 __author__ = 'tinglev'
 
 import re
+import os
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
@@ -14,39 +15,52 @@ class DockerConfPipelineStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        raw_lines = self._get_docker_conf_lines()
-        env_lines = self._get_docker_conf_env_lines(raw_lines)
-        missing_conf_vars = self._missing_conf_vars(env_lines)
+        raw_lines = self.get_docker_conf_lines()
+        env_lines = self.get_docker_conf_env_lines(raw_lines)
+        missing_conf_vars = self.missing_conf_vars(env_lines)
         if missing_conf_vars:
-            self._handle_step_error('Missing the following environment variables in docker.conf: {}'
-                                    .format(missing_conf_vars))
-        data = self._add_env_lines_to_data(env_lines, data)
-        data[Data.DOCKER_CONF_FILE] = self._get_docker_conf_path()
+            self.handle_step_error('Missing the following environment variables in docker.conf: {}'
+                                   .format(missing_conf_vars))
+        data = self.add_env_lines_to_data(env_lines, data)
+        data[Data.DOCKER_CONF_FILE] = self.get_docker_conf_path()
         return data
 
-    def _clean_variable_value(self, value):
-        return value.replace('"', '')
+    def clean_variable_value(self, value):
+        return value.rstrip('"').lstrip('"')
 
-    def _add_env_lines_to_data(self, env_lines, data):
-        for env in env_lines:
-            data[env.split('=')[0]] = self._clean_variable_value(env.split('=')[1])
-        return data
-
-    def _get_docker_conf_path(self):
-        return Environment.get_project_root() + '/docker.conf'
-
-    def _get_docker_conf_env_lines(self, raw_lines):
-        return [line for line in raw_lines if re.match(r'^([a-zA-Z0-9_]+)=(.+)$', line)]
-
-    def _get_docker_conf_lines(self):
+    def add_env_lines_to_data(self, env_lines, data):
         try:
-            with open(self._get_docker_conf_path()) as d_conf:
+            for env in env_lines:
+                data[env.split('=')[0]] = self.clean_variable_value(env.split('=')[1])
+        except TypeError as t_err:
+            self.log.warn('TypeError in add_env_lines_to_data: %s', t_err, exc_info=True)
+            return data
+        return data
+
+    def get_docker_conf_path(self):
+        stripped_root = Environment.get_project_root().rstrip('/')
+        return '{}/docker.conf'.format(stripped_root)
+
+    def docker_conf_exists(self):
+        return os.path.isfile(self.get_docker_conf_path())
+
+    def get_docker_conf_env_lines(self, raw_lines):
+        return [line for line in raw_lines
+                if re.match(r'^([a-zA-Z0-9_]+)=(([a-zA-Z0-9_]+)|(".+"))$', line)]
+
+    def get_docker_conf_lines(self):
+        try:
+            with open(self.get_docker_conf_path()) as d_conf:
                 return d_conf.read().splitlines()
         except IOError as ioe:
-            self._handle_step_error('Could not read docker.conf', ioe)
+            self.handle_step_error('Could not read docker.conf', ioe)
 
-    def _missing_conf_vars(self, lines):
-        required = [Environment.IMAGE_NAME, Environment.IMAGE_VERSION]
-        variables = [line.split('=')[0] for line in lines]
-        missing = [req for req in required if req not in variables]
+    def missing_conf_vars(self, lines):
+        try:
+            required = [Environment.IMAGE_NAME, Environment.IMAGE_VERSION]
+            variables = [line.split('=')[0] for line in lines]
+            missing = [req for req in required if req not in variables]
+        except TypeError as t_err:
+            self.log.warn('TypeError in add_env_lines_to_data: %s', t_err, exc_info=True)
+            return required
         return missing
