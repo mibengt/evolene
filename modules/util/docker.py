@@ -26,4 +26,8 @@ class Docker(object):
 
     @staticmethod
     def stop_and_remove_container(container_id):
-        Process.run_with_output('docker rm -f {}'.format(container_id))
+        return Process.run_with_output('docker rm -f {}'.format(container_id))
+
+    @staticmethod
+    def tag_image(image_id, tag):
+        return Process.run_with_output('docker tag {} {}'.format(image_id, tag))
