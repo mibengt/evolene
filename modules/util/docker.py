@@ -14,3 +14,16 @@ class Docker(object):
     def grep_image_id(image_id):
         return Process.run_with_output('docker image ls | grep {}'
                                        .format(image_id))
+
+    @staticmethod
+    def get_container_status(container_id):
+        return Process.run_with_output('docker inspect --format=\'{{{{.State.Status}}}}\' {}'
+                                       .format(container_id)).rstrip()
+
+    @staticmethod
+    def run(image_id):
+        return Process.run_with_output('docker run -d {}'.format(image_id))
+
+    @staticmethod
+    def stop_and_remove_container(container_id):
+        Process.run_with_output('docker rm -f {}'.format(container_id))
