@@ -18,12 +18,11 @@ class DryRunStep(AbstractPipelineStep):
     def get_required_data_keys(self):
         return [Data.LOCAL_IMAGE_ID]
 
-    def get_container_status(self, container_id):
+    def get_container_status(self, container_id): #pragma: no cover
         return Docker.get_container_status(container_id)
 
-    def start_container(self, data):
-        container_id = Docker.run(data[Data.LOCAL_IMAGE_ID])
-        return container_id.rstrip()
+    def start_container(self, data): #pragma: no cover
+        return Docker.run(data[Data.LOCAL_IMAGE_ID])
 
     def wait_for_container_created(self, container_id):
         container_status = self.get_container_status(container_id)

@@ -22,13 +22,13 @@ class DockerTest(unittest.TestCase):
         current_path = os.path.dirname(os.path.abspath(__file__))
         os.environ[Environment.PROJECT_ROOT] = os.path.join(current_path, '../data')
         result = Docker.build()
-        self.assertIn('sha256:', result)
         DockerTest.IMAGE_ID = result.replace('sha256:', '')[:12]
+        self.assertIn('sha256:', result)
 
     def test_1_run(self):
         container_id = Docker.run(DockerTest.IMAGE_ID)
-        self.assertEqual(len(container_id), 65)
         DockerTest.CONTAINER_ID = container_id
+        self.assertEqual(len(container_id), 64)
 
     def test_2_get_container_status(self):
         status = Docker.get_container_status(DockerTest.CONTAINER_ID)

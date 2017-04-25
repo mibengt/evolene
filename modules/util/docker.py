@@ -22,7 +22,7 @@ class Docker(object):
 
     @staticmethod
     def run(image_id):
-        return Process.run_with_output('docker run -d {}'.format(image_id))
+        return Process.run_with_output('docker run -d {}'.format(image_id)).rstrip()
 
     @staticmethod
     def stop_and_remove_container(container_id):
