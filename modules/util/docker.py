@@ -31,3 +31,7 @@ class Docker(object):
     @staticmethod
     def tag_image(image_id, tag):
         return Process.run_with_output('docker tag {} {}'.format(image_id, tag))
+
+    @staticmethod
+    def push(registry_image_name):
+        return Process.run_with_output('docker push {}'.format(registry_image_name))
