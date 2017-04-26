@@ -19,12 +19,15 @@ class DockerTests(unittest.TestCase):
         Process.run_with_output('docker rmi -f {}'.format(DockerTests.IMAGE_ID))
 
     def test_all(self):
-        self._test_build()
-        self._test_tag_image()
-        self._test_run()
-        self._test_get_container_status()
-        self._test_grep_image_id()
-        self._test_stop_and_rm_container()
+        try:
+            self._test_build()
+            self._test_tag_image()
+            self._test_run()
+            self._test_get_container_status()
+            self._test_grep_image_id()
+            self._test_stop_and_rm_container()
+        except:
+            self.tearDownClass()
 
     def _test_build(self):
         current_path = os.path.dirname(os.path.abspath(__file__))
