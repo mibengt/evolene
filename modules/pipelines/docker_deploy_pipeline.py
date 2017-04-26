@@ -42,10 +42,24 @@ class DockerDeployPipeline(object):
             .set_next_step(self.push_image_step)
 
     def run_pipeline(self):
+        self.verify_environment()
+        self.run_steps()
+
+    def run_steps(self):
         try:
+            self.log.info('Running Docker build pipeline')
             data = self.first_step.run_pipeline_step({})
         except PipelineException as p_ex:
             self.log.fatal('Caught exception: %s', p_ex, exc_info=True)
         else:
             self.log.info(data)
-                    
+
+    def verify_environment(self):
+        try:
+            self.log.info('Running environment verification')
+            step = self.first_step
+            while step:
+                step.step_environment_ok()
+                step = step.next_step
+        except PipelineException as p_ex:
+            self.log.fatal('Caught exception: %s', p_ex, exc_info=True)
