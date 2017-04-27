@@ -57,7 +57,7 @@ class DockerConfPipelineStep(AbstractPipelineStep):
 
     def missing_conf_vars(self, lines):
         try:
-            required = [Environment.IMAGE_NAME, Environment.IMAGE_VERSION]
+            required = [Environment.IMAGE_NAME, Data.IMAGE_VERSION]
             variables = [line.split('=')[0] for line in lines]
             missing = [req for req in required if req not in variables]
         except TypeError as t_err:

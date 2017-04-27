@@ -11,7 +11,7 @@ class ImageVersionStep(AbstractPipelineStep):
         return [Environment.BUILD_NUMBER, Environment.GIT_COMMIT]
 
     def get_required_data_keys(self): # pragma: no cover
-        return [Environment.IMAGE_VERSION]
+        return [Data.IMAGE_VERSION]
 
     def _create_image_version(self, image_version): # pragma: no cover
         self.check_image_version(image_version)
@@ -35,7 +35,7 @@ class ImageVersionStep(AbstractPipelineStep):
         return '{}.{}_{}'.format(image_version, build_number, commit_hash)
 
     def run_step(self, data): # pragma: no cover
-        image_version = data[Environment.IMAGE_VERSION]
+        image_version = data[Data.IMAGE_VERSION]
         final_image_version = self._create_image_version(image_version)
         data[Data.IMAGE_VERSION] = final_image_version
         return data

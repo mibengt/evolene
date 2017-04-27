@@ -5,7 +5,6 @@ import os
 class Environment(object):
 
     IMAGE_NAME = 'IMAGE_NAME'
-    IMAGE_VERSION = 'IMAGE_VERSION'
     PROJECT_ROOT = 'PROJECT_ROOT_PATH'
     GIT_COMMIT = 'GIT_COMMIT'
     BUILD_NUMBER = 'BUILD_NUMBER'
@@ -30,10 +29,6 @@ class Environment(object):
     @staticmethod
     def get_image_name():
         return os.environ.get(Environment.IMAGE_NAME)
-
-    @staticmethod
-    def get_image_version():
-        return os.environ.get(Environment.IMAGE_VERSION)
 
     @staticmethod
     def get_git_commit():

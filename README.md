@@ -18,3 +18,17 @@ To run tests:
 ```bash
 ./run_tests.sh
 ```
+
+Environment variables for configuration:
+
+```
+IMAGE_NAME          - The name of the image to build (ex: 'kth-azure-app')
+PROJECT_ROOT        - The path to the root of the project to build (ex: '/Users/projects/kth-azure-app')
+GIT_COMMIT          - The commit hash of the push that triggered the build (usually set by Jenkins)
+BUILD_NUMBER        - The number of the current build (usually set by Jenkins)
+SLACK_WEB_HOOK      - The Slack webhook endpoint to use
+SLACK_CHANNELS      - Comma separated list of channels to post messages to (ex: '#pipeline-logs,#zermatt')
+REGISTRY_HOST       - The host of the Docker registry to use (ex: 'kthregistryv2.sys.kth.se')
+REGISTRY_USER       - Registry user
+REGISTRY_PASSWORD   - Registry password
+```

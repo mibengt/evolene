@@ -4,6 +4,7 @@ import unittest
 import os
 from mock import patch
 from modules.util.environment import Environment
+from modules.util.data import Data
 from modules.pipeline_steps.docker_conf_step import DockerConfPipelineStep
 
 class DockerConfStepTests(unittest.TestCase):
@@ -88,17 +89,17 @@ class DockerConfStepTests(unittest.TestCase):
         dcs = DockerConfPipelineStep()
         lines = None
         result = dcs.missing_conf_vars(lines)
-        self.assertEqual(result, [Environment.IMAGE_NAME, Environment.IMAGE_VERSION])
+        self.assertEqual(result, [Environment.IMAGE_NAME, Data.IMAGE_VERSION])
         lines = []
         result = dcs.missing_conf_vars(lines)
-        self.assertEqual(result, [Environment.IMAGE_NAME, Environment.IMAGE_VERSION])
+        self.assertEqual(result, [Environment.IMAGE_NAME, Data.IMAGE_VERSION])
         lines = ['{}=test'.format(Environment.IMAGE_NAME)]
         result = dcs.missing_conf_vars(lines)
-        self.assertEqual(result, [Environment.IMAGE_VERSION])
+        self.assertEqual(result, [Data.IMAGE_VERSION])
         lines = ['{}=test'.format(Environment.IMAGE_NAME),
-                 '{}=test'.format(Environment.IMAGE_VERSION)]
+                 '{}=test'.format(Data.IMAGE_VERSION)]
         result = dcs.missing_conf_vars(lines)
         self.assertEqual(result, [])
         lines = ['bla=test', 'lba2=test']
         result = dcs.missing_conf_vars(lines)
-        self.assertEqual(result, [Environment.IMAGE_NAME, Environment.IMAGE_VERSION])
+        self.assertEqual(result, [Environment.IMAGE_NAME, Data.IMAGE_VERSION])
