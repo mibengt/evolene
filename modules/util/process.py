@@ -14,4 +14,5 @@ class Process(object):
             Process.log.debug('Running command with output: "%s"', cmd)
             return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as cpe:
-            raise PipelineException('Shell command gave error with output "{}"'.format(cpe.output))
+            raise PipelineException('Shell command gave error with output "{}"'
+                                    .format(cpe.output.rstrip('\n')))

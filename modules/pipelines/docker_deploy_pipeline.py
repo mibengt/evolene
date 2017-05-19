@@ -11,6 +11,7 @@ from modules.pipeline_steps.test_image_step import TestImageStep
 from modules.pipeline_steps.tag_image_step import TagImageStep
 from modules.pipeline_steps.push_image_step import PushImageStep
 from modules.util.exceptions import PipelineException
+from modules.util.slack import Slack
 
 
 class DockerDeployPipeline(object):
@@ -51,6 +52,7 @@ class DockerDeployPipeline(object):
             data = self.first_step.run_pipeline_step({})
         except PipelineException as p_ex:
             self.log.fatal('Caught exception: %s', p_ex, exc_info=True)
+            Slack.send_to_slack('Fatal exception in build pipeline: {}'.format(p_ex))
         else:
             self.log.info(data)
 
