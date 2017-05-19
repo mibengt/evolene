@@ -68,8 +68,7 @@ class AbstractPipelineStep:
             error_func(message)
 
     def report_error_to_slack(self, message):
-        #Slack.send_to_slack(channel, message)
-        pass
+        Slack.send_to_slack(message)
 
     def run_pipeline_step(self, data):
         if not self.step_environment_ok():
