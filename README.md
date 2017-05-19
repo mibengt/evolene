@@ -31,4 +31,5 @@ SLACK_CHANNELS      - Comma separated list of channels to post messages to (ex: 
 REGISTRY_HOST       - The host of the Docker registry to use (ex: 'kthregistryv2.sys.kth.se')
 REGISTRY_USER       - Registry user
 REGISTRY_PASSWORD   - Registry password
+EVOLENE_DIRECTORY   - The working directory of evolene (used on jenkins to work properly)
 ```
