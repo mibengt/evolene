@@ -2,7 +2,6 @@ __author__ = 'tinglev'
 
 import os
 import unittest
-from mock import patch
 from modules.pipeline_steps.push_image_step import PushImageStep
 from modules.util.data import Data
 from modules.util.exceptions import PipelineException
@@ -21,7 +20,8 @@ class PushImageStepTests(unittest.TestCase):
     def test_get_image_to_push(self):
         pis = PushImageStep()
         os.environ[Environment.REGISTRY_HOST] = 'https://kthregistryv2.sys.kth.se'
-        data = {'LOCAL_IMAGE_ID': 'kth-azure-app:1.2.0_1234'}
+        os.environ[Environment.IMAGE_NAME] = 'kth-azure-app'
+        data = {Data.IMAGE_VERSION: '1.2.0_1234'}
         result = pis.get_image_to_push(data)
         self.assertEqual(result, 'kthregistryv2.sys.kth.se/kth-azure-app:1.2.0_1234')
 

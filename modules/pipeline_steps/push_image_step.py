@@ -17,7 +17,7 @@ class PushImageStep(AbstractPipelineStep):
                 Environment.REGISTRY_PASSWORD]
 
     def get_required_data_keys(self): #pragma: no cover
-        return [Data.IMAGE_VERSION, Data.LOCAL_IMAGE_ID]
+        return [Data.IMAGE_VERSION]
 
     def run_step(self, data):
         self.push_image(data)
@@ -68,8 +68,9 @@ class PushImageStep(AbstractPipelineStep):
                                     .format(req_err))
 
     def get_image_to_push(self, data):
-        return '{}/{}'.format(Environment.get_registry_host(True),
-                              data[Data.LOCAL_IMAGE_ID])
+        return '{}/{}:{}'.format(Environment.get_registry_host(True),
+                                 Environment.get_image_name(),
+                                 data[Data.IMAGE_VERSION])
 
     def push_image(self, data):
         registry_image_name = self.get_image_to_push(data)
