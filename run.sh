@@ -1,3 +1,3 @@
 #!/bin/sh
 
-env/bin/python run.py docker run-pipeline
+./env/bin/python run.py docker run-pipeline
