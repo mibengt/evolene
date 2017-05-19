@@ -1,6 +1,7 @@
 __author__ = 'tinglev'
 
 import logging
+import sys
 from modules.pipeline_steps.setup_step import SetupStep
 from modules.pipeline_steps.docker_conf_step import DockerConfPipelineStep
 from modules.pipeline_steps.image_version_step import ImageVersionStep
@@ -53,6 +54,7 @@ class DockerDeployPipeline(object):
         except PipelineException as p_ex:
             self.log.fatal('Caught exception: %s', p_ex, exc_info=True)
             Slack.send_to_slack('Fatal exception in build pipeline: {}'.format(p_ex))
+            sys.exit(1)
         else:
             self.log.info(data)
 
