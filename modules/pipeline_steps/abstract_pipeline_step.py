@@ -69,7 +69,7 @@ class AbstractPipelineStep:
             error_func(message)
 
     def report_error_to_slack(self, message):
-        message = ('Error in build of image {} on build step {}: {}'
+        message = ('Error in build of image "{}" on build step "{}": {}'
                    .format(Environment.get_image_name(), self.get_step_name(), message))
         Slack.send_to_slack(message)
 
