@@ -56,7 +56,7 @@ class DockerDeployPipeline(object):
             Slack.send_to_slack('Fatal exception in build pipeline: {}'.format(p_ex))
             sys.exit(1)
         else:
-            self.log.info(data)
+            self.log.info('Build and push successful. Pipeline data: %s', data)
             Slack.on_successful_deploy(data)
 
     def verify_environment(self):
