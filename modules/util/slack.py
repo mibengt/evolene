@@ -10,14 +10,13 @@ class Slack(object):
     log = logging.getLogger(__name__)
 
     @staticmethod
-    def send_to_slack(message):
+    def send_to_slack(message, icon=':triangular_flag_on_post:'):
         for channel in Environment.get_slack_channels():
-            body = Slack.get_payload_body(channel, message)
+            body = Slack.get_payload_body(channel, message, icon)
             Slack.call_slack_endpoint(body)
 
     @staticmethod
-    def get_payload_body(channel, text, username='Evolene',
-                         icon=':triangular_flag_on_post:'):
+    def get_payload_body(channel, text, icon, username='Evolene'):
         body = {
             "channel": channel,
             "text": text,
