@@ -9,3 +9,5 @@ class TagImageStepTests(unittest.TestCase):
         tis = TagImageStep()
         result = tis.format_tag('kthregistryv2.sys.kth.se', 'kth-azure-app', '1.0')
         self.assertEqual(result, 'kthregistryv2.sys.kth.se/kth-azure-app:1.0')
+        result = tis.format_tag('https://kthregistryv2.sys.kth.se', 'kth-azure-app', '1.0')
+        self.assertEqual(result, 'kthregistryv2.sys.kth.se/kth-azure-app:1.0')

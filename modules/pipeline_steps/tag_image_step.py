@@ -27,4 +27,9 @@ class TagImageStep(AbstractPipelineStep):
         Docker.tag_image(data[Data.LOCAL_IMAGE_ID], tag)
 
     def format_tag(self, registry, image_name, image_version):
-        return '{}/{}:{}'.format(registry, image_name, image_version)
+        return '{}/{}:{}'.format(self.strip_registry_https_protocol(registry),
+                                 image_name,
+                                 image_version)
+
+    def strip_registry_https_protocol(self, registry):
+        return registry.replace('https://', '')
