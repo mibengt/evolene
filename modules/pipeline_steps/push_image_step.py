@@ -12,15 +12,15 @@ class PushImageStep(AbstractPipelineStep):
 
     def get_required_env_variables(self): #pragma: no cover
         return [Environment.REGISTRY_HOST,
-                Environment.IMAGE_NAME,
                 Environment.REGISTRY_USER,
+                Environment.IMAGE_NAME,
                 Environment.REGISTRY_PASSWORD]
 
     def get_required_data_keys(self): #pragma: no cover
-        return [Data.IMAGE_VERSION]
+        return [Data.IMAGE_VERSION, Data.LOCAL_IMAGE_ID]
 
     def run_step(self, data):
-        self.push_image()
+        self.push_image(data)
         tags = self.get_tags_from_registry()
         self.verify_image_version_in_tags(tags, data)
         return data
@@ -67,10 +67,11 @@ class PushImageStep(AbstractPipelineStep):
             raise PipelineException('Timeout or request exception when calling registry API: {}'
                                     .format(req_err))
 
-    def get_image_to_push(self):
-        return '{}/{}'.format(Environment.get_registry_host(), Environment.get_image_name())
+    def get_image_to_push(self, data):
+        return '{}/{}'.format(Environment.get_registry_host(True),
+                              data[Data.LOCAL_IMAGE_ID])
 
-    def push_image(self):
-        registry_image_name = self.get_image_to_push()
+    def push_image(self, data):
+        registry_image_name = self.get_image_to_push(data)
         Docker.push(registry_image_name)
         self.log.info('Pushed image "%s" to registry', registry_image_name)

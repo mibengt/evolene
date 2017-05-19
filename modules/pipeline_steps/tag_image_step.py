@@ -17,7 +17,7 @@ class TagImageStep(AbstractPipelineStep):
         image_id = data[Data.LOCAL_IMAGE_ID]
         image_version = data[Data.IMAGE_VERSION]
         image_name = Environment.get_image_name()
-        registry = Environment.get_registry_host()
+        registry = Environment.get_registry_host(True)
         tag = self.format_tag(registry, image_name, image_version)
         self.run_tag_command(tag, data)
         self.log.info('Tagged image "%s" with "%s"', image_id, tag)
@@ -27,9 +27,6 @@ class TagImageStep(AbstractPipelineStep):
         Docker.tag_image(data[Data.LOCAL_IMAGE_ID], tag)
 
     def format_tag(self, registry, image_name, image_version):
-        return '{}/{}:{}'.format(self.strip_registry_https_protocol(registry),
+        return '{}/{}:{}'.format(registry,
                                  image_name,
                                  image_version)
-
-    def strip_registry_https_protocol(self, registry):
-        return registry.replace('https://', '')

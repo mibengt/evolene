@@ -16,7 +16,9 @@ class Environment(object):
     EVOLENE_DIRECTORY = 'EVOLENE_DIRECTORY'
 
     @staticmethod
-    def get_registry_host():
+    def get_registry_host(remove_protocol=False):
+        if remove_protocol:
+            return os.environ.get(Environment.REGISTRY_HOST).replace('https://', '')
         return os.environ.get(Environment.REGISTRY_HOST)
 
     @staticmethod
