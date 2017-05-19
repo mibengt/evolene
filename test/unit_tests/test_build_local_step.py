@@ -20,6 +20,10 @@ class BuildLocalStepTests(unittest.TestCase):
                        '0752187c9cce        13 days ago         107 MB')
         result = bls.get_image_size(grep_output)
         self.assertEqual(result, '107 MB')
+        grep_output = ('kthregistryv2.sys.kth.se/kth-azure-app   <none>              '
+                       '0752187c9cce        13 days ago         37.3 MB')
+        result = bls.get_image_size(grep_output)
+        self.assertEqual(result, '37.3 MB')
         grep_output = ''
         result = bls.get_image_size(grep_output)
         self.assertEqual(result, 'N/A')
