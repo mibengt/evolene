@@ -12,7 +12,7 @@ class Docker(object):
 
     @staticmethod
     def grep_image_id(image_id):
-        return Process.run_with_output('docker imagesU | grep {}'
+        return Process.run_with_output('docker images | grep {}'
                                        .format(image_id))
 
     @staticmethod
