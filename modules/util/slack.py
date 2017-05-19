@@ -4,6 +4,7 @@ import logging
 import requests
 from requests import HTTPError, ConnectTimeout, RequestException
 from modules.util.environment import Environment
+from modules.util.data import Data
 
 class Slack(object):
 
@@ -14,6 +15,13 @@ class Slack(object):
         for channel in Environment.get_slack_channels():
             body = Slack.get_payload_body(channel, message, icon)
             Slack.call_slack_endpoint(body)
+
+    @staticmethod
+    def on_successful_deploy(data):
+        message = ('I just built and pushed "{}:{}". '
+                   'Complete build pipeline data was:\n```\n{}\n```'
+                   .format(Environment.get_image_name(), data[Data.IMAGE_VERSION], data))
+        Slack.send_to_slack(message, icon=':checkered_flag:')
 
     @staticmethod
     def get_payload_body(channel, text, icon, username='Evolene'):

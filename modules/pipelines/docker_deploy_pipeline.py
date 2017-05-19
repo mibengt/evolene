@@ -57,8 +57,7 @@ class DockerDeployPipeline(object):
             sys.exit(1)
         else:
             self.log.info(data)
-            Slack.send_to_slack('The following build was successful: `{}`'.format(data),
-                                icon=':checkered_flag:')
+            Slack.on_successful_deploy(data)
 
     def verify_environment(self):
         try:
