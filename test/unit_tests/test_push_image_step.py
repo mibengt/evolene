@@ -19,7 +19,7 @@ class PushImageStepTests(unittest.TestCase):
 
     def test_get_image_to_push(self):
         pis = PushImageStep()
-        os.environ[Environment.REGISTRY_HOST] = 'https://kthregistryv2.sys.kth.se'
+        os.environ[Environment.REGISTRY_HOST] = 'kthregistryv2.sys.kth.se'
         os.environ[Environment.IMAGE_NAME] = 'kth-azure-app'
         data = {Data.IMAGE_VERSION: '1.2.0_1234'}
         result = pis.get_image_to_push(data)

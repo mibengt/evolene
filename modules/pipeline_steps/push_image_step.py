@@ -68,7 +68,7 @@ class PushImageStep(AbstractPipelineStep):
                                     .format(req_err))
 
     def get_image_to_push(self, data):
-        return '{}/{}:{}'.format(Environment.get_registry_host(True),
+        return '{}/{}:{}'.format(Environment.get_registry_host(),
                                  Environment.get_image_name(),
                                  data[Data.IMAGE_VERSION])
 

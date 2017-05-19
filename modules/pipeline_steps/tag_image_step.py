@@ -17,7 +17,7 @@ class TagImageStep(AbstractPipelineStep):
         image_id = data[Data.LOCAL_IMAGE_ID]
         image_version = data[Data.IMAGE_VERSION]
         image_name = Environment.get_image_name()
-        registry = Environment.get_registry_host(True)
+        registry = Environment.get_registry_host()
         tag = self.format_tag(registry, image_name, image_version)
         self.run_tag_command(tag, data)
         self.log.info('Tagged image "%s" with "%s"', image_id, tag)
