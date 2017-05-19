@@ -1,3 +1,3 @@
 #!/bin/sh
 
-./env/bin/python run.py docker run-pipeline
+${EVOLENE_DIRECTORY}/env/bin/python ${EVOLENE_DIRECTORY}/run.py docker run-pipeline
