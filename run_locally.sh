@@ -3,7 +3,7 @@
 DEBUG=True \
 GIT_COMMIT=abc1237XXXXX \
 BUILD_NUMBER=123 \
-PROJECT_ROOT_PATH=/Users/tinglev/Repos/evolene/test/data \
+WORKSPACE=/Users/tinglev/Repos/evolene/test/data \
 IMAGE_NAME=evolene \
 REGISTRY_HOST=kthregistryv2.sys.kth.se \
 REGISTRY_USER=jenkins \
