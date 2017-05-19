@@ -24,12 +24,21 @@
 # ----
 # Remove all local images
 
+import os
+import sys
+import logging
 import fire
 from modules.pipelines.docker_deploy_pipeline import DockerDeployPipeline
+from modules.util.environment import Environment
 import modules.util.log as log
 
 if __name__ == '__main__':
     log.init_logging()
+    evo_dir = Environment.get_evolene_directory()
+    if not evo_dir:
+        logging.getLogger(__name__).fatal('Missing EVOLENE_DIRECTORY environment')
+        sys.exit(1)
+    os.chdir(evo_dir)
     fire.Fire({
         'docker': DockerDeployPipeline
         })

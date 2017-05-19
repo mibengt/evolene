@@ -13,6 +13,7 @@ class Environment(object):
     REGISTRY_HOST = 'REGISTRY_HOST'
     REGISTRY_USER = 'REGISTRY_USER'
     REGISTRY_PASSWORD = 'REGISTRY_PASSWORD'
+    EVOLENE_DIRECTORY = 'EVOLENE_DIRECTORY'
 
     @staticmethod
     def get_registry_host():
@@ -50,3 +51,7 @@ class Environment(object):
     @staticmethod
     def get_slack_web_hook():
         return os.environ.get(Environment.SLACK_WEB_HOOK)
+
+    @staticmethod
+    def get_evolene_directory():
+        return os.environ.get(Environment.EVOLENE_DIRECTORY)
