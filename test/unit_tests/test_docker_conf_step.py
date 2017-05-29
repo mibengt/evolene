@@ -60,6 +60,9 @@ class DockerConfStepTests(unittest.TestCase):
         lines = ['#comment', 'ENV=TEST', 'ENV_2="TEST 2"']
         result = dcs.get_docker_conf_env_lines(lines)
         self.assertEqual(result, ['ENV=TEST', 'ENV_2="TEST 2"'])
+        lines = ['#comment', 'ENV=1.0']
+        result = dcs.get_docker_conf_env_lines(lines)
+        self.assertEqual(result, ['ENV=1.0'])
 
     def test_add_env_lines_to_data(self):
         dcs = DockerConfPipelineStep()
@@ -103,3 +106,7 @@ class DockerConfStepTests(unittest.TestCase):
         lines = ['bla=test', 'lba2=test']
         result = dcs.missing_conf_vars(lines)
         self.assertEqual(result, [Environment.IMAGE_NAME, Data.IMAGE_VERSION])
+        lines = ['{}=kopps'.format(Environment.IMAGE_NAME),
+                 '{}=1.0'.format(Data.IMAGE_VERSION)]
+        result = dcs.missing_conf_vars(lines)
+        self.assertEqual(result, [])

@@ -46,7 +46,7 @@ class DockerConfPipelineStep(AbstractPipelineStep):
 
     def get_docker_conf_env_lines(self, raw_lines):
         return [line for line in raw_lines
-                if re.match(r'^([a-zA-Z0-9_]+)=(([a-zA-Z0-9_]+)|(".+"))$', line)]
+                if re.match(r'[^\s#="]+=(([^\s#="]+)|(".+"))$', line)]
 
     def get_docker_conf_lines(self):
         try:
@@ -61,6 +61,6 @@ class DockerConfPipelineStep(AbstractPipelineStep):
             variables = [line.split('=')[0] for line in lines]
             missing = [req for req in required if req not in variables]
         except TypeError as t_err:
-            self.log.warn('TypeError in add_env_lines_to_data: %s', t_err, exc_info=True)
+            self.log.warn('TypeError in missing_conf_vars: %s', t_err, exc_info=True)
             return required
         return missing
