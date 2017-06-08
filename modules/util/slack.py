@@ -11,17 +11,17 @@ class Slack(object):
     log = logging.getLogger(__name__)
 
     @staticmethod
-    def send_to_slack(message, icon=':triangular_flag_on_post:'):
+    def send_to_slack(message, icon=':no_entry:'):
         for channel in Environment.get_slack_channels():
             body = Slack.get_payload_body(channel, message, icon)
             Slack.call_slack_endpoint(body)
 
     @staticmethod
     def on_successful_deploy(data):
-        message = ('I just built and pushed "{}:{}". '
-                   'Complete build pipeline data was:\n```\n{}\n```'
+        message = ('*{0}*: I just built and pushed "{0}:{1}". '
+                   'Complete build pipeline data was:\n```\n{2}\n```'
                    .format(Environment.get_image_name(), data[Data.IMAGE_VERSION], data))
-        Slack.send_to_slack(message, icon=':checkered_flag:')
+        Slack.send_to_slack(message, icon=':travis:')
 
     @staticmethod
     def get_payload_body(channel, text, icon, username='Evolene'):
