@@ -22,22 +22,32 @@ class DockerTests(unittest.TestCase):
         try:
             self._test_build()
             self._test_tag_image()
+            self._test_inspect_image()
             self._test_run()
             self._test_get_container_status()
             self._test_grep_image_id()
             self._test_stop_and_rm_container()
-        except:
+        except Exception as ex:
+            print 'Error was: ' + ex.message
             self.tearDownClass()
 
     def _test_build(self):
         current_path = os.path.dirname(os.path.abspath(__file__))
         os.environ[Environment.PROJECT_ROOT] = os.path.join(current_path, '../data')
-        result = Docker.build()
+        test_lbl_1 = 'test.label.1=one'
+        test_lbl_2 = 'test.label.2=two'
+        result = Docker.build([test_lbl_1, test_lbl_2])
         DockerTests.IMAGE_ID = result.replace('sha256:', '')[:12]
         self.assertIn('sha256:', result)
 
     def _test_tag_image(self):
         Docker.tag_image(DockerTests.IMAGE_ID, 'test_tag')
+
+    def _test_inspect_image(self):
+        result = Docker.inspect_image(DockerTests.IMAGE_ID)
+        self.assertIn('"test.label.1": "one"', result)
+        self.assertIn('"test.label.2": "two"', result)
+        self.assertIn('"test_tag:latest"', result)
 
     def _test_run(self):
         container_id = Docker.run(DockerTests.IMAGE_ID)

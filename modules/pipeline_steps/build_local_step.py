@@ -14,10 +14,10 @@ class BuildLocalStep(AbstractPipelineStep):
         return [Environment.PROJECT_ROOT]
 
     def get_required_data_keys(self):
-        return []
+        return [Data.IMAGE_VERSION]
 
     def run_step(self, data):
-        image_id = self.run_build()
+        image_id = self.run_build(data)
         image_grep_output = self.verify_built_image(image_id)
         size = self.get_image_size(image_grep_output)
         data[Data.IMAGE_SIZE] = size
@@ -43,8 +43,10 @@ class BuildLocalStep(AbstractPipelineStep):
             return size.group(0)
         return 'N/A'
 
-    def run_build(self):
-        image_id = Docker.build()
+    def run_build(self, data):
+        lbl_image_name = 'se.kth.imageName={}'.format(Environment.get_image_name())
+        lbl_image_version = 'se.kth.imageVersion={}'.format(data[Data.IMAGE_VERSION])
+        image_id = Docker.build([lbl_image_name, lbl_image_version])
         return self.format_image_id(image_id)
 
 

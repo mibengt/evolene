@@ -6,9 +6,14 @@ from modules.util.environment import Environment
 class Docker(object):
 
     @staticmethod
-    def build():
-        return Process.run_with_output('docker build -q {}'
-                                       .format(Environment.get_project_root()))
+    def build(labels=None):
+        build_cmd = 'docker build -q'
+        if labels:
+            for label in labels:
+                build_cmd = '{} --label {}'.format(build_cmd, label)
+        return Process.run_with_output('{} {}'
+                                       .format(build_cmd, 
+                                               Environment.get_project_root()))
 
     @staticmethod
     def grep_image_id(image_id):
@@ -35,3 +40,7 @@ class Docker(object):
     @staticmethod
     def push(registry_image_name):
         return Process.run_with_output('docker push {}'.format(registry_image_name))
+
+    @staticmethod
+    def inspect_image(image_id):
+        return Process.run_with_output('docker image inspect {}'.format(image_id))

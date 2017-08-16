@@ -1,10 +1,13 @@
 __author__ = 'tinglev'
 
 import unittest
+import os
 from mock import patch
 from modules.pipeline_steps.build_local_step import BuildLocalStep
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.docker import Docker
+from modules.util.data import Data
+from modules.util.environment import Environment
 
 class BuildLocalStepTests(unittest.TestCase):
 
@@ -42,3 +45,12 @@ class BuildLocalStepTests(unittest.TestCase):
                                   '0752187c9cce        13 days ago         107 MB')
         result = bls.verify_built_image('does_not_exist')
         mock_handle_error.assert_called_once()
+        
+    @patch.object(Docker, 'build') 
+    def test_run_build(self, mock_docker_build):
+        bls = BuildLocalStep()
+        data = {Data.IMAGE_VERSION: '1.2.32_abcd'}
+        os.environ[Environment.IMAGE_NAME] = 'kth-azure-app'
+        bls.run_build(data)
+        mock_docker_build.assert_called_once_with(['se.kth.imageName=kth-azure-app',
+                                                   'se.kth.imageVersion=1.2.32_abcd'])
