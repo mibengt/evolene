@@ -69,8 +69,9 @@ class AbstractPipelineStep:
             error_func(message)
 
     def report_error_to_slack(self, message):
+        # Instead of passsing around data, just use env var JOB_NAME here
         message = ('*{}*: Error building image.\n{}'
-                   .format(Environment.get_image_name(), message))
+                   .format(os.environ.get('JOB_NAME'), message))
         Slack.send_to_slack(message)
 
     def run_pipeline_step(self, data):

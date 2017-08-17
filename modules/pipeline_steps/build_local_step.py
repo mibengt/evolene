@@ -14,7 +14,7 @@ class BuildLocalStep(AbstractPipelineStep):
         return [Environment.PROJECT_ROOT]
 
     def get_required_data_keys(self):
-        return [Data.IMAGE_VERSION]
+        return [Data.IMAGE_VERSION, Data.IMAGE_NAME]
 
     def run_step(self, data):
         image_id = self.run_build(data)
@@ -44,7 +44,7 @@ class BuildLocalStep(AbstractPipelineStep):
         return 'N/A'
 
     def run_build(self, data):
-        lbl_image_name = 'se.kth.imageName={}'.format(Environment.get_image_name())
+        lbl_image_name = 'se.kth.imageName={}'.format(data[Data.IMAGE_NAME])
         lbl_image_version = 'se.kth.imageVersion={}'.format(data[Data.IMAGE_VERSION])
         image_id = Docker.build([lbl_image_name, lbl_image_version])
         return self.format_image_id(image_id)

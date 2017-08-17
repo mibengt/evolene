@@ -20,7 +20,7 @@ class PushImageStep(AbstractPipelineStep):
 
     def run_step(self, data):
         self.push_image(data)
-        tags = self.get_tags_from_registry()
+        tags = self.get_tags_from_registry(data)
         self.verify_image_version_in_tags(tags, data)
         return data
 
@@ -31,8 +31,8 @@ class PushImageStep(AbstractPipelineStep):
         self.log.info('Found tag in tag list. Verification successful.')
         return True
 
-    def get_tags_from_registry(self):
-        url = self.create_registry_url()
+    def get_tags_from_registry(self, data):
+        url = self.create_registry_url(data)
         (user, password) = self.get_auth_tuple()
         response = self.call_api_endpoint(url, user, password)
         tags = self.get_tags_from_response(response)
@@ -42,9 +42,9 @@ class PushImageStep(AbstractPipelineStep):
     def get_auth_tuple(self): #pragma: no cover
         return (Environment.get_registry_user(), Environment.get_registry_password())
 
-    def create_registry_url(self):
+    def create_registry_url(self, data):
         return 'https://{}/v2/{}/tags/list'.format(Environment.get_registry_host(),
-                                                   Environment.get_image_name())
+                                                   data[Data.IMAGE_NAME])
 
     def get_tags_from_response(self, response): #pragma: no cover
         try:
@@ -68,7 +68,7 @@ class PushImageStep(AbstractPipelineStep):
 
     def get_image_to_push(self, data):
         return '{}/{}:{}'.format(Environment.get_registry_host(),
-                                 Environment.get_image_name(),
+                                 data[Data.IMAGE_NAME],
                                  data[Data.IMAGE_VERSION])
 
     def push_image(self, data):

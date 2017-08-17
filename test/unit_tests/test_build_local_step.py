@@ -49,8 +49,7 @@ class BuildLocalStepTests(unittest.TestCase):
     @patch.object(Docker, 'build') 
     def test_run_build(self, mock_docker_build):
         bls = BuildLocalStep()
-        data = {Data.IMAGE_VERSION: '1.2.32_abcd'}
-        os.environ[Environment.IMAGE_NAME] = 'kth-azure-app'
+        data = {Data.IMAGE_VERSION: '1.2.32_abcd', Data.IMAGE_NAME: 'kth-azure-app'}
         bls.run_build(data)
         mock_docker_build.assert_called_once_with(['se.kth.imageName=kth-azure-app',
                                                    'se.kth.imageVersion=1.2.32_abcd'])

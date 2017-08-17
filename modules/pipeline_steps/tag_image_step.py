@@ -16,7 +16,7 @@ class TagImageStep(AbstractPipelineStep):
     def run_step(self, data): #pragma: no cover
         image_id = data[Data.LOCAL_IMAGE_ID]
         image_version = data[Data.IMAGE_VERSION]
-        image_name = Environment.get_image_name()
+        image_name = data[Data.IMAGE_NAME]
         registry = Environment.get_registry_host()
         tag = self.format_tag(registry, image_name, image_version)
         self.run_tag_command(tag, data)
