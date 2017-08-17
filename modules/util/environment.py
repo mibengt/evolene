@@ -4,7 +4,7 @@ import os
 
 class Environment(object):
 
-    IMAGE_NAME = 'JOB_NAME'
+    IMAGE_NAME = 'IMAGE_NAME'
     PROJECT_ROOT = 'WORKSPACE'
     GIT_COMMIT = 'GIT_COMMIT'
     BUILD_NUMBER = 'BUILD_NUMBER'

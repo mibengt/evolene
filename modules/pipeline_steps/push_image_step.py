@@ -13,11 +13,10 @@ class PushImageStep(AbstractPipelineStep):
     def get_required_env_variables(self): #pragma: no cover
         return [Environment.REGISTRY_HOST,
                 Environment.REGISTRY_USER,
-                Environment.IMAGE_NAME,
                 Environment.REGISTRY_PASSWORD]
 
     def get_required_data_keys(self): #pragma: no cover
-        return [Data.IMAGE_VERSION]
+        return [Data.IMAGE_VERSION, Data.IMAGE_NAME]
 
     def run_step(self, data):
         self.push_image(data)

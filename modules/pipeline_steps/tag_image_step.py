@@ -8,10 +8,10 @@ from modules.util.docker import Docker
 class TagImageStep(AbstractPipelineStep):
 
     def get_required_env_variables(self): #pragma: no cover
-        return [Environment.IMAGE_NAME, Environment.REGISTRY_HOST]
+        return [Environment.REGISTRY_HOST]
 
     def get_required_data_keys(self): #pragma: no cover
-        return [Data.LOCAL_IMAGE_ID, Data.IMAGE_VERSION]
+        return [Data.LOCAL_IMAGE_ID, Data.IMAGE_VERSION, Data.IMAGE_NAME]
 
     def run_step(self, data): #pragma: no cover
         image_id = data[Data.LOCAL_IMAGE_ID]
