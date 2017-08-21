@@ -22,8 +22,7 @@ class ImageVersionStep(AbstractPipelineStep):
     def check_image_version(self, image_version):
         match = re.match(r'^[0-9]+\.[0-9]+$', image_version)
         if not match:
-            self.handle_step_error('docker.conf IMAGE_VERSION is "{}", should be "Major.Minor"'
-                                   .format(image_version))
+            self.handle_step_error('IMAGE_VERSION in docker.conf is "{}", must be "Major.Minor"'.format(image_version))
 
     def get_clamped_commit_hash(self, length=7):
         commit_hash = Environment.get_git_commit()
