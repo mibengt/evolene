@@ -12,3 +12,4 @@ setup(name=PROJECT_NAME,
       license='MIT',
       zip_safe=False,
       packages=find_packages())
+      
