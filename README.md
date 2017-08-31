@@ -35,4 +35,3 @@ EVOLENE_DIRECTORY   - The working directory of evolene (used on jenkins to work 
 ```
 
 Changes to this project are automatically sent to https://build.sys.kth.se
-
