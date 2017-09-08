@@ -38,6 +38,7 @@ class BuildLocalStep(AbstractPipelineStep):
         return image_grep_output
 
     def get_image_size(self, image_grep_output):
+        self.log.info('image_grep_output contains: "%s"', image_grep_output)
         size = re.search(r'[0-9\.]+ MB', image_grep_output)
         if size:
             return size.group(0)
