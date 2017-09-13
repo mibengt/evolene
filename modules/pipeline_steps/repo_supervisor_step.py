@@ -5,6 +5,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.docker import Docker
 from modules.util.process import Process
 from modules.util.environment import Environment
+from modules.util.data import Data
 from modules.util.exceptions import PipelineException
 from modules.util.slack import Slack
 
@@ -14,17 +15,17 @@ class RepoSupervisorStep(AbstractPipelineStep):
     EXCLUDED_DIRECTORIES = ['node_modules']
 
     def get_required_env_variables(self): #pragma: no cover
-        return [Environment.PROJECT_ROOT, Environment.IMAGE_NAME]
+        return [Environment.PROJECT_ROOT]
 
     def get_required_data_keys(self): #pragma: no cover
-        return []
+        return [Data.IMAGE_NAME, Data.IMAGE_VERSION]
 
     def run_step(self, data):
         image_name = RepoSupervisorStep.IMAGE_NAME
         self._pull_image_if_missing(image_name)
         output = self._run_supervisor(image_name)
         if output:
-            self._process_supervisor_result(output)
+            self._process_supervisor_result(output, data)
         else:
             self.log.info('Repo-supervisor found nothing')
         return data
@@ -36,17 +37,17 @@ class RepoSupervisorStep(AbstractPipelineStep):
                            image_name)
             Docker.pull(image_name)
 
-    def _process_supervisor_result(self, cmd_output):
+    def _process_supervisor_result(self, cmd_output, data):
         results = json.loads(cmd_output)
         filenames = [f_name for (f_name, _) in results['result'].iteritems()
                      if not self._directory_is_excluded(f_name)]
         if filenames:
-            self._log_warning_and_send_to_slack(filenames)
+            self._log_warning_and_send_to_slack(filenames, data)
 
-    def _log_warning_and_send_to_slack(self, filenames):
+    def _log_warning_and_send_to_slack(self, filenames, data):
         self.log.info('Found suspicious string in files "%s"', filenames)
-        msg = ('Found suspicious string in the files "{}" while building image "{}"'
-               .format(filenames, Environment.get_image_name()))
+        msg = ('Found suspicious string in the files "{}" while building image "{}:{}"'
+               .format(filenames, data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION]))
         Slack.on_warning(msg)
 
     def _directory_is_excluded(self, filename):
