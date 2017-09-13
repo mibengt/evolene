@@ -5,13 +5,14 @@ __author__ = 'tinglev@kth.se'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.docker import Docker
 from modules.util.process import Process
+from modules.util.environment import Environment
 
 class RepoSupervisorStep(AbstractPipelineStep):
 
     IMAGE_NAME = 'kthse/repo-supervisor'
 
     def get_required_env_variables(self): #pragma: no cover
-        return []
+        return [Environment.PROJECT_ROOT]
 
     def get_required_data_keys(self): #pragma: no cover
         return []
@@ -22,7 +23,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
         if image_name not in image_grep_output:
             Docker.pull(image_name)
         result = self._run_supervisor()
-        print result
+        self.log.info('Repo-supervisor result was: "%s"', result)
         return data
 
     def _run_supervisor(self):
