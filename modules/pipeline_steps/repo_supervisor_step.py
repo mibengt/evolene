@@ -39,14 +39,16 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
     def _process_supervisor_result(self, cmd_output, data):
         results = json.loads(cmd_output)
-        filenames = [f_name for (f_name, _) in results['result'].iteritems()
+        filenames = [f_name.replace('/opt/scan_me', '') for (f_name, _)
+                     in results['result'].iteritems()
                      if not self._directory_is_excluded(f_name)]
         if filenames:
             self._log_warning_and_send_to_slack(filenames, data)
 
     def _log_warning_and_send_to_slack(self, filenames, data):
         self.log.info('Found suspicious string in files "%s"', filenames)
-        msg = ('Found suspicious string in the files "{}" while building image "{}:{}"'
+        msg = ('Found suspicious string(s) in the following file(s) "{}" '
+               'while building image "{}:{}"'
                .format(filenames, data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION]))
         Slack.on_warning(msg)
 
@@ -65,6 +67,6 @@ class RepoSupervisorStep(AbstractPipelineStep):
             return Process.run_with_output(cmd)
         except PipelineException as pipeline_ex:
             # Special handling while waiting for https://github.com/auth0/repo-supervisor/pull/5
-            if 'Not detected any secrets in files' in pipeline_ex.message:
-                return None
-            raise
+            if 'Not detected any secrets in files' not in pipeline_ex.message:
+                self.log.warn('Ignoring error in repo supervisor step: "%s"', pipeline_ex.message)
+            return None
