@@ -10,6 +10,7 @@ from modules.util.exceptions import PipelineException
 class RepoSupervisorStep(AbstractPipelineStep):
 
     IMAGE_NAME = 'kthse/repo-supervisor'
+    EXCLUDED_DIRECTORIES = ['node_modules']
 
     def get_required_env_variables(self): #pragma: no cover
         return [Environment.PROJECT_ROOT]
@@ -28,7 +29,9 @@ class RepoSupervisorStep(AbstractPipelineStep):
         result = self._run_supervisor(image_name)
         if result:
             result_json = json.loads(result)
-            self.log.info('Repo supervisor results were: "%s"', result_json)
+            for key, value in result_json['result'].iteritems():
+                if key not in RepoSupervisorStep.EXCLUDED_DIRECTORIES:
+                    self.log.info('Found suspicious string in file "%s"', value)
         else:
             self.log.debug('Repo-supervisor found nothing')
         return data
