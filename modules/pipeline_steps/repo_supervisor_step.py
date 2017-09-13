@@ -27,7 +27,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
         return data
 
     def _run_supervisor(self):
-        cmd = ('docker run -it --rm -v ${WORKSPACE}:/opt/scan_me repo-supervisor '
+        cmd = ('docker run --rm -v ${WORKSPACE}:/opt/scan_me repo-supervisor '
                '/bin/bash -c "source ~/.bashrc && '
                'JSON_OUTPUT=1 node /opt/repo-supervisor/dist/cli.js /opt/scan_me"')
         return Process.run_with_output(cmd)
