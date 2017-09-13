@@ -1,11 +1,11 @@
 __author__ = 'tinglev@kth.se'
 
-# docker pull kthse/repo-supervisor
-
+import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.docker import Docker
 from modules.util.process import Process
 from modules.util.environment import Environment
+from modules.util.exceptions import PipelineException
 
 class RepoSupervisorStep(AbstractPipelineStep):
 
@@ -26,7 +26,11 @@ class RepoSupervisorStep(AbstractPipelineStep):
             Docker.pull(image_name)
         self.log.debug('Running repo supervisor')
         result = self._run_supervisor(image_name)
-        self.log.info('Repo-supervisor result was: "%s"', result)
+        if result:
+            result_json = json.loads(result)
+            self.log.info('Repo supervisor results were: "%s"', result_json)
+        else
+            self.log.debug('Repo-supervisor found nothing')
         return data
 
     def _run_supervisor(self, image_name):
@@ -34,4 +38,10 @@ class RepoSupervisorStep(AbstractPipelineStep):
                '/bin/bash -c "source ~/.bashrc && '
                'JSON_OUTPUT=1 node /opt/repo-supervisor/dist/cli.js /opt/scan_me"'
                .format(image_name))
-        return Process.run_with_output(cmd)
+        try:
+            return Process.run_with_output(cmd)
+        except PipelineException as pipeline_ex:
+            # Special handling while waiting for https://github.com/auth0/repo-supervisor/pull/5
+            if 'Not detected any secrets in files' in pipeline_ex.message:
+                return None
+            raise
