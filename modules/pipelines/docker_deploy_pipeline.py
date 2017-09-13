@@ -11,6 +11,7 @@ from modules.pipeline_steps.dry_run_step import DryRunStep
 from modules.pipeline_steps.test_image_step import TestImageStep
 from modules.pipeline_steps.tag_image_step import TagImageStep
 from modules.pipeline_steps.push_image_step import PushImageStep
+from modules.pipeline_steps.repo_supervisor_step import RepoSupervisorStep
 from modules.util.exceptions import PipelineException
 from modules.util.slack import Slack
 
@@ -30,6 +31,7 @@ class DockerDeployPipeline(object):
         self.test_image_step = TestImageStep()
         self.tag_image_step = TagImageStep()
         self.push_image_step = PushImageStep()
+        self.repo_supervisor_step = RepoSupervisorStep()
 
         # Configure pipeline
         self.first_step = self.setup_step
@@ -37,6 +39,7 @@ class DockerDeployPipeline(object):
             .set_next_step(self.conf_step) \
             .set_next_step(self.image_version_step) \
             .set_next_step(self.docker_file_step) \
+            .set_next_step(self.repo_supervisor_step) \
             .set_next_step(self.build_local_step) \
             .set_next_step(self.dry_run_step) \
             .set_next_step(self.test_image_step) \

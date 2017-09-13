@@ -44,3 +44,7 @@ class Docker(object):
     @staticmethod
     def inspect_image(image_id):
         return Process.run_with_output('docker image inspect {}'.format(image_id))
+
+    @staticmethod
+    def pull(image_name):
+        return Process.run_with_output('docker pull {}'.format(image_name))
