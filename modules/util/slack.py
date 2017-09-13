@@ -23,6 +23,10 @@ class Slack(object):
         Slack.send_to_slack(message, icon=':travis:')
 
     @staticmethod
+    def on_warning(message):
+        Slack.send_to_slack(message, icon=':warning:')
+
+    @staticmethod
     def get_payload_body(channel, text, icon, username='Evolene'):
         body = {
             "channel": channel,
