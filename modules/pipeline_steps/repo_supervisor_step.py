@@ -29,7 +29,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
         if result:
             result_json = json.loads(result)
             self.log.info('Repo supervisor results were: "%s"', result_json)
-        else
+        else:
             self.log.debug('Repo-supervisor found nothing')
         return data
 
