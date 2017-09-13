@@ -25,12 +25,13 @@ class RepoSupervisorStep(AbstractPipelineStep):
                            image_name)
             Docker.pull(image_name)
         self.log.debug('Running repo supervisor')
-        result = self._run_supervisor()
+        result = self._run_supervisor(image_name)
         self.log.info('Repo-supervisor result was: "%s"', result)
         return data
 
-    def _run_supervisor(self):
-        cmd = ('docker run --rm -v ${WORKSPACE}:/opt/scan_me repo-supervisor '
+    def _run_supervisor(self, image_name):
+        cmd = ('docker run --rm -v ${{WORKSPACE}}:/opt/scan_me {} '
                '/bin/bash -c "source ~/.bashrc && '
-               'JSON_OUTPUT=1 node /opt/repo-supervisor/dist/cli.js /opt/scan_me"')
+               'JSON_OUTPUT=1 node /opt/repo-supervisor/dist/cli.js /opt/scan_me"'
+               .format(image_name))
         return Process.run_with_output(cmd)
