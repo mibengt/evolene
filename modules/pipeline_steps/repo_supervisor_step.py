@@ -39,7 +39,8 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
     def _process_supervisor_result(self, cmd_output, data):
         results = json.loads(cmd_output)
-        filenames = [f_name.replace('/opt/scan_me', '') for (f_name, _)
+        filenames = [f_name.replace('/opt/scan_me', '').encode('utf-8')
+                     for (f_name, _)
                      in results['result'].iteritems()
                      if not self._directory_is_excluded(f_name)]
         if filenames:
