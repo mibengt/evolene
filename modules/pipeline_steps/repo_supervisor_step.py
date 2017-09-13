@@ -29,9 +29,10 @@ class RepoSupervisorStep(AbstractPipelineStep):
         result = self._run_supervisor(image_name)
         if result:
             result_json = json.loads(result)
-            for key, value in result_json['result'].iteritems():
-                if key not in RepoSupervisorStep.EXCLUDED_DIRECTORIES:
-                    self.log.info('Found suspicious string in file "%s"', value)
+            for filename, _ in result_json['result'].iteritems():
+                for directory in RepoSupervisorStep.EXCLUDED_DIRECTORIES:
+                    if directory not in filename:
+                        self.log.info('Found suspicious string in file "%s"', filename)
         else:
             self.log.debug('Repo-supervisor found nothing')
         return data
