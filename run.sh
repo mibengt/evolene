@@ -1,4 +1,3 @@
 #!/bin/sh
 
-SCRIPTPATH=`pwd -P`
-${SCRIPTPATH}/env/bin/python ${SCRIPTPATH}/run.py docker run-pipeline
+${EVOLENE_DIRECTORY}/env/bin/python ${EVOLENE_DIRECTORY}/run.py docker run-pipeline
