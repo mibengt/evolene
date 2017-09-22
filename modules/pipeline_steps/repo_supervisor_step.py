@@ -32,7 +32,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
     def _pull_image_if_missing(self, image_name):
         image_grep_output = Docker.grep_image_id(image_name)
-        if image_name not in image_grep_output:
+        if not image_grep_output or image_name not in image_grep_output:
             self.log.debug('Couldnt find local image "%s". Pulling from docker.io.',
                            image_name)
             Docker.pull(image_name)

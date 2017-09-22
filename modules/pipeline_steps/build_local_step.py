@@ -32,9 +32,9 @@ class BuildLocalStep(AbstractPipelineStep):
 
     def verify_built_image(self, image_id):
         image_grep_output = Docker.grep_image_id(image_id)
-        self.log.debug('Grep for image id returned "%s"', image_grep_output.rstrip())
-        if not image_id in image_grep_output:
+        if not image_grep_output or image_id not in image_grep_output:
             self.handle_step_error('Could not find locally built image')
+        self.log.debug('Grep for image id returned "%s"', image_grep_output.rstrip())
         return image_grep_output
 
     def get_image_size(self, image_grep_output):
