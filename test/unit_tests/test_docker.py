@@ -63,6 +63,8 @@ class DockerTests(unittest.TestCase):
         self.assertTrue(DockerTests.IMAGE_ID in grep_return)
         # Test that the tag from the earlier step also appears here
         self.assertTrue('test_tag' in grep_return)
+        image_id = Docker.grep_image_id('SHOULDNOTEXIST')
+        self.assertIsNone(image_id)
 
     def _test_stop_and_rm_container(self):
         Docker.stop_and_remove_container(DockerTests.CONTAINER_ID)
