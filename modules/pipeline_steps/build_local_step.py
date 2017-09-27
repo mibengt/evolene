@@ -39,7 +39,7 @@ class BuildLocalStep(AbstractPipelineStep):
 
     def get_image_size(self, image_grep_output):
         self.log.info('image_grep_output contains: "%s"', image_grep_output)
-        size = re.search(r'[0-9\.]+ MB', image_grep_output)
+        size = re.search(r'[0-9\.]+MB', image_grep_output)
         if size:
             return size.group(0)
         return 'N/A'
@@ -49,6 +49,3 @@ class BuildLocalStep(AbstractPipelineStep):
         lbl_image_version = 'se.kth.imageVersion={}'.format(data[Data.IMAGE_VERSION])
         image_id = Docker.build([lbl_image_name, lbl_image_version])
         return self.format_image_id(image_id)
-
-
-

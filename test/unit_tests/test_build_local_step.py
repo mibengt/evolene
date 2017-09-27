@@ -20,13 +20,13 @@ class BuildLocalStepTests(unittest.TestCase):
     def test_get_image_size(self):
         bls = BuildLocalStep()
         grep_output = ('kthregistryv2.sys.kth.se/kth-azure-app   <none>              '
-                       '0752187c9cce        13 days ago         107 MB')
+                       '0752187c9cce        13 days ago         107MB')
         result = bls.get_image_size(grep_output)
-        self.assertEqual(result, '107 MB')
+        self.assertEqual(result, '107MB')
         grep_output = ('kthregistryv2.sys.kth.se/kth-azure-app   <none>              '
-                       '0752187c9cce        13 days ago         37.3 MB')
+                       '0752187c9cce        13 days ago         37.3MB')
         result = bls.get_image_size(grep_output)
-        self.assertEqual(result, '37.3 MB')
+        self.assertEqual(result, '37.3MB')
         grep_output = ''
         result = bls.get_image_size(grep_output)
         self.assertEqual(result, 'N/A')
@@ -36,17 +36,17 @@ class BuildLocalStepTests(unittest.TestCase):
     def test_verify_built_image(self, mock_handle_error, mock_grep):
         bls = BuildLocalStep()
         mock_grep.return_value = ('kthregistryv2.sys.kth.se/kth-azure-app   <none>              '
-                                  '0752187c9cce        13 days ago         107 MB')
+                                  '0752187c9cce        13 days ago         107MB')
         result = bls.verify_built_image('0752187c9cce')
         mock_grep.assert_called_once()
         self.assertEqual(result, mock_grep.return_value)
         mock_grep.reset_mock()
         mock_grep.return_value = ('kthregistryv2.sys.kth.se/kth-azure-app   <none>              '
-                                  '0752187c9cce        13 days ago         107 MB')
+                                  '0752187c9cce        13 days ago         107MB')
         result = bls.verify_built_image('does_not_exist')
         mock_handle_error.assert_called_once()
-        
-    @patch.object(Docker, 'build') 
+
+    @patch.object(Docker, 'build')
     def test_run_build(self, mock_docker_build):
         bls = BuildLocalStep()
         data = {Data.IMAGE_VERSION: '1.2.32_abcd', Data.IMAGE_NAME: 'kth-azure-app'}
