@@ -59,6 +59,6 @@ class Docker(object):
         return Process.run_with_output('docker pull {}'.format(image_name))
 
     @staticmethod
-    def run_unit_test_compose():
+    def run_unit_test_compose(compose_test_file):
         return Process.run_with_output('docker-compose --file {} up'
-                                       .format(Docker.UNIT_TEST_COMPOSE_FILENAME))
+                                       .format(compose_test_file))

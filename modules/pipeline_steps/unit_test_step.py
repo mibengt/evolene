@@ -15,20 +15,24 @@ class UnitTestStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        compose_test_file = Docker.UNIT_TEST_COMPOSE_FILENAME
-        if self.test_file_exists():
-            self.run_unit_tests()
+        compose_test_file = self.get_absolut_test_file_path()
+        if self.test_file_exists(compose_test_file):
+            self.run_unit_tests(compose_test_file)
         else:
             self.log.info('No file named "%s" found. No unit tests will be run.',
                           compose_test_file)
         return data
 
-    def test_file_exists(self):
-        return os.path.exists(Docker.UNIT_TEST_COMPOSE_FILENAME)
+    def get_absolut_test_file_path(self):
+        stripped_root = Environment.get_project_root().rstrip('/')
+        return '{}/{}'.format(stripped_root, Docker.UNIT_TEST_COMPOSE_FILENAME)
 
-    def run_unit_tests(self):
+    def test_file_exists(self, compose_test_file):
+        return os.path.exists(compose_test_file)
+
+    def run_unit_tests(self, compose_test_file):
         try:
-            Docker.run_unit_test_compose()
+            Docker.run_unit_test_compose(compose_test_file)
         except Exception as ex:
             raise PipelineException('Unit tests failed with message: {}'
                                     .format(ex.message))
