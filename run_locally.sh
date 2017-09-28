@@ -8,6 +8,6 @@ IMAGE_NAME=evolene \
 REGISTRY_HOST=kthregistryv2.sys.kth.se \
 REGISTRY_USER=jenkins \
 SLACK_CHANNELS=#pipeline-logs \
-SLACK_WEB_HOOK=not_at_this_time \
+EVOLENE_SLACK_WEB_HOOK=https://not_at_this_time \
 EVOLENE_DIRECTORY=$(pwd) \
 env/bin/python run.py docker run-pipeline

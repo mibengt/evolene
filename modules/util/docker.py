@@ -6,6 +6,8 @@ from modules.util.exceptions import PipelineException
 
 class Docker(object):
 
+    UNIT_TEST_COMPOSE_FILENAME = 'docker-compose-unit-tests.yml'
+
     @staticmethod
     def build(labels=None):
         build_cmd = 'docker build -q'
@@ -55,3 +57,8 @@ class Docker(object):
     @staticmethod
     def pull(image_name):
         return Process.run_with_output('docker pull {}'.format(image_name))
+
+    @staticmethod
+    def run_unit_test_compose():
+        return Process.run_with_output('docker-compose --file {} up'
+                                       .format(Docker.UNIT_TEST_COMPOSE_FILENAME))

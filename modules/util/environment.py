@@ -14,6 +14,7 @@ class Environment(object):
     REGISTRY_USER = 'REGISTRY_USER'
     REGISTRY_PASSWORD = 'REGISTRY_PASSWORD'
     EVOLENE_DIRECTORY = 'EVOLENE_DIRECTORY'
+    EXPERIMENTAL = 'EXPERIMENTAL'
 
     @staticmethod
     def get_registry_host():
@@ -55,3 +56,7 @@ class Environment(object):
     @staticmethod
     def get_evolene_directory():
         return os.environ.get(Environment.EVOLENE_DIRECTORY)
+
+    @staticmethod
+    def get_experimental():
+        return os.environ.get(Environment.EXPERIMENTAL)

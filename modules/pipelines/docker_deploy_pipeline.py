@@ -12,8 +12,10 @@ from modules.pipeline_steps.test_image_step import TestImageStep
 from modules.pipeline_steps.tag_image_step import TagImageStep
 from modules.pipeline_steps.push_image_step import PushImageStep
 from modules.pipeline_steps.repo_supervisor_step import RepoSupervisorStep
+from modules.pipeline_steps.unit_test_step import UnitTestStep
 from modules.util.exceptions import PipelineException
 from modules.util.slack import Slack
+from modules.util.environment import Environment
 
 
 class DockerDeployPipeline(object):
@@ -21,30 +23,20 @@ class DockerDeployPipeline(object):
     def __init__(self):
         self.log = logging.getLogger(__name__)
 
-        # Create pipeline steps
-        self.setup_step = SetupStep()
-        self.conf_step = DockerConfPipelineStep()
-        self.image_version_step = ImageVersionStep()
-        self.docker_file_step = DockerFileStep()
-        self.build_local_step = BuildLocalStep()
-        self.dry_run_step = DryRunStep()
-        self.test_image_step = TestImageStep()
-        self.tag_image_step = TagImageStep()
-        self.push_image_step = PushImageStep()
-        self.repo_supervisor_step = RepoSupervisorStep()
-
         # Configure pipeline
-        self.first_step = self.setup_step
-        self.first_step \
-            .set_next_step(self.conf_step) \
-            .set_next_step(self.image_version_step) \
-            .set_next_step(self.docker_file_step) \
-            .set_next_step(self.repo_supervisor_step) \
-            .set_next_step(self.build_local_step) \
-            .set_next_step(self.dry_run_step) \
-            .set_next_step(self.test_image_step) \
-            .set_next_step(self.tag_image_step) \
-            .set_next_step(self.push_image_step)
+        self.first_step = SetupStep()
+        next_step = self.first_step.set_next_step(DockerConfPipelineStep())
+        next_step = next_step.set_next_step(ImageVersionStep())
+        next_step = next_step.set_next_step(DockerFileStep())
+        if Environment.get_experimental():
+            next_step = next_step.set_next_step(RepoSupervisorStep())
+        next_step = next_step.set_next_step(BuildLocalStep())
+        next_step = next_step.set_next_step(DryRunStep())
+        if Environment.get_experimental():
+            next_step = next_step.set_next_step(UnitTestStep())
+        next_step = next_step.set_next_step(TestImageStep())
+        next_step = next_step.set_next_step(TagImageStep())
+        next_step = next_step.set_next_step(PushImageStep())
 
     def run_pipeline(self):
         self.verify_environment()
