@@ -28,6 +28,7 @@ class Docker(object):
                 # We got an empty output, which means that the grep failed
                 # which in turn means that no image was found, return None
                 return None
+            raise
 
     @staticmethod
     def get_container_status(container_id):
