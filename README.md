@@ -4,13 +4,18 @@
 Jenkins build as code.
 
 Features:
+* Verifies *docker.conf*
+* Verifies *Dockerfile*
 * Repo security scanning for passwords and secrets
 * Docker build
 * SemVer versioning of Docker images
 * Push to Docker Registry
 * Slack integration for build information
+* Contarinerized integration testing by running *docker-compose-integration-tests.yml*	
+* Contarinerized unit testing by running *docker-compose-unit-tests.yml*
 
 ## How to use on Jenkins
+Do use Evolene on Jenkins simply add a build step that executes run.sh. Evolene uses Convention Over Configuration. That means that Evolene is configure by following standard naming convensions rather then per project configuration.
 
 ![KTH on Azure](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
 
