@@ -30,7 +30,7 @@ SLACK_CHANNELS="#team-studadm-build,#pipeline-logs" DEBUG=True EXPERIMENTAL=True
 ```
 
 
-# For developers
+# How to develop and run Evolene on your local machine
 
 To run: 
 ```bash
