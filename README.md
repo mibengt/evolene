@@ -14,12 +14,12 @@ Features:
 
 Default configuration
 ```bash
-SLACK_CHANNELS="#team-studadm" $EVOLENE_DIRECTORY/run.sh
+SLACK_CHANNELS="#team-studadm-build" $EVOLENE_DIRECTORY/run.sh
 ```
 
 Latest feature:
 ```bash
-SLACK_CHANNELS="#team-pipeline-build,#pipeline-logs" DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh
+SLACK_CHANNELS="#team-studadm-build,#pipeline-logs" DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh
 ```
 
 
