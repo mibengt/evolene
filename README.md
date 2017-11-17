@@ -1,5 +1,4 @@
-# Evolene
-## Pipeline functionality for building, testing and pushing Docker images.
+# Evolene - Standradized building on Jenkins
 
 Jenkins build as code.
 
