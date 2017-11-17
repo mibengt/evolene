@@ -10,13 +10,18 @@ Features:
 * Push to Docker Registry
 * Slack integration for build information
 
-## Pipeline step Build configuration
+## How to use
 
 Default configuration
-`SLACK_CHANNELS="#team-studadm" $EVOLENE_DIRECTORY/run.sh`
+```bash
+SLACK_CHANNELS="#team-studadm" $EVOLENE_DIRECTORY/run.sh
+```
 
 Latest feature:
-`SLACK_CHANNELS="#team-pipeline-build,#pipeline-logs" DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh`
+```bash
+SLACK_CHANNELS="#team-pipeline-build,#pipeline-logs" DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh
+```
+
 
 # For developers
 
