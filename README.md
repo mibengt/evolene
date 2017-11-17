@@ -14,7 +14,7 @@ Features:
 * Contarinerized unit testing by running **docker-compose-unit-tests.yml**
 
 ## How to use on Jenkins
-Do use Evolene on Jenkins simply add a build step that executes run.sh. Evolene uses Convention Over Configuration. That means that Evolene is configure by following standard naming convensions rather then per project configuration.
+Do use Evolene on Jenkins simply [add a build step](https://build.sys.kth.se/view/team-pipeline/job/kth-azure-app/configure) that executes run.sh. Evolene uses Convention Over Configuration. That means that Evolene is configure by following standard naming convensions rather then per project configuration.
 
 ![KTH on Azure](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
 
