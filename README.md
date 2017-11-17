@@ -10,7 +10,9 @@ Features:
 * Push to Docker Registry
 * Slack integration for build information
 
-## How to use
+## How to use on Jenkins
+
+![KTH on Azure](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
 
 Default configuration
 ```bash
