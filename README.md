@@ -1,7 +1,21 @@
 # Evolene
 ## Pipeline functionality for building, testing and pushing Docker images.
 
-A Python rewrite of https://gita.sys.kth.se/Infosys/zermatt
+Jenkins build as code.
+Features:
+* Repo security scanning for passwords and secrets
+* Docker build
+* SemVer versioning of Docker images
+* Push to Docker Registry
+
+## Pipeline step Build configuration
+
+Default configuration
+`SLACK_CHANNELS="#team-studadm" $EVOLENE_DIRECTORY/run.sh`
+
+Latest feature:
+`SLACK_CHANNELS="#team-pipeline-build,#pipeline-logs" DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh`
+
 
 To run: 
 ```bash
@@ -19,7 +33,7 @@ To run tests:
 ./run_tests.sh
 ```
 
-Environment variables for configuration:
+All environment variables for configuration:
 
 ```
 IMAGE_NAME          - The name of the image to build (ex: 'kth-azure-app')
@@ -32,6 +46,7 @@ REGISTRY_HOST       - The host (without protocol) of the Docker registry to use 
 REGISTRY_USER       - Registry user
 REGISTRY_PASSWORD   - Registry password
 EVOLENE_DIRECTORY   - The working directory of evolene (used on jenkins to work properly)
+EXPERIMENTAL        - Feature toogle for latest features
 ```
 
 Changes to this project are automatically sent to https://build.sys.kth.se
