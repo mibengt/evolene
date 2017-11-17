@@ -2,11 +2,13 @@
 ## Pipeline functionality for building, testing and pushing Docker images.
 
 Jenkins build as code.
+
 Features:
 * Repo security scanning for passwords and secrets
 * Docker build
 * SemVer versioning of Docker images
 * Push to Docker Registry
+* Slack integration for build information
 
 ## Pipeline step Build configuration
 
@@ -16,6 +18,7 @@ Default configuration
 Latest feature:
 `SLACK_CHANNELS="#team-pipeline-build,#pipeline-logs" DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh`
 
+# For developers
 
 To run: 
 ```bash
