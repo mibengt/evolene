@@ -61,5 +61,5 @@ class Docker(object):
 
     @staticmethod
     def run_unit_test_compose(compose_test_file):
-        return Process.run_with_output('docker-compose --file {} up'
+        return Process.run_with_output('docker-compose --file {} up --abort-on-container-exit'
                                        .format(compose_test_file))
