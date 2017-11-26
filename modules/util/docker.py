@@ -7,6 +7,7 @@ from modules.util.exceptions import PipelineException
 class Docker(object):
 
     UNIT_TEST_COMPOSE_FILENAME = 'docker-compose-unit-tests.yml'
+    INTEGRATION_TEST_COMPOSE_FILENAME = 'docker-compose-integration-tests.yml'
 
     @staticmethod
     def build(labels=None):
@@ -63,3 +64,9 @@ class Docker(object):
     def run_unit_test_compose(compose_test_file):
         return Process.run_with_output('docker-compose --file {} up --abort-on-container-exit'
                                        .format(compose_test_file))
+
+    @staticmethod
+    def run_integration_tests(compose_test_file):
+        return Process.run_with_output('docker-compose --file {} up --abort-on-container-exit'
+                                       .format(compose_test_file))
+

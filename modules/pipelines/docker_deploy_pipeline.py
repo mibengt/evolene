@@ -13,6 +13,7 @@ from modules.pipeline_steps.tag_image_step import TagImageStep
 from modules.pipeline_steps.push_image_step import PushImageStep
 from modules.pipeline_steps.repo_supervisor_step import RepoSupervisorStep
 from modules.pipeline_steps.unit_test_step import UnitTestStep
+from modules.pipeline_steps.unit_test_step import IntegrationTestStep
 from modules.util.exceptions import PipelineException
 from modules.util.slack import Slack
 from modules.util.environment import Environment
@@ -34,6 +35,8 @@ class DockerDeployPipeline(object):
         next_step = next_step.set_next_step(DryRunStep())
         if Environment.get_experimental():
             next_step = next_step.set_next_step(UnitTestStep())
+        if Environment.get_experimental():
+            next_step = next_step.set_next_step(IntegrationTestStep()
         next_step = next_step.set_next_step(TestImageStep())
         next_step = next_step.set_next_step(TagImageStep())
         next_step = next_step.set_next_step(PushImageStep())
