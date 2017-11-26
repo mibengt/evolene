@@ -36,7 +36,7 @@ class DockerDeployPipeline(object):
         if Environment.get_experimental():
             next_step = next_step.set_next_step(UnitTestStep())
         if Environment.get_experimental():
-            next_step = next_step.set_next_step(IntegrationTestStep()
+            next_step = next_step.set_next_step(IntegrationTestStep())
         next_step = next_step.set_next_step(TestImageStep())
         next_step = next_step.set_next_step(TagImageStep())
         next_step = next_step.set_next_step(PushImageStep())
