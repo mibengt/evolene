@@ -33,10 +33,10 @@ class DockerDeployPipeline(object):
             next_step = next_step.set_next_step(RepoSupervisorStep())
         next_step = next_step.set_next_step(BuildLocalStep())
         next_step = next_step.set_next_step(DryRunStep())
-        if Environment.get_experimental():
-            next_step = next_step.set_next_step(UnitTestStep())
-        if Environment.get_experimental():
-            next_step = next_step.set_next_step(IntegrationTestStep())
+        #if Environment.get_experimental():
+        next_step = next_step.set_next_step(UnitTestStep())
+        #if Environment.get_experimental():
+        next_step = next_step.set_next_step(IntegrationTestStep())
         next_step = next_step.set_next_step(TestImageStep())
         next_step = next_step.set_next_step(TagImageStep())
         next_step = next_step.set_next_step(PushImageStep())
