@@ -64,7 +64,7 @@ class Docker(object):
         return Process.run_with_output('docker pull {}'.format(image_name))
 
     @staticmethod
-    def run_unit_test_compose(self, compose_test_file, data):
+    def run_unit_test_compose(compose_test_file, data):
         cmd = 'LOCAL_IMAGE_ID={} IMAGE_NAME={} IMAGE_VERSION=:{} docker-compose --file {} up --abort-on-container-exit'.format( data[Data.LOCAL_IMAGE_ID],
                                                 data[Data.IMAGE_NAME],
                                                 data[Data.IMAGE_VERSION],
@@ -73,7 +73,7 @@ class Docker(object):
         return Process.run_with_output(cmd)
 
     @staticmethod
-    def run_integration_tests(self, compose_test_file, data):
+    def run_integration_tests(compose_test_file, data):
         cmd = 'LOCAL_IMAGE_ID={} IMAGE_NAME={} IMAGE_VERSION=:{} docker-compose --file {} up --abort-on-container-exit'.format( data[Data.LOCAL_IMAGE_ID],
                                                 data[Data.IMAGE_NAME],
                                                 data[Data.IMAGE_VERSION],
