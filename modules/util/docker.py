@@ -8,7 +8,7 @@ from modules.util.data import Data
 
 class Docker(object):
 
-     def __init__(self):
+    def __init__(self):
         self.log = logging.getLogger(__name__)
 
     UNIT_TEST_COMPOSE_FILENAME = 'docker-compose-unit-tests.yml'
