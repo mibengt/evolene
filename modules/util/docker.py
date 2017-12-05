@@ -1,11 +1,13 @@
 __author__ = 'tinglev'
 
+import logging
 from modules.util.process import Process
 from modules.util.environment import Environment
 from modules.util.exceptions import PipelineException
 from modules.util.data import Data
 
 class Docker(object):
+
 
     UNIT_TEST_COMPOSE_FILENAME = 'docker-compose-unit-tests.yml'
     INTEGRATION_TEST_COMPOSE_FILENAME = 'docker-compose-integration-tests.yml'
@@ -62,20 +64,20 @@ class Docker(object):
         return Process.run_with_output('docker pull {}'.format(image_name))
 
     @staticmethod
-    def run_unit_test_compose(compose_test_file, data):
+    def run_unit_test_compose(self, compose_test_file, data):
         cmd = 'LOCAL_IMAGE_ID={} IMAGE_NAME={} IMAGE_VERSION=:{} docker-compose --file {} up --abort-on-container-exit'.format( data[Data.LOCAL_IMAGE_ID],
                                                 data[Data.IMAGE_NAME],
                                                 data[Data.IMAGE_VERSION],
                                                 compose_test_file)
-        print 'Unit tests command: {}'.format(cmd)
+        logging.getLogger(__name__).info('Unit tests command: {}'.format(cmd))
         return Process.run_with_output(cmd)
 
     @staticmethod
-    def run_integration_tests(compose_test_file, data):
+    def run_integration_tests(self, compose_test_file, data):
         cmd = 'LOCAL_IMAGE_ID={} IMAGE_NAME={} IMAGE_VERSION=:{} docker-compose --file {} up --abort-on-container-exit'.format( data[Data.LOCAL_IMAGE_ID],
                                                 data[Data.IMAGE_NAME],
                                                 data[Data.IMAGE_VERSION],
                                                 compose_test_file)
                                                 
-        print 'Integration tests command: {}'.format(cmd)
+        logging.getLogger(__name__).info('Integration tests command: {}'.format(cmd))
         return Process.run_with_output(cmd)
