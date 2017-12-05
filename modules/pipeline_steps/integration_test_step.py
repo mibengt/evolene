@@ -18,7 +18,7 @@ class IntegrationTestStep(AbstractPipelineStep):
     def run_step(self, data):
         compose_test_file = self.get_absolut_test_file_path()
         if self.test_file_exists(compose_test_file):
-            self.log.info('Running integration tests.")
+            self.log.info('Running integration tests.')
             self.run_integration_tests(compose_test_file, data)
         else:
             self.log.info('No file named "%s" found. No integration tests will be run.',

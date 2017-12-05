@@ -19,7 +19,7 @@ class UnitTestStep(AbstractPipelineStep):
         
         compose_test_file = self.get_absolut_test_file_path()
         if self.test_file_exists(compose_test_file):
-            self.log.info('Running unit tests.")
+            self.log.info('Running unit tests.')
             self.run_unit_tests(compose_test_file, data)
         else:
             self.log.info('No file named "%s" found. No unit tests will be run.',
