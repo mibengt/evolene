@@ -70,7 +70,7 @@ class Docker(object):
         return run_test(compose_test_file, data)
 
     @staticmethod
-    def run_test()compose_test_file, data):
+    def run_test(compose_test_file, data):
         cmd = 'LOCAL_IMAGE_ID={} IMAGE_NAME={} IMAGE_VERSION={} docker-compose --file {} up --abort-on-container-exit'.format(
                                                 data[Data.LOCAL_IMAGE_ID],
                                                 data[Data.IMAGE_NAME],
