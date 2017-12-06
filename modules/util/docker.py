@@ -63,11 +63,11 @@ class Docker(object):
 
     @staticmethod
     def run_unit_test_compose(compose_test_file, data):
-        return run_test(compose_test_file, data)
+        return Docker.run_test(compose_test_file, data)
 
     @staticmethod
     def run_integration_tests(compose_test_file, data):
-        return run_test(compose_test_file, data)
+        return Docker.run_test(compose_test_file, data)
 
     @staticmethod
     def run_test(compose_test_file, data):
