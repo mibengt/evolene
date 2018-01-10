@@ -11,7 +11,7 @@ from modules.util.slack import Slack
 
 class RepoSupervisorStep(AbstractPipelineStep):
 
-    IMAGE_NAME = 'repo-supervisor'
+    IMAGE_NAME = 'kthse/repo-supervisor'
     EXCLUDED_DIRECTORIES = ['node_modules']
 
     def get_required_env_variables(self): #pragma: no cover
