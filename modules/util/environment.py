@@ -15,9 +15,12 @@ class Environment(object):
     REGISTRY_PASSWORD = 'REGISTRY_PASSWORD'
     EVOLENE_DIRECTORY = 'EVOLENE_DIRECTORY'
     EXPERIMENTAL = 'EXPERIMENTAL'
+    PUSH_PUBLIC = 'PUSH_PUBLIC'
 
     @staticmethod
     def get_registry_host():
+        if Environment.get_push_public():
+            return "docker.io"
         return os.environ.get(Environment.REGISTRY_HOST)
 
     @staticmethod
@@ -57,6 +60,10 @@ class Environment(object):
     def get_evolene_directory():
         return os.environ.get(Environment.EVOLENE_DIRECTORY)
 
+    @staticmethod
+    def get_push_public():
+        return os.environ.get(Environment.PUSH_PUBLIC)
+    
     @staticmethod
     def get_experimental():
         return os.environ.get(Environment.EXPERIMENTAL)

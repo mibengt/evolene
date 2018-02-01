@@ -11,6 +11,7 @@ from modules.pipeline_steps.dry_run_step import DryRunStep
 from modules.pipeline_steps.test_image_step import TestImageStep
 from modules.pipeline_steps.tag_image_step import TagImageStep
 from modules.pipeline_steps.push_image_step import PushImageStep
+from modules.pipeline_steps.push_public_image_step import PushPublicImageStep
 from modules.pipeline_steps.repo_supervisor_step import RepoSupervisorStep
 from modules.pipeline_steps.unit_test_step import UnitTestStep
 from modules.pipeline_steps.integration_test_step import IntegrationTestStep
@@ -26,20 +27,32 @@ class DockerDeployPipeline(object):
 
         # Configure pipeline
         self.first_step = SetupStep()
+        # Check the content of docker.conf
         next_step = self.first_step.set_next_step(DockerConfPipelineStep())
+        # Build new image version major.minor.path_githash
         next_step = next_step.set_next_step(ImageVersionStep())
+        # Check Dockerfile exists
         next_step = next_step.set_next_step(DockerFileStep())
+        # Scan repo for secrets like passwords
         if Environment.get_experimental():
             next_step = next_step.set_next_step(RepoSupervisorStep())
+        # Build the image to local registry
         next_step = next_step.set_next_step(BuildLocalStep())
+        # Test run the image
         next_step = next_step.set_next_step(DryRunStep())
-        #if Environment.get_experimental():
+        # Run unit tests
         next_step = next_step.set_next_step(UnitTestStep())
-        #if Environment.get_experimental():
+        # Run integration tests
         next_step = next_step.set_next_step(IntegrationTestStep())
+        # Do something (leftover?)
         next_step = next_step.set_next_step(TestImageStep())
+        # Tag the buildt image with image version.
         next_step = next_step.set_next_step(TagImageStep())
-        next_step = next_step.set_next_step(PushImageStep())
+        # Puch the tagged image to a repository.
+        if Environment.get_push_public():
+            next_step = next_step.set_next_step(PushPublicImageStep())
+        else:
+            next_step = next_step.set_next_step(PushImageStep())
 
     def run_pipeline(self):
         self.verify_environment()
