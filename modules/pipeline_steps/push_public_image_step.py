@@ -27,7 +27,7 @@ class PushPublicImageStep(AbstractPipelineStep):
 
 
     def get_required_env_variables(self):
-        return [Environment.get_registry_host]
+        return [Environment.PUSH_PUBLIC]
 
     def get_required_data_keys(self):
         return [Data.IMAGE_NAME, Data.IMAGE_VERSION]
