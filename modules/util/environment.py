@@ -20,7 +20,7 @@ class Environment(object):
     @staticmethod
     def get_registry_host():
         if Environment.get_push_public():
-            return "docker.io"
+            return "docker.io/kthse"
         return os.environ.get(Environment.REGISTRY_HOST)
 
     @staticmethod
