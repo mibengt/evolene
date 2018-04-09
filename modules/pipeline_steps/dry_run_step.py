@@ -50,8 +50,7 @@ class DryRunStep(AbstractPipelineStep):
         try:
             container_status = self.wait_for_container_created(container_id)
             if not self.is_running(container_status):
-                self.handle_step_error('Status of container after dry run is "{}"'
-                                       .format(container_status))
+                self.handle_step_error('Failed to test start the newly built container on Jenkins.')
         finally:
             self.stop_container(container_id)
         self.log.info('Dry run of image with id "%s" successful', data[Data.LOCAL_IMAGE_ID])
