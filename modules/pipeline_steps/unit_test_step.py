@@ -37,5 +37,5 @@ class UnitTestStep(AbstractPipelineStep):
         try:
             Docker.run_unit_test_compose(compose_test_file, data)
         except Exception as ex:
-            raise PipelineException('Unit tests failed with message: {}'
-                                    .format(ex.message))
+            raise PipelineException('*{}* Unit tests failed: \n```{}```'
+                                    .format(data[Data.IMAGE_NAME], ex.message.replace('`', ' ')))
