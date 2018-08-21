@@ -16,8 +16,8 @@ class Process(object):
             return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 
         except subprocess.CalledProcessError as cpe:
-            message = "Shell command gave error with output: {}".format(cpe.output)
+            message = "Shell command gave error with output: ```{}```".format(cpe.output)
             if data:
-                message = "*{}* failed: \n{}".format(data[Data.IMAGE_NAME], cpe.output)
+                message = "*{}* failed: \n```{}```".format(data[Data.IMAGE_NAME], cpe.output)
 
             raise PipelineException(message)
