@@ -17,4 +17,4 @@ class Process(object):
             return output
         except subprocess.CalledProcessError as cpe:
             raise PipelineException('Shell command gave error with output: ```{}```'
-                                    .format(cpe.output.rstrip('\n')))
+                                    .format(cpe.output))
