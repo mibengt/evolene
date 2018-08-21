@@ -12,7 +12,9 @@ class Process(object):
     def run_with_output(cmd):
         try:
             Process.log.debug('Running command with output: "%s"', cmd)
-            return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+            output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+            print(output)
+            return output
         except subprocess.CalledProcessError as cpe:
-            raise PipelineException('Shell command gave error with output "{}"'
+            raise PipelineException('Shell command gave error with output: ```{}```'
                                     .format(cpe.output.rstrip('\n')))
