@@ -76,4 +76,4 @@ class Docker(object):
                                                 data[Data.IMAGE_NAME],
                                                 data[Data.IMAGE_VERSION],
                                                 compose_test_file)
-        return Process.run_with_output(cmd)
+        return Process.run_with_output(cmd, data)

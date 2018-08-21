@@ -9,12 +9,14 @@ class Process(object):
     log = logging.getLogger(__name__)
 
     @staticmethod
-    def run_with_output(cmd):
+    def run_with_output(cmd, data):
         try:
             Process.log.debug('Running command with output: "%s"', cmd)
-            output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
-            print(output)
-            return output
+            return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+
         except subprocess.CalledProcessError as cpe:
-            raise PipelineException('Shell command gave error with output: ```{}```'
-                                    .format(cpe.output))
+            message = "Shell command gave error with output: {}".format(cpe.output)
+            if data:
+                message = "*{}* failed: \n{}".format(data[Data.IMAGE_NAME], cpe.output))
+
+            raise PipelineException(message)
