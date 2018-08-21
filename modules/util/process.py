@@ -10,7 +10,7 @@ class Process(object):
     log = logging.getLogger(__name__)
 
     @staticmethod
-    def run_with_output(cmd, data):
+    def run_with_output(cmd, data=None):
         try:
             Process.log.debug('Running command with output: "%s"', cmd)
             return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
