@@ -37,4 +37,4 @@ class IntegrationTestStep(AbstractPipelineStep):
             Docker.run_integration_tests(compose_test_file, data)
         except Exception as ex:
             raise PipelineException('*{}* Integration tests failed: ```{}```'
-                                    .format(data[Data.IMAGE_NAME], ex.message))
+                                    .format(data[Data.IMAGE_NAME], ex.message.replace('`', ' ')))
