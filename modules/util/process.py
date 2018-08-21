@@ -3,6 +3,7 @@ __author__ = 'tinglev'
 import subprocess
 import logging
 from modules.util.exceptions import PipelineException
+from modules.util.data import Data
 
 class Process(object):
 
