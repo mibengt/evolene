@@ -36,5 +36,5 @@ class IntegrationTestStep(AbstractPipelineStep):
         try:
             Docker.run_integration_tests(compose_test_file, data)
         except Exception as ex:
-            raise PipelineException('*{}* Integration tests failed: \n{}'
-                                    .format(data[Data.IMAGE_NAME], ex.message.replace('`', ' ')))
+            raise PipelineException('*{}* Integration tests failed: \n{}\n\n:jenkins: {get_build_url}'
+                                    .format(data[Data.IMAGE_NAME], ex.message.replace('`', ' ')[-200:], Environment.get_build_url()))

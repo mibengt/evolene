@@ -8,6 +8,7 @@ class Environment(object):
     PROJECT_ROOT = 'WORKSPACE'
     GIT_COMMIT = 'GIT_COMMIT'
     BUILD_NUMBER = 'BUILD_NUMBER'
+    BUILD_URL = 'BUILD_URL'
     SLACK_WEB_HOOK = 'EVOLENE_SLACK_WEB_HOOK'
     SLACK_CHANNELS = 'SLACK_CHANNELS'
     REGISTRY_HOST = 'REGISTRY_HOST'
@@ -67,3 +68,7 @@ class Environment(object):
     @staticmethod
     def get_experimental():
         return os.environ.get(Environment.EXPERIMENTAL)
+
+    @staticmethod
+    def get_build_url():
+        return os.environ.get(Environment.BUILD_URL)
