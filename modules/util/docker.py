@@ -12,7 +12,7 @@ class Docker(object):
 
     @staticmethod
     def build(labels=None):
-        build_cmd = 'docker build -q'
+        build_cmd = 'docker build --quiet'
         if labels:
             for label in labels:
                 build_cmd = '{} --label {}'.format(build_cmd, label)

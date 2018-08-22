@@ -20,5 +20,5 @@ class Process(object):
                 if cpe.output:
                     raise PipelineException(cpe.output)
             
-            raise PipelineException("Opps had an unhandled error while building :( {}".format(cpe))
+            raise PipelineException(cpe)
             
