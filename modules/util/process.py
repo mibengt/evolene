@@ -16,9 +16,8 @@ class Process(object):
             return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 
         except subprocess.CalledProcessError as cpe:
-            if cpe:
-                if cpe.output:
-                    raise PipelineException(cpe.output)
+            if cpe.output:
+                raise PipelineException(cpe.output)
             
             raise PipelineException(cpe)
             
