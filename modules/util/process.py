@@ -16,4 +16,9 @@ class Process(object):
             return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 
         except subprocess.CalledProcessError as cpe:
-            raise PipelineException(cpe.output)
+            if cpe:
+                if cpe.output:
+                    raise PipelineException(cpe.output)
+            
+            raise PipelineException("Opps had an unhandled error while building :( {}".format(cpe))
+            
