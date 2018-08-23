@@ -40,7 +40,7 @@ class UnitTestStep(AbstractPipelineStep):
             raise PipelineException(ex.message, self.get_slack_message(ex, data))
 
     def get_slack_message(self, exception, data):
-        return '*{}*s unit tests failed: \n{}\n\n:jenkins: {}console'.format(
+        return '*{}*s unit tests failed: \n```{}```\n:jenkins: {}console'.format(
             data[Data.IMAGE_NAME], 
             exception.message.replace('`', ' ')[-1000:], 
             Environment.get_build_url())
