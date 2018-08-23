@@ -63,7 +63,7 @@ class DockerDeployPipeline(object):
             self.log.info('Running Docker build pipeline')
             data = self.first_step.run_pipeline_step({})
         except PipelineException as p_ex:
-            #self.log.fatal('%s'.encode('UTF-8'), p_ex, exc_info=True)
+            self.log.fatal('%s'.encode('UTF-8'), p_ex, exc_info=False)
             Slack.send_to_slack('<!channel> {}'.format(p_ex.slack_message))
             sys.exit(1)
         else:
