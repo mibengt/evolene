@@ -19,5 +19,5 @@ class Process(object):
             if cpe.output:
                 raise PipelineException(cpe.output)
             
-            raise PipelineException(cpe)
+            raise PipelineException("".format(cpe))
             
