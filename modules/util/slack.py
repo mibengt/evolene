@@ -13,7 +13,7 @@ class Slack(object):
     @staticmethod
     def send_to_slack(message, icon=':no_entry:'):
         for channel in Environment.get_slack_channels():
-            body = Slack.get_payload_body(channel, message[-1000:], icon)
+            body = Slack.get_payload_body(channel, message, icon)
             Slack.call_slack_endpoint(body)
 
     @staticmethod
