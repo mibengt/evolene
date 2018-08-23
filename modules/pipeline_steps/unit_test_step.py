@@ -37,5 +37,5 @@ class UnitTestStep(AbstractPipelineStep):
         try:
             Docker.run_unit_test_compose(compose_test_file, data)
         except Exception as ex:
-            raise PipelineException('*{}* Unit tests failed: \n{}\n\n:jenkins: {}/console'
+            raise PipelineException('*{}* Unit tests failed: \n{}\n\n:jenkins: {}console'
                                     .format(data[Data.IMAGE_NAME], ex.message.replace('`', ' '), Environment.get_build_url()))
