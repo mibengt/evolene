@@ -28,8 +28,15 @@ class DockerTests(unittest.TestCase):
             self._test_grep_image_id()
             self._test_stop_and_rm_container()
         except Exception as ex:
-            print 'Error was: ' + ex.message
+            print 'Error was: {}'.format(ex.message)
             self.tearDownClass()
+
+    def test_grep_image_id_missing(self):
+        try:
+            image_id = Docker.grep_image_id('paddy')
+            self.assertIsNone(image_id)
+        except:
+            print
 
     def _test_build(self):
         current_path = os.path.dirname(os.path.abspath(__file__))
@@ -65,6 +72,7 @@ class DockerTests(unittest.TestCase):
         self.assertTrue('test_tag' in grep_return)
         image_id = Docker.grep_image_id('SHOULDNOTEXIST')
         self.assertIsNone(image_id)
+
 
     def _test_stop_and_rm_container(self):
         Docker.stop_and_remove_container(DockerTests.CONTAINER_ID)
