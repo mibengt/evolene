@@ -41,7 +41,6 @@ class Slack(object):
         try:
             web_hook = Environment.get_slack_web_hook()
             response = requests.post(web_hook, json=payload)
-            Slack.log.debug('Response was "%s"', response.text)
         except HTTPError as http_ex:
             Slack.log.error('Slack endpoint threw HTTPError with response "%s"', http_ex.response)
         except ConnectTimeout as timeout:
