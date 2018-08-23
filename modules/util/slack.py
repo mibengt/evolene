@@ -40,7 +40,6 @@ class Slack(object):
     def call_slack_endpoint(payload):
         try:
             web_hook = Environment.get_slack_web_hook()
-            Slack.log.debug('Calling Slack with payload "%s"', payload)
             response = requests.post(web_hook, json=payload)
             Slack.log.debug('Response was "%s"', response.text)
         except HTTPError as http_ex:
