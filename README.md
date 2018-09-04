@@ -10,7 +10,7 @@ Features:
 * SemVer versioning of Docker images
 * Push to Docker Registry
 * Slack integration for build information
-* Contarinerized integration testing by running **docker-compose-integration-tests.yml**	
+* Contarinerized integration testing by running **docker-compose-integration-tests.yml**
 * Contarinerized unit testing by running **docker-compose-unit-tests.yml**
 
 ## How to use on Jenkins
@@ -31,7 +31,7 @@ SLACK_CHANNELS="#team-studadm-build,#pipeline-logs" DEBUG=True EXPERIMENTAL=True
 
 # How to develop and run Evolene on your local machine
 
-To run: 
+To run:
 ```bash
 python run.py docker run-pipeline
 ```
@@ -65,6 +65,46 @@ EXPERIMENTAL        - Feature toogle for latest features
 
 Changes to this project are automatically sent to https://build.sys.kth.se
 
+# Enable integration tests with docker-compose-integration-tests.yml
+## docker-compose-integration-tests.yml
+Creating a file named ```docker-compose-integration-tests.yml``` in the root of the project tells Jenkins to run integration tests.
+The following is an example file from the [lms-sync-users](https://github.com/KTH/lms-sync-users) app:
+```
+version: '3.2'
 
+services:
+  web:
+    build: .
+    image: $LOCAL_IMAGE_ID
 
+    volumes:
+      - ./test:/test
+      - ./node_modules:/node_modules
+    tty: true
+    command: npm run test:docker-integration
+    environment:
+      - CANVAS_API_URL
+      - CANVAS_API_KEY
+      - AZURE_HOST
+      - AZURE_SHARED_ACCESS_KEY_NAME
+      - AZURE_SHARED_ACCESS_KEY
+```
+The last block, environment, defines which environment variables should be passed into the docker container.
 
+With this file in place, Jenkins will try to run the integration tests. But for the tests to run successfully, the credentials has to be setup in Jenkins.
+
+## Jenkins credentials
+Add credentials by going to the [Credentials](https://build.sys.kth.se/credentials/store/system/domain/_/) page in Jenkins, and create the credentials that should be passed into the docker container as ```Secret text```. In this example, one secret text should be created for each of the following:
+- CANVAS_API_URL
+- CANVAS_API_KEY
+- AZURE_HOST
+- AZURE_SHARED_ACCESS_KEY_NAME
+- AZURE_SHARED_ACCESS_KEY
+
+_However, this is not enough to actually tell Jenkins to pass the credentials into the build as environment variables._
+
+## Binding credentials to environment variables in Jenkins
+Go to the Jenkins project page, and choose configure ([lms-sync-users in this example](https://build.sys.kth.se/job/lms-sync-users/configure)).
+Scroll to the ```Bindings``` block, and add a ```Secret text``` binding for each of the above specified environment variables.
+
+Now everything should be setup for the integration tests to run successfully. Time to get some pop corn 🍿
