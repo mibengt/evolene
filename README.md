@@ -105,6 +105,9 @@ _However, this is not enough to actually tell Jenkins to pass the credentials in
 
 ## Binding credentials to environment variables in Jenkins
 Go to the Jenkins project page, and choose configure ([lms-sync-users in this example](https://build.sys.kth.se/job/lms-sync-users/configure)).
-Scroll to the ```Bindings``` block, and add a ```Secret text``` binding for each of the above specified environment variables.
+
+Under the ```Build Environment```, check the option ```Use secret text(s) or file(s)```. This will show a new block, named ```Bindings```.
+
+Add a ```Secret text``` binding for each of the above specified environment variables.
 
 Now everything should be setup for the integration tests to run successfully. Time to get some pop corn 🍿
