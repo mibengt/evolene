@@ -39,7 +39,8 @@ class DockerDeployPipeline(object):
         # Build the image to local registry
         next_step = next_step.set_next_step(BuildLocalStep())
         # Test run the image
-        next_step = next_step.set_next_step(DryRunStep())
+        if Environment.use_dry_run():
+            next_step = next_step.set_next_step(DryRunStep())
         # Run unit tests
         next_step = next_step.set_next_step(UnitTestStep())
         # Run integration tests

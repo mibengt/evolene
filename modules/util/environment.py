@@ -16,6 +16,7 @@ class Environment(object):
     REGISTRY_PASSWORD = 'REGISTRY_PASSWORD'
     EVOLENE_DIRECTORY = 'EVOLENE_DIRECTORY'
     EXPERIMENTAL = 'EXPERIMENTAL'
+    SKIP_DRY_RUN = 'SKIP_DRY_RUN'
     PUSH_PUBLIC = 'PUSH_PUBLIC'
 
     @staticmethod
@@ -63,12 +64,27 @@ class Environment(object):
 
     @staticmethod
     def get_push_public():
-        return os.environ.get(Environment.PUSH_PUBLIC)
+        return Environment.is_true(Environment.PUSH_PUBLIC)
     
     @staticmethod
     def get_experimental():
-        return os.environ.get(Environment.EXPERIMENTAL)
+        return Environment.is_true(Environment.EXPERIMENTAL)
+
+    @staticmethod
+    def use_dry_run():
+        if Environment.is_true(Environment.SKIP_DRY_RUN):
+            return False
+        return True
+        
 
     @staticmethod
     def get_build_url():
         return os.environ.get(Environment.BUILD_URL)
+
+    @staticmethod
+    def is_true(env_key):
+        value = os.environ.get(env_key)
+        if value is None:
+            return False
+
+        return value.lower() in ['true', 'yes', 'y']
