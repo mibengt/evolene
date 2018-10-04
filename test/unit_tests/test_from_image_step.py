@@ -31,6 +31,9 @@ class DockerFileTests(unittest.TestCase):
     def test_other_app_image(self):
         self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/other-app:latest"))
 
+    def test_allow_all_unknown_images(self):
+        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/someimage:latest"))
+
     def test_all_versions_invalid(self):
         self.assertFalse(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/oracle:11.1"))
 
