@@ -35,6 +35,12 @@ class DockerConfPipelineStep(AbstractPipelineStep):
         except TypeError as t_err:
             self.log.warn('TypeError in add_env_lines_to_data: %s', t_err, exc_info=True)
             return data
+        
+        # Store the orignal image version from file, before we add any build number as patch (if any).
+        # Orignal image version is allowed to contain patch also.
+        if Data.IMAGE_VERSION in data:
+            data[Data.IMAGE_VERSION_FROM_DOCKER_CONF] = data[Data.IMAGE_VERSION]
+        
         return data
 
     def get_docker_conf_path(self):

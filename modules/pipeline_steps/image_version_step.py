@@ -13,11 +13,13 @@ class ImageVersionStep(AbstractPipelineStep):
     def get_required_data_keys(self): # pragma: no cover
         return [Data.IMAGE_VERSION]
 
+    def get_patch_version(self, image_version):
+        return Environment.get_build_number()
+
     def _create_image_version(self, image_version): # pragma: no cover
         self.check_image_version(image_version)
-        build_number = Environment.get_build_number()
         commit_hash = self.get_clamped_commit_hash()
-        return self.format_image_version(image_version, build_number, commit_hash)
+        return self.format_semver_version(image_version, commit_hash, Environment.get_build_number())
 
     def check_image_version(self, image_version):
         match = re.match(r'^[0-9]+\.[0-9]+$', image_version)
@@ -30,11 +32,25 @@ class ImageVersionStep(AbstractPipelineStep):
             commit_hash = commit_hash[:length]
         return commit_hash
 
-    def format_image_version(self, image_version, build_number, commit_hash):
-        return '{}.{}_{}'.format(image_version, build_number, commit_hash)
+    def get_semver_version(self, image_version, build_number):
+
+        if image_version.count('.') > 2:
+            raise ValueError("'{}' is not in major.minor or major.minor.patch format.".format(image_version))
+
+        # image_version is "1.2.3" (major.minor.patch)
+        if image_version.count('.') is 2:
+            return image_version # "1.2.3"
+
+        # image_version is "1.2" (major.minor only) add build number as patch version.
+        return '{}.{}'.format(image_version, build_number)
+
+    def format_semver_version(self, image_version, commit_hash, build_number):
+        return '{}_{}'.format(self.get_semver_version(image_version, build_number), commit_hash)
 
     def run_step(self, data): # pragma: no cover
         image_version = data[Data.IMAGE_VERSION]
         final_image_version = self._create_image_version(image_version)
+        data[Data.SEM_VER] = self.get_semver_version(image_version, Environment.get_build_number())
         data[Data.IMAGE_VERSION] = final_image_version
+        data[Data.COMMIT_HASH] = self.get_clamped_commit_hash()
         return data

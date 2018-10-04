@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.1'
+VERSION = '1.0'
 PROJECT_NAME = 'evolene'
 
 setup(name=PROJECT_NAME,
@@ -12,4 +12,3 @@ setup(name=PROJECT_NAME,
       license='MIT',
       zip_safe=False,
       packages=find_packages())
-

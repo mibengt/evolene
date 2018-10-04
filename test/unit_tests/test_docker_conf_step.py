@@ -80,6 +80,26 @@ class DockerConfStepTests(unittest.TestCase):
         self.assertEqual(result['test_key'], 'test_val')
         self.assertEqual(result['test_2_key'], 'test_2_val')
 
+    
+    def test_image_version_in_data(self):
+        dcs = DockerConfPipelineStep()
+        lines = ['#comment', 'IMAGE_NAME=TEST', 'IMAGE_VERSION=1.3']
+        env_lines = dcs.get_docker_conf_env_lines(lines)
+
+        result = dcs.add_env_lines_to_data(env_lines, {})
+
+        self.assertEqual(result[Data.IMAGE_VERSION_FROM_DOCKER_CONF], '1.3')
+    
+    def test_patch_version_in_image_version(self):
+        dcs = DockerConfPipelineStep()
+        lines = ['#comment', 'IMAGE_NAME=TEST', 'IMAGE_VERSION=1.3.1']
+        env_lines = dcs.get_docker_conf_env_lines(lines)
+
+        result = dcs.add_env_lines_to_data(env_lines, {})
+
+        self.assertEqual(result[Data.IMAGE_VERSION], '1.3.1')
+        self.assertEqual(result[Data.IMAGE_VERSION_FROM_DOCKER_CONF], '1.3.1')
+        
     def test_get_docker_conf_lines(self):
         current_path = os.path.dirname(os.path.abspath(__file__))
         os.environ[Environment.PROJECT_ROOT] = os.path.join(current_path, '../data')

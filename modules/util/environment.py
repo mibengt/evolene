@@ -17,6 +17,7 @@ class Environment(object):
     EVOLENE_DIRECTORY = 'EVOLENE_DIRECTORY'
     EXPERIMENTAL = 'EXPERIMENTAL'
     SKIP_DRY_RUN = 'SKIP_DRY_RUN'
+    EXTRA_TAG_WITHOUT_COMMIT_HASH = 'ADD_EXTRA_TAG_WITHOUT_COMMIT_HASH'
     PUSH_PUBLIC = 'PUSH_PUBLIC'
 
     @staticmethod
@@ -75,7 +76,10 @@ class Environment(object):
         if Environment.is_true(Environment.SKIP_DRY_RUN):
             return False
         return True
-        
+
+    @staticmethod
+    def extra_tag_without_commit_hash():
+       return Environment.is_true(Environment.EXTRA_TAG_WITHOUT_COMMIT_HASH)
 
     @staticmethod
     def get_build_url():

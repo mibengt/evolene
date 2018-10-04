@@ -15,6 +15,7 @@ from modules.pipeline_steps.push_public_image_step import PushPublicImageStep
 from modules.pipeline_steps.repo_supervisor_step import RepoSupervisorStep
 from modules.pipeline_steps.unit_test_step import UnitTestStep
 from modules.pipeline_steps.integration_test_step import IntegrationTestStep
+from modules.pipeline_steps.from_image_step import FromImageStep
 from modules.util.exceptions import PipelineException
 from modules.util.slack import Slack
 from modules.util.environment import Environment
@@ -33,6 +34,9 @@ class DockerDeployPipeline(object):
         next_step = next_step.set_next_step(ImageVersionStep())
         # Check Dockerfile exists
         next_step = next_step.set_next_step(DockerFileStep())
+        # Check Dockerfiles FROM statement
+        if Environment.get_experimental():
+           next_step = next_step.set_next_step(FromImageStep())
         # Scan repo for secrets like passwords
         if Environment.get_experimental():
             next_step = next_step.set_next_step(RepoSupervisorStep())

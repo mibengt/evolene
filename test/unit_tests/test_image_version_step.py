@@ -50,7 +50,16 @@ class ImageVersionStepTests(unittest.TestCase):
         result = ivs.get_clamped_commit_hash()
         self.assertEqual(result, '1234')
 
-    def test_format_image_version(self):
+    def test_format_image_version_with_build_number_as_patch(self):
         ivs = ImageVersionStep()
-        result = ivs.format_image_version('1.2', '123', 'ab12cb3')
+        result = ivs.format_semver_version('1.2', 'ab12cb3', 123)
         self.assertEquals(result, '1.2.123_ab12cb3')
+
+    def test_format_image_version_with_patch_in_docker_conf(self):
+        ivs = ImageVersionStep()
+        result = ivs.format_semver_version('1.2.321', 'ab12cb3', 999)
+        self.assertEquals(result, '1.2.321_ab12cb3')
+
+    def test_format_image_version_to_long(self):
+        ivs = ImageVersionStep()
+        self.assertRaises(ValueError, ivs.format_semver_version, '1.2.321.1', 'ab12cb3', 999)
