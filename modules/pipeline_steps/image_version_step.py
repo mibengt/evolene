@@ -15,9 +15,6 @@ class ImageVersionStep(AbstractPipelineStep):
     def get_required_data_keys(self): # pragma: no cover
         return [Data.IMAGE_VERSION]
 
-    def get_patch_version(self, image_version):
-        return Environment.get_build_number()
-
     def _create_image_version(self, image_version): # pragma: no cover
         self.check_image_version(image_version)
         commit_hash = self.get_clamped_commit_hash()

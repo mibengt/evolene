@@ -7,6 +7,7 @@ from modules.util.environment import Environment
 from modules.util.data import Data
 from modules.util.exceptions import PipelineException
 from modules.util.docker import Docker
+from modules.util.environment import Environment
 
 class PushImageStep(AbstractPipelineStep):
 
@@ -20,6 +21,9 @@ class PushImageStep(AbstractPipelineStep):
 
     def run_step(self, data):
         self.push_image(data)
+        if Environment.add_extra_push_without_commit_hash():
+            self.push_image_without_hash(data)
+
         tags = self.get_tags_from_registry(data)
         self.verify_image_version_in_tags(tags, data)
         return data
@@ -70,8 +74,19 @@ class PushImageStep(AbstractPipelineStep):
         return '{}/{}:{}'.format(Environment.get_registry_host(),
                                  data[Data.IMAGE_NAME],
                                  data[Data.IMAGE_VERSION])
+    
+    def get_image_to_push_without_hash(self, data):
+        return '{}/{}:{}'.format(Environment.get_registry_host(),
+                                 data[Data.IMAGE_NAME],
+                                 data[Data.SEM_VER])
 
     def push_image(self, data):
         registry_image_name = self.get_image_to_push(data)
         Docker.push(registry_image_name)
         self.log.info('Pushed image "%s" to registry', registry_image_name)
+
+    def push_image_without_hash(self, data):
+        registry_image_name = self.get_image_to_push_without_hash(data)
+        Docker.push(registry_image_name)
+        self.log.info('Pushed image "%s" to registry', registry_image_name_without_hash)
+            

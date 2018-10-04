@@ -15,8 +15,7 @@ class TagImageStep(AbstractPipelineStep):
 
     def run_step(self, data): #pragma: no cover
         self.run_tag_command(self.get_default_tag(data), data)
-        if Environment.extra_tag_without_commit_hash():
-            self.run_tag_command(self.get_tag_without_commit_hash(data), data)
+        self.run_tag_command(self.get_tag_without_commit_hash(data), data)
 
         return data
 
