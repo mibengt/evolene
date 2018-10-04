@@ -6,6 +6,7 @@ from mock import patch
 from modules.pipeline_steps.image_version_step import ImageVersionStep
 from modules.util.exceptions import PipelineException
 from modules.util.environment import Environment
+from modules.util.image_version_util import ImageVersionUtil
 
 class ImageVersionStepTests(unittest.TestCase):
 

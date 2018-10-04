@@ -1,6 +1,7 @@
 __author__ = 'tinglev'
 
 import os
+import re
 
 class Environment(object):
 
@@ -92,3 +93,9 @@ class Environment(object):
             return False
 
         return value.lower() in ['true', 'yes', 'y']
+
+    @staticmethod
+    def patch_version_exists(image_version):
+        if not re.match(r'^[0-9]+\.[0-9]+\.[0-9]+$', image_version):
+            return False
+        return True

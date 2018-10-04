@@ -3,6 +3,8 @@ __author__ = 'tinglev'
 import re
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
+from modules.util.image_version_util import ImageVersionUtil
+
 from modules.util.data import Data
 
 class ImageVersionStep(AbstractPipelineStep):
@@ -22,9 +24,11 @@ class ImageVersionStep(AbstractPipelineStep):
         return self.format_semver_version(image_version, commit_hash, Environment.get_build_number())
 
     def check_image_version(self, image_version):
-        match = re.match(r'^[0-9]+\.[0-9]+$', image_version)
-        if not match:
-            self.handle_step_error('IMAGE_VERSION in docker.conf is "{}", must be "Major.Minor"'.format(image_version))
+        if not ImageVersionUtil.is_valid(image_version):
+            if ImageVersionUtil.use_patch_from_docker_conf():
+                self.handle_step_error('IMAGE_VERSION in docker.conf is `{}`, must be "Major.Minor"'.format(image_version))
+            else:
+                self.handle_step_error('IMAGE_VERSION in docker.conf is `{}`, must be "Major.Minor.Patch" since BUILD_NUMBER="docker.conf" is used.'.format(image_version))
 
     def get_clamped_commit_hash(self, length=7):
         commit_hash = Environment.get_git_commit()
