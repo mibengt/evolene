@@ -14,7 +14,7 @@ class FromImageStep(AbstractPipelineStep):
         "kth-nodejs-web": [ "2.4", "2.5"],
         "kth-nodejs-api": [ "2.4", "2.5" ],
         "oracle": [ ],
-        "redis": ["*"]
+        "redis": ["*"]s
     }
 
     def __init__(self, supported_images=None):
@@ -28,7 +28,7 @@ class FromImageStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        self.log.warn(message)
+        from_line = self.get_from_line()
         if self.validate(from_line):
             self.log.debug("From image in Dockerfile '{}' is valid.".format(from_line))
         else:
@@ -36,10 +36,6 @@ class FromImageStep(AbstractPipelineStep):
             self.log.warn(message)
             Slack.on_warning(message)
         return data
-
-    def get_docker_file_path(self):
-        stripped_root = Environment.get_project_root().rstrip('/')
-        return '{}/Dockerfile'.format(stripped_root)
 
     def validate(self, from_line):
         for image_name in self.SUPPORTED_IMAGES:
@@ -69,3 +65,6 @@ class FromImageStep(AbstractPipelineStep):
                 if "FROM" in line:
                     return line.strip()
 
+    def get_docker_file_path(self):
+        stripped_root = Environment.get_project_root().rstrip('/')
+        return '{}/Dockerfile'.format(stripped_root)
