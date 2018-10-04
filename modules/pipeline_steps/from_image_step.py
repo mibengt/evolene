@@ -34,7 +34,7 @@ class FromImageStep(AbstractPipelineStep):
         if self.validate(from_line):
             self.log.debug("'FROM:' statement '{}' in Dockerfile is valid.".format(from_line))
         else:
-            message = "{}:{} Dockerfile uses an unsecure 'FROM:' image `{}`, please upgrade.".format(data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION], from_line)
+            message = "*{}* Git commit '{}'s Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(data[Data.IMAGE_NAME], data[Data.COMMIT_HASH], from_line)
             self.log.warn(message)
             Slack.on_warning(message)
         return data
