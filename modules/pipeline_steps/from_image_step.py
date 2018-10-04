@@ -5,6 +5,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
 from modules.util.slack import Slack
+import logging
 
 class FromImageStep(AbstractPipelineStep):
 
@@ -14,10 +15,11 @@ class FromImageStep(AbstractPipelineStep):
         "kth-nodejs-web": [ "2.4", "2.5"],
         "kth-nodejs-api": [ "2.4", "2.5" ],
         "oracle": [ ],
-        "redis": ["*"]s
+        "redis": ["*"]
     }
 
     def __init__(self, supported_images=None):
+        self.log = logging.getLogger(self.get_step_name())
         if supported_images:
             self.SUPPORTED_IMAGES = supported_images
 

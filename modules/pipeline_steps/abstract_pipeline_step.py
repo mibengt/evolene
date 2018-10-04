@@ -9,11 +9,11 @@ from modules.util.environment import Environment
 
 class AbstractPipelineStep:
     __metaclass__ = ABCMeta
+    next_step = None
 
     def __init__(self):
         self.log = logging.getLogger(self.get_step_name())
-        self.next_step = None
-
+    
     @abstractmethod
     def run_step(self, data): #pragma: no cover
         """ Should return data """
