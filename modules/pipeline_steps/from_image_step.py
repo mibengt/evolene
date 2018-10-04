@@ -27,12 +27,8 @@ class FromImageStep(AbstractPipelineStep):
     def get_required_data_keys(self): # pragma: no cover
         return []
 
-    def get_docker_file_path(self):
-        stripped_root = Environment.get_project_root().rstrip('/')
-        return '{}/Dockerfile'.format(stripped_root)
-
     def run_step(self, data):
-        from_line = self.get_from_line()
+        self.log.warn(message)
         if self.validate(from_line):
             self.log.debug("From image in Dockerfile '{}' is valid.".format(from_line))
         else:
@@ -40,6 +36,10 @@ class FromImageStep(AbstractPipelineStep):
             self.log.warn(message)
             Slack.on_warning(message)
         return data
+
+    def get_docker_file_path(self):
+        stripped_root = Environment.get_project_root().rstrip('/')
+        return '{}/Dockerfile'.format(stripped_root)
 
     def validate(self, from_line):
         for image_name in self.SUPPORTED_IMAGES:
