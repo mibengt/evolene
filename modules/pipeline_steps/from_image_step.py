@@ -32,9 +32,9 @@ class FromImageStep(AbstractPipelineStep):
     def run_step(self, data):
         from_line = self.get_from_line()
         if self.validate(from_line):
-            self.log.debug("From image in Dockerfile '{}' is valid.".format(from_line))
+            self.log.debug("'FROM:' statement '{}' in Dockerfile is valid.".format(from_line))
         else:
-            message = "{}:{} Dockerfile uses an unsecure image `{}`, please upgrade.".format(data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION], from_line)
+            message = "{}:{} Dockerfile uses an unsecure 'FROM:' image `{}`, please upgrade.".format(data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION], from_line)
             self.log.warn(message)
             Slack.on_warning(message)
         return data
