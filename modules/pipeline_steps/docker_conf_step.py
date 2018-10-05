@@ -51,16 +51,9 @@ class DockerConfPipelineStep(AbstractPipelineStep):
                 if re.match(r'[^\s#="]+=(([^\s#="]+)|(".+"))$', line)]
 
     def get_docker_conf_lines(self):
-        result = None
         try:
             with open(self.get_docker_conf_path()) as d_conf:
-                result = d_conf.read().splitlines()
-            
-            print "*************************"
-            print result
-            print "*************************"
-        
-
+                return d_conf.read().splitlines()
         except IOError as ioe:
             self.handle_step_error('Could not read docker.conf', ioe)
 
