@@ -31,6 +31,7 @@ class DockerConfPipelineStep(AbstractPipelineStep):
     def add_env_lines_to_data(self, env_lines, data):
         try:
             for env in env_lines:
+                self.log.debug("Adding /docker.conf value for: {}".format(env.split('=')[0]))
                 data[env.split('=')[0]] = self.clean_variable_value(env.split('=')[1])
         except TypeError as t_err:
             self.log.warn('TypeError in add_env_lines_to_data: %s', t_err, exc_info=True)
