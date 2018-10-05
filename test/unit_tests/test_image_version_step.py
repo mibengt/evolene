@@ -27,13 +27,13 @@ class ImageVersionStepTests(unittest.TestCase):
 
     def test_format_image_version_with_build_number_as_patch(self):
         ivs = ImageVersionStep()
-        result = ivs.get_semver('1.2', 123)
+        result = ivs.get_sem_ver('1.2', 123)
         self.assertEquals(result, '1.2.123')
 
     def test_format_image_version_to_long(self):
         ivs = ImageVersionStep()
         try:
-            ivs.get_semver('1.2.321', 1)
+            ivs.get_sem_ver('1.2.321', 1)
             self.assertEqual("", "Should not be allowed to come here.")
         except Exception as e:
             self.assertTrue(True)
