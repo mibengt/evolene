@@ -16,6 +16,9 @@ class DockerConfPipelineStep(AbstractPipelineStep):
 
     def run_step(self, data):
         raw_lines = self.get_docker_conf_lines()
+        print "******************"
+        print raw_lines
+        print "******************"
         env_lines = self.get_docker_conf_env_lines(raw_lines)
         missing_conf_vars = self.missing_conf_vars(env_lines)
         if missing_conf_vars:
