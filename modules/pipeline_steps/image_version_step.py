@@ -16,7 +16,12 @@ class ImageVersionStep(AbstractPipelineStep):
         return [Data.IMAGE_VERSION]
 
     def run_step(self, data): # pragma: no cover
-        data[Data.SEM_VER] = self.get_semver(data[Data.IMAGE_VERSION], data[Data.PATCH_VERSION])
+        patch_version = None
+        
+        if Data.PATCH_VERSION in data:
+            patch_version = data[Data.PATCH_VERSION]
+
+        data[Data.SEM_VER] = self.get_semver(data[Data.IMAGE_VERSION], patch_version)
         data[Data.COMMIT_HASH]   = self.get_commit_hash_clamped()
         data[Data.IMAGE_VERSION] = self.append_commit_hash(data[Data.SEM_VER])
         return data
