@@ -50,8 +50,6 @@ class Environment(object):
     def get_build_number():
         return os.environ.get(Environment.BUILD_NUMBER)
 
- 
-
     @staticmethod
     def get_slack_channels():
         channels = os.environ.get(Environment.SLACK_CHANNELS)
