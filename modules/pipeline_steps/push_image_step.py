@@ -17,24 +17,17 @@ class PushImageStep(AbstractPipelineStep):
                 Environment.REGISTRY_PASSWORD]
 
     def get_required_data_keys(self): #pragma: no cover
+
         return [Data.IMAGE_VERSION, Data.IMAGE_NAME]
 
     def run_step(self, data):
-        self.log.error("*****************************")
-        self.log.error("*****************************")
-        self.log.error("*****************************")
         self.push_image(data)
-        self.log.error("-----------------------------")
-        self.log.error("-----------------------------")
-        self.log.error("-----------------------------")
-
-        if Environment.add_extra_push_without_commit_hash():
-            print "------> push_image_without_hash "
-            self.push_image_without_hash(data)
-
+        self.verify_push(data)
+        return data
+    
+    def verify_push(self, data):
         tags = self.get_tags_from_registry(data)
         self.verify_image_version_in_tags(tags, data)
-        return data
 
     def verify_image_version_in_tags(self, tags, data):
         if not data[Data.IMAGE_VERSION] in tags:
@@ -83,18 +76,7 @@ class PushImageStep(AbstractPipelineStep):
                                  data[Data.IMAGE_NAME],
                                  data[Data.IMAGE_VERSION])
     
-    def get_image_to_push_without_hash(self, data):
-        return '{}/{}:{}'.format(Environment.get_registry_host(),
-                                 data[Data.IMAGE_NAME],
-                                 data[Data.SEM_VER])
-
     def push_image(self, data):
         registry_image_name = self.get_image_to_push(data)
         Docker.push(registry_image_name)
         self.log.info('Pushed image "%s" to registry', registry_image_name)
-
-    def push_image_without_hash(self, data):
-        registry_image_name = self.get_image_to_push_without_hash(data)
-        Docker.push(registry_image_name)
-        self.log.info('Pushed image "%s" to registry', registry_image_name_without_hash)
-            

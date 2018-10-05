@@ -13,7 +13,6 @@ class PushImageStepTests(unittest.TestCase):
         pis = PushImageStep()
         data = {Data.IMAGE_VERSION: '1.1.23_2135'}
         result = pis.verify_image_version_in_tags(['1.1.23_2135', '1.2.0_1234'], data)
-        self.assertTrue(result)
         self.assertRaises(PipelineException,
                           pis.verify_image_version_in_tags, ['1.1.23_2136', '1.2.0_1234'], data)
 
