@@ -21,7 +21,7 @@ class PushImageStep(AbstractPipelineStep):
 
     def run_step(self, data):
         self.push_image(data)
-        print "------>  "
+        print "------> ! "
         if Environment.add_extra_push_without_commit_hash():
             print "------> push_image_without_hash "
             self.push_image_without_hash(data)
