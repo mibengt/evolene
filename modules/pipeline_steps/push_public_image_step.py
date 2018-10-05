@@ -21,7 +21,7 @@ class PushPublicImageStep(AbstractPipelineStep):
         return data
 
     def get_image_to_push(self, data):
-        self.log.debug('Pushing image to public registry.')
+        self.log.debug('Pushing image to Docker Hub.')
         return '{}/{}:{}'.format(Environment.get_registry_host(),
                                  data[Data.IMAGE_NAME],
                                  data[Data.IMAGE_VERSION])
@@ -35,10 +35,10 @@ class PushPublicImageStep(AbstractPipelineStep):
     def push_image(self, data):
         registry_image_name = self.get_image_to_push(data)
         Docker.push(registry_image_name)
-        self.log.info('Pushed image "%s" to registry', registry_image_name)
+        self.log.info('Pushed image %s to Docker Hub.', registry_image_name)
 
 
     def push_image_only_semver(self, data):
         registry_image_name = self.get_image_to_push_without_hash(data)
         Docker.push(registry_image_name)
-        self.log.info('Pushed image "%s" to registry', registry_image_name)
+        self.log.info('Pushed image %s to Docker Hub', registry_image_name)

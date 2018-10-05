@@ -79,4 +79,4 @@ class PushImageStep(AbstractPipelineStep):
     def push_image(self, data):
         registry_image_name = self.get_image_to_push(data)
         Docker.push(registry_image_name)
-        self.log.info('Pushed image "%s" to registry', registry_image_name)
+        self.log.info('Pushed image %s to KTH:s private :whale: registry.', registry_image_name)
