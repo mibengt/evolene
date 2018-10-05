@@ -16,23 +16,19 @@ class ImageVersionStep(AbstractPipelineStep):
         return [Data.IMAGE_VERSION]
 
     def run_step(self, data): # pragma: no cover
-        patch_version = None
-        
-        if Data.PATCH_VERSION in data:
-            patch_version = data[Data.PATCH_VERSION]
-
-        data[Data.SEM_VER] = self.get_semver(data[Data.IMAGE_VERSION], patch_version)
+        data[Data.SEM_VER] = self.get_semver(data[Data.IMAGE_VERSION], get_patch_version())
         data[Data.COMMIT_HASH]   = self.get_commit_hash_clamped()
         data[Data.IMAGE_VERSION] = self.append_commit_hash(data[Data.SEM_VER])
         return data
+    
+    def get_patch_version(self, data):
+        if Data.PATCH_VERSION in data:
+            return data[Data.PATCH_VERSION]
+        return Environment.get_build_number()
 
     def get_semver(self, image_version, patch_version):
         if not ImageVersionUtil.is_major_minor_only(image_version):
             self.handle_step_error('IMAGE_VERSION in docker.conf is `{}`, must be "Major.Minor"'.format(image_version))
-
-        if not patch_version:
-            patch_version = Environment.get_build_number()
-
         return "{}.{}".format(image_version, patch_version)
 
     def append_commit_hash(self, image_version):
