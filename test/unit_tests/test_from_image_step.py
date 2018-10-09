@@ -10,6 +10,7 @@ class DockerFileTests(unittest.TestCase):
 
     TEST_ALLOWED_IMAGES = {
         "kth-app": ["1.0", "2.0" ],
+        "kth-nodejs": [ "9.11.0" ],
         "other-app": ["latest"],
         "oracle": [ ],
         "redis": ["*"]
@@ -27,7 +28,13 @@ class DockerFileTests(unittest.TestCase):
 
     def test_not_supported_kth_image(self):
         self.assertFalse(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM kthreg/kth-app:0.0"))
+
+    def test_more_supported_kth_image(self):
+        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM kthse/kth-nodejs:9.11.0"))
+
+
     
+
     def test_other_app_image(self):
         self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/other-app:latest"))
 

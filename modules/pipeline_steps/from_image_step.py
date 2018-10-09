@@ -11,9 +11,9 @@ class FromImageStep(AbstractPipelineStep):
 
     SUPPORTED_IMAGES = {
         "kth-os": [ "3.8" ],
-        "kth-nodejs": [ "2.4", "2.5"],
-        "kth-nodejs-web": [ "2.4", "2.5"],
-        "kth-nodejs-api": [ "2.4", "2.5" ],
+        "kth-nodejs": [ "2.4", "9.11"],
+        "kth-nodejs-web": [ "2.4" ],
+        "kth-nodejs-api": [ "2.4" ],
         "oracle": [ ],
         "redis": ["*"]
     }
