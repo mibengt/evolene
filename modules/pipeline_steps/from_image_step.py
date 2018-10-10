@@ -31,51 +31,51 @@ class FromImageStep(AbstractPipelineStep):
 
     def run_step(self, data):
         from_line = self.get_from_line()
-        if self.validate(from_line):
+        if self.validate(from_line, data[Data.IMAGE_NAME]):
             self.log.debug("'FROM:' statement '{}' in Dockerfile is valid.".format(from_line))
         else:
-            message = "*{}* Git commit '{}'s Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(data[Data.IMAGE_NAME], data[Data.COMMIT_HASH], from_line)
+            message = "*{}* Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(data[Data.IMAGE_NAME], from_line)
             self.log.warn(message)
             Slack.on_warning(message)
         
         return data
 
-    def validate(self, from_line):
-        for image_name in self.SUPPORTED_IMAGES:
-            if image_name in from_line:
-                self.inform_if_change_image(image_name)
-                return self.is_valid_tag_for_image_name(from_line, image_name)
+    def validate(self, from_line, image_name):
+        for image in self.SUPPORTED_IMAGES:
+            if image in from_line:
+                self.inform_if_change_image(image, image_name)
+                return self.is_valid_tag_for_image_name(from_line, image)
         return True
 
-    def get_change_image_message(self, image_name):
+    def get_change_image_message(self, image, image_name):
         result = None
-        if str(image_name) == "kth-nodejs-web":
+        if str(image) == "kth-nodejs-web":
             result = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(image_name)
 
-        if str(image_name) == "kth-nodejs-api":
+        if str(image) == "kth-nodejs-api":
             result = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(image_name)
 
         return result
 
-    def inform_if_change_image(self, image_name):
-        message = self.get_change_image_message(image_name)
+    def inform_if_change_image(self, image, image_name):
+        message = self.get_change_image_message(image, image_name)
         
         if message:
             self.log.warn(message)
             Slack.on_warning(message)
 
 
-    def is_valid_tag_for_image_name(self, from_line, image_name):
+    def is_valid_tag_for_image_name(self, from_line, image):
         
         # If array is empty, allow no tags for that image name.
-        if not self.SUPPORTED_IMAGES[image_name]:
+        if not self.SUPPORTED_IMAGES[image]:
             return False
 
         # Allow all versions
-        if self.SUPPORTED_IMAGES[image_name][0] == "*":
+        if self.SUPPORTED_IMAGES[image][0] == "*":
             return True
 
-        for tag in self.SUPPORTED_IMAGES[image_name]:
+        for tag in self.SUPPORTED_IMAGES[image]:
             tag_pattern = ":{}".format(tag) # Match docker.io/redis":2.3
             if tag_pattern in from_line:
                 return True
