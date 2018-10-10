@@ -46,3 +46,9 @@ class DockerFileTests(unittest.TestCase):
 
     def test_allow_all_versions(self):
         self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/redis:13.37"))
+
+    def test_inform_if_change_image(self):
+        self.assertIsNotNone(FromImageStep().get_change_image_message("kth-nodejs-web"))
+
+    def test_inform_if_change_image_is_empty(self):
+        self.assertIsNone(FromImageStep().get_change_image_message("should-not-return-a-message"))

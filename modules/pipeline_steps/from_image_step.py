@@ -46,18 +46,24 @@ class FromImageStep(AbstractPipelineStep):
                 self.inform_if_change_image(image_name)
                 return self.is_valid_tag_for_image_name(from_line, image_name)
         return True
-       
+
+    def get_change_image_message(self, image_name):
+        result = None
+        if str(image_name) == "kth-nodejs-web":
+            result = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(image_name)
+
+        if str(image_name) == "kth-nodejs-api":
+            result = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(image_name)
+
+        return result
+
     def inform_if_change_image(self, image_name):
-        message = "--------------> {}".format(image_name)
-        if image_name == "kth-nodejs-web":
-            message = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(image_name)
-
-        if image_name == "kth-nodejs-api":
-            message = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(image_name)
-
+        message = self.get_change_image_message(image_name)
+        
         if message:
             self.log.warn(message)
             Slack.on_warning(message)
+
 
     def is_valid_tag_for_image_name(self, from_line, image_name):
         
