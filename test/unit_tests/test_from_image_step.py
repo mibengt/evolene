@@ -24,28 +24,28 @@ class DockerFileTests(unittest.TestCase):
         self.assertEquals("FROM redis", result)
 
     def test_supported_kth_image(self):
-        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM kthreg/kth-app:1.0", "kth-azure-app"))
+        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM kthreg/kth-app:1.0", "kth-azure-app:13.37.0_abcdef"))
 
     def test_not_supported_kth_image(self):
-        self.assertFalse(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM kthreg/kth-app:0.0", "kth-azure-app"))
+        self.assertFalse(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM kthreg/kth-app:0.0", "kth-azure-app:13.37.0_abcdef"))
 
     def test_more_supported_kth_image(self):
-        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM kthse/kth-nodejs:9.11.0", "kth-azure-app"))
+        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM kthse/kth-nodejs:9.11.0", "kth-azure-app:13.37.0_abcdef"))
 
     def test_other_app_image(self):
-        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/other-app:latest", "kth-azure-app"))
+        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/other-app:latest", "kth-azure-app:13.37.0_abcdef"))
 
     def test_allow_all_unknown_images(self):
-        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/someimage:latest", "kth-azure-app"))
+        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/someimage:latest", "kth-azure-app:13.37.0_abcdef"))
 
     def test_all_versions_invalid(self):
-        self.assertFalse(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/oracle:11.1", "kth-azure-app"))
+        self.assertFalse(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/oracle:11.1", "kth-azure-app:13.37.0_abcdef"))
 
     def test_allow_all_versions(self):
-        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/redis:13.37", "kth-azure-app"))
+        self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/redis:13.37", "kth-azure-app:13.37.0_abcdef"))
 
     def test_inform_if_change_image(self):
-        self.assertIsNotNone(FromImageStep().get_change_image_message("kth-nodejs-web", "kth-azure-app"))
+        self.assertIsNotNone(FromImageStep().get_change_image_message("kth-nodejs-web", "kth-azure-app:13.37.0_abcdef"))
 
     def test_inform_if_change_image_is_empty(self):
-        self.assertIsNone(FromImageStep().get_change_image_message("should-not-return-a-message", "kth-azure-app"))
+        self.assertIsNone(FromImageStep().get_change_image_message("should-not-return-a-message", "kth-azure-app:13.37.0_abcdef"))

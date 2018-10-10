@@ -31,34 +31,35 @@ class FromImageStep(AbstractPipelineStep):
 
     def run_step(self, data):
         from_line = self.get_from_line()
-        if self.validate(from_line, data[Data.IMAGE_NAME]):
+        log_prefix = "{}:{}".format(data[Data.IMAGE_NAME], data[Data.COMMIT_HASH])
+        if self.validate(from_line, log_prefix):
             self.log.debug("'FROM:' statement '{}' in Dockerfile is valid.".format(from_line))
         else:
-            message = "*{}* Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(data[Data.IMAGE_NAME], from_line)
+            message = "*{}* Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(log_prefix, from_line)
             self.log.warn(message)
             Slack.on_warning(message)
         
         return data
 
-    def validate(self, from_line, image_name):
+    def validate(self, from_line, log_prefix):
         for image in self.SUPPORTED_IMAGES:
             if image in from_line:
-                self.inform_if_change_image(image, image_name)
+                self.inform_if_change_image(image, log_prefix)
                 return self.is_valid_tag_for_image_name(from_line, image)
         return True
 
-    def get_change_image_message(self, image, image_name):
+    def get_change_image_message(self, image, log_prefix):
         result = None
         if str(image) == "kth-nodejs-web":
-            result = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(image_name)
+            result = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
 
         if str(image) == "kth-nodejs-api":
-            result = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(image_name)
+            result = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
 
         return result
 
-    def inform_if_change_image(self, image, image_name):
-        message = self.get_change_image_message(image, image_name)
+    def inform_if_change_image(self, image, log_prefix):
+        message = self.get_change_image_message(image, log_prefix)
         
         if message:
             self.log.warn(message)
