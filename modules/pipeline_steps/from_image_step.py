@@ -11,7 +11,7 @@ class FromImageStep(AbstractPipelineStep):
 
     SUPPORTED_IMAGES = {
         "kth-os": [ "3.8" ],
-        "kth-nodejs": [ "2.4", "9.11"],
+        "kth-nodejs": [ "8.11", "9.11"],
         "kth-nodejs-web": [ "2.4" ],
         "kth-nodejs-api": [ "2.4" ],
         "oracle": [ ],
@@ -37,17 +37,31 @@ class FromImageStep(AbstractPipelineStep):
             message = "*{}* Git commit '{}'s Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(data[Data.IMAGE_NAME], data[Data.COMMIT_HASH], from_line)
             self.log.warn(message)
             Slack.on_warning(message)
+        
         return data
 
     def validate(self, from_line):
         for image_name in self.SUPPORTED_IMAGES:
             if image_name in from_line:
+                self.inform_if_change_image(image_name)
                 return self.is_valid_tag_for_image_name(from_line, image_name)
         return True
        
+    def inform_if_change_image(self, image_name):
+        message = None    
+        if image_name is "kth-os":
+            message = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(image_name)
+
+        if image_name is "kth-nodejs-api":
+            message = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(image_name)
+
+        if message:
+            self.log.warn(message)
+            Slack.on_warning(message)
+
     def is_valid_tag_for_image_name(self, from_line, image_name):
         
-        # If array is empty, allow no images images.
+        # If array is empty, allow no tags for that image name.
         if not self.SUPPORTED_IMAGES[image_name]:
             return False
 
