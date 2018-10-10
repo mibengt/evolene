@@ -35,8 +35,7 @@ class DockerDeployPipeline(object):
         # Check Dockerfile exists
         next_step = next_step.set_next_step(DockerFileStep())
         # Check Dockerfiles FROM statement
-        if Environment.get_experimental():
-           next_step = next_step.set_next_step(FromImageStep())
+        next_step = next_step.set_next_step(FromImageStep())
         # Scan repo for secrets like passwords
         if Environment.get_experimental():
             next_step = next_step.set_next_step(RepoSupervisorStep())
