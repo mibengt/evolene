@@ -14,6 +14,8 @@ class FromImageStep(AbstractPipelineStep):
         "kth-nodejs": [ "8.11", "9.11"],
         "kth-nodejs-web": [ "2.4" ],
         "kth-nodejs-api": [ "2.4" ],
+        "kth-python": [ ],
+        "kth-java": [ ],
         "oracle": [ ],
         "redis": ["*"]
     }
@@ -35,7 +37,7 @@ class FromImageStep(AbstractPipelineStep):
         if self.validate(from_line, log_prefix):
             self.log.debug("'FROM:' statement '{}' in Dockerfile is valid.".format(from_line))
         else:
-            message = "*{}* Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(log_prefix, from_line)
+            message = "*{}*: Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(log_prefix, from_line)
             self.log.warn(message)
             Slack.on_warning(message)
         
@@ -51,10 +53,16 @@ class FromImageStep(AbstractPipelineStep):
     def get_change_image_message(self, image, log_prefix):
         result = None
         if str(image) == "kth-nodejs-web":
-            result = "*{}* Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
+            result = "*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
 
         if str(image) == "kth-nodejs-api":
-            result = "*{}* Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
+            result = "*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
+
+        if str(image) == "kth-python":
+            result = "<!channel>*{}*: KTH Python is not supported any more. Please talk to #team-pipeline".format(log_prefix)
+
+        if str(image) == "kth-java":
+            result = "<!channel>*{}*: KTH Java is not supported any more. Please talk to #team-pipeline".format(log_prefix)
 
         return result
 
