@@ -49,7 +49,7 @@ class FromImageStep(AbstractPipelineStep):
        
     def inform_if_change_image(self, image_name):
         message = None    
-        if image_name is "kth-os":
+        if image_name is "kth-nodejs-web":
             message = "*{}* Please change to `kthse/kth-nodejs`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(image_name)
 
         if image_name is "kth-nodejs-api":
