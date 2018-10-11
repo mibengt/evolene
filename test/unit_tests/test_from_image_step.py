@@ -45,6 +45,7 @@ class DockerFileTests(unittest.TestCase):
         self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/redis:13.37", "kth-azure-app:13.37.0_abcdef"))
 
     def test_inform_if_change_image(self):
+        self.assertIsNotNone(FromImageStep().get_change_image_message("kth-nodejs-api", "kth-azure-app:13.37.0_abcdef"))
         self.assertIsNotNone(FromImageStep().get_change_image_message("kth-nodejs-web", "kth-azure-app:13.37.0_abcdef"))
 
     def test_inform_if_change_image_is_empty(self):

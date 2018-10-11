@@ -70,10 +70,10 @@ class FromImageStep(AbstractPipelineStep):
 
     def get_change_image_message(self, image, log_prefix):
         result = None
-        if str(image) == "kth-nodejs-web":
+        if "kth-nodejs-web" in image:
             result = "*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
 
-        if str(image) == "kth-nodejs-api":
+        if "kth-nodejs-api" in image:
             result = "*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
 
         return result
