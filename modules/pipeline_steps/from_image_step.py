@@ -70,10 +70,10 @@ class FromImageStep(AbstractPipelineStep):
 
     def get_change_image_message(self, image, log_prefix):
         result = None
-        if "kth-nodejs-web" in image:
+        if "kth-nodejs-web" == str(image):
             result = "*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
 
-        if "kth-nodejs-api" in image:
+        if "kth-nodejs-api" == str(image):
             result = "*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
 
         return result
@@ -84,7 +84,6 @@ class FromImageStep(AbstractPipelineStep):
         if message:
             self.log.warn(message)
             Slack.on_warning(message)
-
 
     def is_valid_tag_for_image_name(self, from_line, image):
         
