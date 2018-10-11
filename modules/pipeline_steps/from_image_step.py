@@ -70,24 +70,16 @@ class FromImageStep(AbstractPipelineStep):
 
     def get_change_image_message(self, image, log_prefix):
 
-        print "----------> get_change_image_message Image: {}".format(image)
-
         if "kth-nodejs-web" == str(image):
-            print "----------> is web"
             return "*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
 
         if "kth-nodejs-api" == str(image):
-            print "----------> is api"
             return "*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
-
-        print "----------> is None"
-
 
         return None
 
     def inform_if_change_image(self, image, log_prefix):
 
-        print "----------> Image: {}".format(image)
         message = self.get_change_image_message(image, log_prefix)
         
         if message:
@@ -105,7 +97,7 @@ class FromImageStep(AbstractPipelineStep):
             return True
 
         for tag in self.IMAGE_RULES[image]:
-            tag_pattern = ":{}".format(tag) # Match docker.io/redis":2.3
+            tag_pattern = ":{}".format(tag) # ex: docker.io/redis":2.3"
             if tag_pattern in from_line:
                 return True
         return False
