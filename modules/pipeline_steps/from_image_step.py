@@ -9,21 +9,39 @@ import logging
 
 class FromImageStep(AbstractPipelineStep):
 
-    SUPPORTED_IMAGES = {
+    
+    IMAGE_RULES = {
+        # Tags starting with.
+        # 
+        # i.e: kthse/kth-os:3.8.0
+        # "kth-os": [ "3.8" ]
+        # "kth-os": [ "3.8.0" ]
+        # "kth-os": [ "3.8.0_abcdef" ]
+        #
         "kth-os": [ "3.8" ],
         "kth-nodejs": [ "8.11", "9.11"],
         "kth-nodejs-web": [ "2.4" ],
         "kth-nodejs-api": [ "2.4" ],
+        "kth-play1": [ "1.5" ],
+        "kth-play2": [ "2.2" ],
+        
+        #
+        #  Allow all tags
+        #
+        "redis": ["*"],
+
+        #
+        # Disallow all tags
+        #
         "kth-python": [ ],
         "kth-java": [ ],
         "oracle": [ ],
-        "redis": ["*"]
     }
 
-    def __init__(self, supported_images=None):
+    def __init__(self, image_rules=None):
         self.log = logging.getLogger(self.get_step_name())
-        if supported_images:
-            self.SUPPORTED_IMAGES = supported_images
+        if image_rules:
+            self.IMAGE_RULES = image_rules
 
     def get_required_env_variables(self): # pragma: no cover
         return [Environment.PROJECT_ROOT]
@@ -44,7 +62,7 @@ class FromImageStep(AbstractPipelineStep):
         return data
 
     def validate(self, from_line, log_prefix):
-        for image in self.SUPPORTED_IMAGES:
+        for image in self.IMAGE_RULES:
             if image in from_line:
                 self.inform_if_change_image(image, log_prefix)
                 return self.is_valid_tag_for_image_name(from_line, image)
@@ -57,12 +75,6 @@ class FromImageStep(AbstractPipelineStep):
 
         if str(image) == "kth-nodejs-api":
             result = "*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
-
-        if str(image) == "kth-python":
-            result = "<!channel>*{}*: KTH Python is not supported any more. Please talk to #team-pipeline".format(log_prefix)
-
-        if str(image) == "kth-java":
-            result = "<!channel>*{}*: KTH Java is not supported any more. Please talk to #team-pipeline".format(log_prefix)
 
         return result
 
@@ -77,14 +89,14 @@ class FromImageStep(AbstractPipelineStep):
     def is_valid_tag_for_image_name(self, from_line, image):
         
         # If array is empty, allow no tags for that image name.
-        if not self.SUPPORTED_IMAGES[image]:
+        if not self.IMAGE_RULES[image]:
             return False
 
         # Allow all versions
-        if self.SUPPORTED_IMAGES[image][0] == "*":
+        if self.IMAGE_RULES[image][0] == "*":
             return True
 
-        for tag in self.SUPPORTED_IMAGES[image]:
+        for tag in self.IMAGE_RULES[image]:
             tag_pattern = ":{}".format(tag) # Match docker.io/redis":2.3
             if tag_pattern in from_line:
                 return True
