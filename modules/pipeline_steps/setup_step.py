@@ -26,7 +26,8 @@ class SetupStep(AbstractPipelineStep):
             " |______|   \_/    \___/  |_|  \___| |_| |_|  \___| \n"
             "                                                    \n"
             "****************************************************\n"
-            " KTH CD/CI pipeline tool for Docker                 \n"
+            " Help making it better!                             \n"
+            " https://gita.sys.kth.se/Infosys/evolene            \n"
             "****************************************************\n"
             "                                                    \n"
         )
