@@ -2,14 +2,18 @@ __author__ = 'tinglev'
 
 import os
 import re
+import datetime
+import time
 
 class Environment(object):
 
     IMAGE_NAME = 'IMAGE_NAME'
     PROJECT_ROOT = 'WORKSPACE'
     GIT_COMMIT = 'GIT_COMMIT'
+    GIT_BRANCH = 'GIT_BRANCH'
     BUILD_NUMBER = 'BUILD_NUMBER'
     BUILD_URL = 'BUILD_URL'
+    BUILD_INFORMATION_OUTPUT_FILE = 'BUILD_INFORMATION_OUTPUT_FILE'
     SLACK_WEB_HOOK = 'EVOLENE_SLACK_WEB_HOOK'
     SLACK_CHANNELS = 'SLACK_CHANNELS'
     REGISTRY_HOST = 'REGISTRY_HOST'
@@ -19,6 +23,7 @@ class Environment(object):
     EXPERIMENTAL = 'EXPERIMENTAL'
     SKIP_DRY_RUN = 'SKIP_DRY_RUN'
     PUSH_PUBLIC = 'PUSH_PUBLIC'
+    
 
     @staticmethod
     def get_registry_host():
@@ -43,12 +48,25 @@ class Environment(object):
         return os.environ.get(Environment.GIT_COMMIT)
 
     @staticmethod
+    def get_git_branch():
+        return os.environ.get(Environment.GIT_BRANCH)
+
+    @staticmethod
     def get_project_root():
         return os.environ.get(Environment.PROJECT_ROOT)
 
     @staticmethod
     def get_build_number():
         return os.environ.get(Environment.BUILD_NUMBER)
+
+    @staticmethod
+    def get_build_information_output_file():
+        output_file = os.environ.get(Environment.BUILD_INFORMATION_OUTPUT_FILE)
+        if output_file:
+            return output_file
+        return '/config/build.json'
+        
+
 
     @staticmethod
     def get_slack_channels():
@@ -94,3 +112,7 @@ class Environment(object):
         if not re.match(r'^[0-9]+\.[0-9]+\.[0-9]+$', image_version):
             return False
         return True
+    
+    @staticmethod
+    def get_time():
+        return datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')

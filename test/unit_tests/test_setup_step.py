@@ -1,9 +1,10 @@
 __author__ = 'tinglev'
 
 import unittest
+from modules.pipeline_steps.setup_step import SetupStep
 
 class SetupStepTests(unittest.TestCase):
 
-    @unittest.skip("No tests for this yet")
     def test_nothing(self):
-        pass
+        step = SetupStep()
+        step.print_header()
