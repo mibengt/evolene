@@ -28,10 +28,15 @@ class CiEnvironmentToFileStep(AbstractPipelineStep):
 
     def write(self, data):
         try:
+
             with open(self.get_ouput_file(), 'w+') as output_file:
-                return output_file.write(json.dumps(self.get_file_content_as_dict(data)))
+                return output_file.write(self.to_js_module(self.get_file_content_as_dict(data)))
+
         except IOError as ioe:
             self.handle_step_error("Unable to write CI information to file '{}'".format(self.get_ouput_file()), ioe)
+
+    def to_js_module(self, file_content_as_dict):
+        return "module.exports = {}".format(json.dumps(file_content_as_dict))
 
     def get_file_content_as_dict(self, data):
 
