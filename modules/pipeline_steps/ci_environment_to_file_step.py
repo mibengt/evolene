@@ -1,7 +1,5 @@
 __author__ = 'tinglev'
 
-import re
-import os
 import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
@@ -18,16 +16,22 @@ class CiEnvironmentToFileStep(AbstractPipelineStep):
     def run_step(self, data):
         self.write(data)
 
+    def get_local_file_path(self):
+        output_file = Environment.get_build_information_output_file()
+        if output_file:
+            return output_file
+        return '/config/version.js'
+
     def get_ouput_file(self):
         stripped_root = Environment.get_project_root().rstrip('/')
-        return '{}{}'.format(stripped_root, Environment.get_build_information_output_file())
+        return '{}{}'.format(stripped_root, self.get_local_file_path())
 
     def write(self, data):
         try:
             with open(self.get_ouput_file(), 'w+') as output_file:
                 return output_file.write(json.dumps(self.get_file_content_as_dict(data)))
         except IOError as ioe:
-            self.handle_step_error("Unable to write ci envs to file '{}'".format(self.get_ouput_file()), ioe)
+            self.handle_step_error("Unable to write CI information to file '{}'".format(self.get_ouput_file()), ioe)
 
     def get_file_content_as_dict(self, data):
 

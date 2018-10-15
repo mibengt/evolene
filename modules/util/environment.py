@@ -61,13 +61,8 @@ class Environment(object):
 
     @staticmethod
     def get_build_information_output_file():
-        output_file = os.environ.get(Environment.BUILD_INFORMATION_OUTPUT_FILE)
-        if output_file:
-            return output_file
-        return '/config/build.json'
+        return os.environ.get(Environment.BUILD_INFORMATION_OUTPUT_FILE)
         
-
-
     @staticmethod
     def get_slack_channels():
         channels = os.environ.get(Environment.SLACK_CHANNELS)

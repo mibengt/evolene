@@ -11,7 +11,7 @@ class CiEnvironmentToFileStepTests(unittest.TestCase):
     def test_get_default_output_file(self):
         step = CiEnvironmentToFileStep()
         os.environ[Environment.PROJECT_ROOT] = "/tmp"
-        self.assertEqual("/tmp/config/build.json", step.get_ouput_file())
+        self.assertEqual("/tmp/config/version.js", step.get_ouput_file())
 
     def test_get_output_file(self):
         step = CiEnvironmentToFileStep()
