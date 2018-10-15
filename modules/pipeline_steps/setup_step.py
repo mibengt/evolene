@@ -26,7 +26,7 @@ class SetupStep(AbstractPipelineStep):
             " |______|   \_/    \___/  |_|  \___| |_| |_|  \___| \n"
             "                                                    \n"
             "****************************************************\n"
-            " Help making it better!                             \n"
+            " Help make Evolene better!                          \n"
             " https://gita.sys.kth.se/Infosys/evolene            \n"
             "****************************************************\n"
             "                                                    \n"
