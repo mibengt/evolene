@@ -24,8 +24,8 @@ class CiEnvironmentToFileStep(AbstractPipelineStep):
 
     def write(self, data):
         try:
-            with open(self.get_ouput_file()) as output_file:
-                return output_file.write(json.dumps(self.get_file_content_as_dict(data)), 'w+')
+            with open(self.get_ouput_file(), 'w+') as output_file:
+                return output_file.write(json.dumps(self.get_file_content_as_dict(data)))
         except IOError as ioe:
             self.handle_step_error("Unable to write ci envs to file '{}'".format(self.get_ouput_file()), ioe)
 
