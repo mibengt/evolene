@@ -78,18 +78,9 @@ class RepoSupervisorStep(AbstractPipelineStep):
         return result
 
     def ignore(self, filename):
-        self.log.info("-------------------> {}".format(filename))
         for pattern in self.get_ignore_patterns():
-            if FileUtil.is_directory(pattern):
-                if str(filename).startswith(pattern):
-                    self.log.info("--ignore true---> {}".format(pattern))
-                    return True
-                    self.log.info("--ignore false---> {}".format(pattern))
-                return False
-            if str(filename) == pattern:
-                self.log.info("--ignore true---> {}".format(pattern))
+            if str(filename).startswith(pattern):
                 return True
-        self.log.info("--ignore false---> {}".format(filename))
         return False
 
     def _run_supervisor(self, image_name):
