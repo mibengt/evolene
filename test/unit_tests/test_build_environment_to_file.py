@@ -5,13 +5,14 @@ import os
 from modules.pipeline_steps.build_environment_to_file_step import BuildEnvironmentToFileStep
 from modules.util.environment import Environment
 from modules.util.data import Data
+from modules.util.exceptions import PipelineException
 
 class BuildEnvironmentToFileStepTest(unittest.TestCase):
 
     def test_get_default_output_file(self):
         step = BuildEnvironmentToFileStep()
         os.environ[Environment.PROJECT_ROOT] = "/tmp"
-        self.assertEqual("/tmp/config/version.js", step.get_ouput_file())
+        self.assertRaises(PipelineException, step.get_ouput_file)
 
     def test_get_output_file(self):
         step = BuildEnvironmentToFileStep()

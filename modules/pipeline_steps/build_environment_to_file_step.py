@@ -5,6 +5,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
 from modules.util.image_version_util import ImageVersionUtil
+from modules.util.exceptions import PipelineException
 
 class BuildEnvironmentToFileStep(AbstractPipelineStep):
 
@@ -15,17 +16,17 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
         return [Data.IMAGE_VERSION, Data.IMAGE_NAME]
 
     def run_step(self, data):
-        self.write(data)
-
-    def get_local_file_path(self):
-        output_file = Environment.get_build_information_output_file()
-        if output_file:
-            return output_file
-        return '/config/version.js'
+        if Environment.get_build_information_output_file():
+            self.write(data)
 
     def get_ouput_file(self):
         stripped_root = Environment.get_project_root().rstrip('/')
-        return '{}{}'.format(stripped_root, self.get_local_file_path())
+        output_file = Environment.get_build_information_output_file()
+
+        if output_file is None:
+            raise PipelineException("No output file specified in env {}".format(Environment.BUILD_INFORMATION_OUTPUT_FILE))
+
+        return '{}{}'.format(stripped_root, Environment.get_build_information_output_file())
 
     def write(self, data):
         try:
