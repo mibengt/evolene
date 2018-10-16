@@ -5,6 +5,7 @@ import os
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
+from modules.util.file_util import FileUtil
 
 class DockerConfPipelineStep(AbstractPipelineStep):
 

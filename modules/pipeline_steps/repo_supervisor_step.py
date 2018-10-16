@@ -6,13 +6,16 @@ from modules.util.docker import Docker
 from modules.util.process import Process
 from modules.util.environment import Environment
 from modules.util.data import Data
+from modules.util.file_util import FileUtil
 from modules.util.exceptions import PipelineException
 from modules.util.slack import Slack
 
 class RepoSupervisorStep(AbstractPipelineStep):
 
     IMAGE_NAME = 'kthse/repo-supervisor'
-    EXCLUDED_DIRECTORIES = ['node_modules']
+    DEFAULT_PATTERNS = [
+        '/node_modules/'
+    ]
 
     def get_required_env_variables(self): #pragma: no cover
         return [Environment.PROJECT_ROOT]
@@ -51,7 +54,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
         filenames = [f_name.replace('/opt/scan_me', '').encode('utf-8')
                      for (f_name, _)
                      in results['result'].iteritems()
-                     if not self._directory_is_excluded(f_name)]
+                     if not self.ignore(f_name)]
         if filenames:
             self._log_warning_and_send_to_slack(filenames, data)
 
@@ -62,9 +65,25 @@ class RepoSupervisorStep(AbstractPipelineStep):
                .format(data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION], filenames))
         Slack.on_warning(msg)
 
-    def _directory_is_excluded(self, filename):
-        for directory in RepoSupervisorStep.EXCLUDED_DIRECTORIES:
-            if directory in filename:
+    def format_filnames(self, filenames):
+        result = ''
+        for filename in filenames:
+            result = "{}{}\n".format(result, filename)
+        return result
+
+    def get_ignore_patterns(self):
+        result = FileUtil.get_rows_as_array('.scanignore')
+        result.extend(RepoSupervisorStep.DEFAULT_PATTERNS)
+
+        return result
+
+    def ignore(self, filename):
+        for pattern in self.get_ignore_patterns():
+            if FileUtil.is_directory(pattern):
+                if str(filename).startswith(pattern):
+                    return True
+                return False                
+            if str(filename) == pattern:
                 return True
         return False
 
