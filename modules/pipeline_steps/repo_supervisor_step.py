@@ -51,10 +51,10 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
     def _process_supervisor_result(self, cmd_output, data):
         results = json.loads(cmd_output)
-        filenames = [
-                        f_name.replace('/opt/scan_me', '').encode('utf-8')
-                            for (f_name, _) in results['result'].iteritems()
-                                if not self.ignore(f_name)]
+        filenames = [f_name.replace('/opt/scan_me', '').encode('utf-8')
+                     for (f_name, _)
+                     in results['result'].iteritems()
+                     if not self.ignore(f_name)]
         if filenames:
             self._log_warning_and_send_to_slack(filenames, data)
 
