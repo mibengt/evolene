@@ -79,6 +79,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
     def ignore(self, filename):
         for pattern in self.get_ignore_patterns():
+            print "{} starts with {}: {}".format(filename, pattern, str(filename).startswith(pattern))
             if str(filename).startswith(pattern):
                 return True
         return False
