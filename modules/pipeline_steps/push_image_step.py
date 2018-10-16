@@ -78,5 +78,5 @@ class PushImageStep(AbstractPipelineStep):
     def push_image(self, data):
         registry_image_name = self.get_image_to_push(data)
         Docker.push(registry_image_name)
-        Slack.on_successful_private_push(data)
+        Slack.on_successful_private_push(ImageVersionUtil.get_image(data), data[Data.IMAGE_SIZE])
         self.log.info('Pushed image %s to KTH registry.', registry_image_name)

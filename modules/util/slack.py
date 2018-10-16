@@ -18,18 +18,17 @@ class Slack(object):
 
 
     @staticmethod
-    def on_successful_private_push(image_name):
-        message = ('*{0}:{1}* pushed to KTH:s private :whale: registry, size {2}.'
-                   .format(data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION], data[Data.IMAGE_SIZE]))
+    def on_successful_private_push(image, size):
+        message = ('*{0}* pushed to KTH:s private :whale: registry, size {1}.'
+                   .format(image, size))
         Slack.send_to_slack(message, icon=':jenkins:')
 
 
     @staticmethod
-    def on_successful_public_push(image_name, image_version, image_size):
+    def on_successful_public_push(image, image_name, image_size):
         message = (
-            '*{0}:{1}* pushed to https://hub.docker.com/r/kthse/{2}/tags/, size {3}.'
-            .format(image_name,
-                    image_version,
+            '*{0}* pushed to https://hub.docker.com/r/kthse/{1}/tags/, size {2}.'
+            .format(image,
                     image_name,
                     image_size)
         )
