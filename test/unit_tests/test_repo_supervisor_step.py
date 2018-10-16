@@ -26,12 +26,12 @@ class RepoSupervisorStepTest(unittest.TestCase):
         #/node_modules/
         #/secrets
         # + RepoSupervisor.EXCLUDED_DIRECTORIES
-        self.assertTrue(step.ignore('/tmp/myfile.js'))
-        self.assertFalse(step.ignore('/tmp/myfile'))
-        self.assertTrue(step.ignore('/node_modules/')) # From EXCLUDED_DIRECTORIES
-        self.assertTrue(step.ignore('/packages/'))
+        self.assertTrue(step.ignore(RepoSupervisorStep.REPO_MOUNTED_DIR + '/tmp/myfile.js'))
+        self.assertFalse(step.ignore(RepoSupervisorStep.REPO_MOUNTED_DIR + '/tmp/myfile'))
+        self.assertTrue(step.ignore(RepoSupervisorStep.REPO_MOUNTED_DIR + '/node_modules/')) # From EXCLUDED_DIRECTORIES
+        self.assertTrue(step.ignore(RepoSupervisorStep.REPO_MOUNTED_DIR + '/packages/'))
 
     def test_excluded_directories_are_ignored(self):
         step = RepoSupervisorStep()
         os.environ[Environment.PROJECT_ROOT] = self.get_test_data_project_root()
-        self.assertTrue(step.ignore('/node_modules/')) # From EXCLUDED_DIRECTORIES
+        self.assertTrue(step.ignore(RepoSupervisorStep.REPO_MOUNTED_DIR + '/node_modules/')) # From EXCLUDED_DIRECTORIES

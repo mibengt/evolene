@@ -13,7 +13,7 @@ from modules.util.slack import Slack
 class RepoSupervisorStep(AbstractPipelineStep):
 
     REPO_SUPERVISOR_IMAGE_NAME = 'kthse/repo-supervisor'
-    REPO_SUPERVISOR_MOUNT_DIR = '/opt/scan_me'
+    REPO_MOUNTED_DIR = '/opt/scan_me'
     DEFAULT_PATTERNS = [
         '/node_modules/'
     ]
@@ -52,10 +52,10 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
     def _process_supervisor_result(self, cmd_output, data):
         results = json.loads(cmd_output)
-        filenames = [f_name.replace(RepoSupervisorStep.REPO_SUPERVISOR_MOUNT_DIR, '').encode('utf-8')
+        filenames = [f_name.replace(RepoSupervisorStep.REPO_MOUNTED_DIR, '').encode('utf-8')
                      for (f_name, _)
                      in results['result'].iteritems()
-                     if not self.ignore(f_name, dir_prefix=RepoSupervisorStep.REPO_SUPERVISOR_MOUNT_DIR)]
+                     if not self.ignore(f_name)]
         if filenames:
             self._log_warning_and_send_to_slack(filenames, data)
 
@@ -78,17 +78,19 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
         return result
 
-    def ignore(self, filename, dir_prefix=''):
+    def ignore(self, filename):
+        # Inside the Repo scaner container the root is 
+        # /opt/scan_me/
         for pattern in self.get_ignore_patterns():
-            if str(filename).startswith(dir_prefix + pattern):
+            if str(filename).startswith(RepoSupervisorStep.REPO_MOUNTED_DIR + pattern):
                 return True
         return False
 
     def _run_supervisor(self, image_name):
-        cmd = ('docker run --rm -v ${{WORKSPACE}}:/opt/scan_me {} '
+        cmd = ('docker run --rm -v ${{WORKSPACE}}:{0} {1} '
                '/bin/bash -c "source ~/.bashrc && '
-               'JSON_OUTPUT=1 node /opt/repo-supervisor/dist/cli.js /opt/scan_me"'
-               .format(image_name))
+               'JSON_OUTPUT=1 node /opt/repo-supervisor/dist/cli.js {0}"'
+               .format(RepoSupervisorStep.REPO_MOUNTED_DIR, image_name))
         try:
             return Process.run_with_output(cmd)
         except PipelineException as pipeline_ex:
