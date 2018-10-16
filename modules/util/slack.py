@@ -26,8 +26,13 @@ class Slack(object):
 
     @staticmethod
     def on_successful_public_push(image_name, image_version, image_size):
-        message = ('*{0}:{1}* pushed to https://hub.docker.com/r/kthse/{2}/tags/, size {3}.'
-                   .format(image_name, image_version, image_name, image_size)
+        message = (
+            '*{0}:{1}* pushed to https://hub.docker.com/r/kthse/{2}/tags/, size {3}.'
+            .format(image_name,
+                    image_version,
+                    image_name,
+                    image_size)
+        )
         Slack.send_to_slack(message, icon=':jenkins:')
 
 

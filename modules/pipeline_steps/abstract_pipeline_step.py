@@ -5,7 +5,6 @@ import os
 import sys
 import logging
 from modules.util.slack import Slack
-from modules.util.environment import Environment
 
 class AbstractPipelineStep:
     __metaclass__ = ABCMeta
