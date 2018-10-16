@@ -12,7 +12,8 @@ from modules.util.slack import Slack
 
 class RepoSupervisorStep(AbstractPipelineStep):
 
-    IMAGE_NAME = 'kthse/repo-supervisor'
+    REPO_SUPERVISOR_IMAGE_NAME = 'kthse/repo-supervisor'
+    REPO_SUPERVISOR_MOUNT_DIR = '/opt/scan_me'
     DEFAULT_PATTERNS = [
         '/node_modules/'
     ]
@@ -24,7 +25,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
         return [Data.IMAGE_NAME, Data.IMAGE_VERSION]
 
     def run_step(self, data):
-        image_name = RepoSupervisorStep.IMAGE_NAME
+        image_name = RepoSupervisorStep.REPO_SUPERVISOR_IMAGE_NAME
         self._pull_image_if_missing(image_name)
         output = self._run_supervisor(image_name)
         if output:
@@ -51,10 +52,10 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
     def _process_supervisor_result(self, cmd_output, data):
         results = json.loads(cmd_output)
-        filenames = [f_name.replace('/opt/scan_me', '').encode('utf-8')
+        filenames = [f_name.replace(RepoSupervisorStep.REPO_SUPERVISOR_MOUNT_DIR, '').encode('utf-8')
                      for (f_name, _)
                      in results['result'].iteritems()
-                     if not self.ignore(f_name)]
+                     if not self.ignore(f_name, dir_prefix=RepoSupervisorStep.REPO_SUPERVISOR_MOUNT_DIR)]
         if filenames:
             self._log_warning_and_send_to_slack(filenames, data)
 
@@ -77,10 +78,9 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
         return result
 
-    def ignore(self, filename):
+    def ignore(self, filename, dir_prefix=''):
         for pattern in self.get_ignore_patterns():
-            self.log.info("{} starts with {}: {}".format(filename, pattern, str(filename).startswith(pattern)))
-            if str(filename).startswith(pattern):
+            if str(filename).startswith(dir_prefix + pattern):
                 return True
         return False
 
