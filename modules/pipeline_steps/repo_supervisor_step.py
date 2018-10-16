@@ -75,16 +75,23 @@ class RepoSupervisorStep(AbstractPipelineStep):
         result = FileUtil.get_rows_as_array('.scanignore')
         result.extend(RepoSupervisorStep.DEFAULT_PATTERNS)
 
+        for pattern in result:
+            self.log.info("--get_ignore_patterns---> {}".format(pattern))
+
         return result
 
     def ignore(self, filename):
         for pattern in self.get_ignore_patterns():
             if FileUtil.is_directory(pattern):
                 if str(filename).startswith(pattern):
+                    self.log.info("--ignore true---> {}".format(pattern))
                     return True
-                return False                
+                    self.log.info("--ignore false---> {}".format(pattern))
+                return False
             if str(filename) == pattern:
+                self.log.info("--ignore true---> {}".format(pattern))
                 return True
+        self.log.info("--ignore false---> {}".format(filename))
         return False
 
     def _run_supervisor(self, image_name):
