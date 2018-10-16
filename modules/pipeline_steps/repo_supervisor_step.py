@@ -60,8 +60,8 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
     def _log_warning_and_send_to_slack(self, filenames, data):
         self.log.info('Found suspicious string in files "%s"', filenames)
-        msg = ('*{}:{}* Found possible password or token in the following file(s) '
-               ', build will continue. ```{}```'
+        msg = ('*{}:{}* Possible password or token in the following file(s).'
+               ' Fix or add file or relative path to `/.scanignore`. ```{}```'
                .format(data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION], self.format_filnames(filenames)))
         Slack.on_warning(msg)
 
@@ -74,9 +74,6 @@ class RepoSupervisorStep(AbstractPipelineStep):
     def get_ignore_patterns(self):
         result = FileUtil.get_rows_as_array('.scanignore')
         result.extend(RepoSupervisorStep.DEFAULT_PATTERNS)
-
-        for pattern in result:
-            self.log.info("--get_ignore_patterns---> {}".format(pattern))
 
         return result
 
