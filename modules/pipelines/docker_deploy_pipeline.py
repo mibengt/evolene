@@ -7,7 +7,7 @@ from modules.pipeline_steps.docker_conf_step import DockerConfPipelineStep
 from modules.pipeline_steps.image_version_step import ImageVersionStep
 from modules.pipeline_steps.docker_file_step import DockerFileStep
 from modules.pipeline_steps.build_local_step import BuildLocalStep
-from modules.pipeline_steps.ci_environment_to_file_step import CiEnvironmentToFileStep
+from modules.pipeline_steps.build_environment_to_file_step import BuildEnvironmentToFileStep
 from modules.pipeline_steps.dry_run_step import DryRunStep
 from modules.pipeline_steps.test_image_step import TestImageStep
 from modules.pipeline_steps.tag_image_step import TagImageStep
@@ -38,7 +38,7 @@ class DockerDeployPipeline(object):
         # Check Dockerfiles FROM statement
         next_step = next_step.set_next_step(FromImageStep())
         # Write information about the current build to a json-file.
-        next_step = next_step.set_next_step(CiEnvironmentToFileStep())
+        next_step = next_step.set_next_step(BuildEnvironmentToFileStep())
         if Environment.get_experimental():
             next_step = next_step.set_next_step(RepoSupervisorStep())
         # Build the image to local registry

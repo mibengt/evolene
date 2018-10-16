@@ -4,8 +4,9 @@ import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
+from modules.util.image_version_util import ImageVersionUtil
 
-class CiEnvironmentToFileStep(AbstractPipelineStep):
+class BuildEnvironmentToFileStep(AbstractPipelineStep):
 
     def get_required_env_variables(self):
         return [Environment.GIT_BRANCH, Environment.GIT_COMMIT]
@@ -28,12 +29,12 @@ class CiEnvironmentToFileStep(AbstractPipelineStep):
 
     def write(self, data):
         try:
-
+            # If the output file already exists over write it.
             with open(self.get_ouput_file(), 'w+') as output_file:
                 return output_file.write(self.to_js_module(self.get_file_content_as_dict(data)))
 
         except IOError as ioe:
-            self.handle_step_error("Unable to write CI information to file '{}'".format(self.get_ouput_file()), ioe)
+            self.handle_step_error("Unable to write build information to file '{}'".format(self.get_ouput_file()), ioe)
 
     def to_js_module(self, file_content_as_dict):
         return "module.exports = {}".format(json.dumps(file_content_as_dict))
@@ -46,6 +47,7 @@ class CiEnvironmentToFileStep(AbstractPipelineStep):
                 "jenkinsBuild": Environment.get_build_number(),
                 "jenkinsBuildDate": Environment.get_time(),
                 "dockerName": data[Data.IMAGE_NAME],
-                "dockerVersion": data[Data.IMAGE_VERSION]
+                "dockerVersion": data[Data.IMAGE_VERSION],
+                "image": ImageVersionUtil.prepend_registry(ImageVersionUtil.get_image(data))
         }
 

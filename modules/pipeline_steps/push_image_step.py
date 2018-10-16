@@ -8,6 +8,7 @@ from modules.util.data import Data
 from modules.util.exceptions import PipelineException
 from modules.util.docker import Docker
 from modules.util.environment import Environment
+from modules.util.image_version_util import ImageVersionUtil
 
 class PushImageStep(AbstractPipelineStep):
 
@@ -70,12 +71,10 @@ class PushImageStep(AbstractPipelineStep):
         except (ConnectTimeout, RequestException) as req_err:
             raise PipelineException('Timeout or request exception when calling registry API: {}'
                                     .format(req_err))
-
-    def get_image_to_push(self, data):
-        return '{}/{}:{}'.format(Environment.get_registry_host(),
-                                 data[Data.IMAGE_NAME],
-                                 data[Data.IMAGE_VERSION])
     
+    def get_image_to_push(self, data):
+        return ImageVersionUtil.prepend_registry(ImageVersionUtil.get_image(data))
+
     def push_image(self, data):
         registry_image_name = self.get_image_to_push(data)
         Docker.push(registry_image_name)

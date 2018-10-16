@@ -2,19 +2,19 @@ __author__ = 'tinglev'
 
 import unittest
 import os
-from modules.pipeline_steps.ci_environment_to_file_step import CiEnvironmentToFileStep
+from modules.pipeline_steps.build_environment_to_file_step import BuildEnvironmentToFileStep
 from modules.util.environment import Environment
 from modules.util.data import Data
 
-class CiEnvironmentToFileStepTests(unittest.TestCase):
+class BuildEnvironmentToFileStepTest(unittest.TestCase):
 
     def test_get_default_output_file(self):
-        step = CiEnvironmentToFileStep()
+        step = BuildEnvironmentToFileStep()
         os.environ[Environment.PROJECT_ROOT] = "/tmp"
         self.assertEqual("/tmp/config/version.js", step.get_ouput_file())
 
     def test_get_output_file(self):
-        step = CiEnvironmentToFileStep()
+        step = BuildEnvironmentToFileStep()
         os.environ[Environment.PROJECT_ROOT] = "/tmp"
         os.environ[Environment.BUILD_INFORMATION_OUTPUT_FILE] = "/path/file.json"
         self.assertEqual("/tmp/path/file.json", step.get_ouput_file())
@@ -30,7 +30,7 @@ class CiEnvironmentToFileStepTests(unittest.TestCase):
             Data.IMAGE_VERSION: "test-app:1.1.3_12345a"
         }
         
-        step = CiEnvironmentToFileStep()
+        step = BuildEnvironmentToFileStep()
 
         output = step.get_file_content_as_dict(data)
 
