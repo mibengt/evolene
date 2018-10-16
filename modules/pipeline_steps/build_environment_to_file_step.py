@@ -49,6 +49,6 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
                 "jenkinsBuildDate": Environment.get_time(),
                 "dockerName": data[Data.IMAGE_NAME],
                 "dockerVersion": data[Data.IMAGE_VERSION],
-                "image": ImageVersionUtil.prepend_registry(ImageVersionUtil.get_image(data))
+                "dockerImage": ImageVersionUtil.prepend_registry(ImageVersionUtil.get_image(data))
         }
 
