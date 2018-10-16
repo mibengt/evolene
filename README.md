@@ -20,12 +20,12 @@ Do use Evolene on Jenkins simply [add a build step](https://build.sys.kth.se/vie
 
 Default configuration
 ```bash
-SLACK_CHANNELS="#team-studadm-build" $EVOLENE_DIRECTORY/run.sh
+SLACK_CHANNELS='#team-studadm-build' BUILD_INFORMATION_OUTPUT_FILE='/config/version.js' $EVOLENE_DIRECTORY/run.sh
 ```
 
 Latest feature:
 ```bash
-SLACK_CHANNELS="#team-studadm-build,#pipeline-logs" DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh
+SLACK_CHANNELS='#team-studadm-build,#pipeline-logs' DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh
 ```
 
 
@@ -50,17 +50,20 @@ To run tests:
 All environment variables for configuration:
 
 ```
-IMAGE_NAME          - The name of the image to build (ex: 'kth-azure-app')
-PROJECT_ROOT        - The path to the root of the project to build (ex: '/Users/projects/kth-azure-app')
-GIT_COMMIT          - The commit hash of the push that triggered the build (usually set by Jenkins)
-BUILD_NUMBER        - The number of the current build (usually set by Jenkins)
-SLACK_WEB_HOOK      - The Slack webhook endpoint to use
-SLACK_CHANNELS      - Comma separated list of channels to post messages to (ex: '#pipeline-logs,#zermatt')
-REGISTRY_HOST       - The host (without protocol) of the Docker registry to use (ex: 'kthregistryv2.sys.kth.se')
-REGISTRY_USER       - Registry user
-REGISTRY_PASSWORD   - Registry password
-EVOLENE_DIRECTORY   - The working directory of evolene (used on jenkins to work properly)
-EXPERIMENTAL        - Feature toogle for latest features
+IMAGE_NAME                    - The name of the image to build (ex: 'kth-azure-app')
+PROJECT_ROOT                  - The path to the root of the project to build (ex: '/Users/projects/kth-azure-app')
+GIT_COMMIT                    - The commit hash of the push that triggered the build (usually set by Jenkins)
+BUILD_NUMBER                  - The number of the current build (usually set by Jenkins)
+SLACK_WEB_HOOK                - The Slack webhook endpoint to use
+SLACK_CHANNELS                - Comma separated list of channels to post messages to (ex: '#pipeline-logs,#zermatt')
+REGISTRY_HOST                 - The host (without protocol) of the Docker registry to use (ex: 'kthregistryv2.sys.kth.se')
+REGISTRY_USER                 - Registry user
+REGISTRY_PASSWORD             - Registry password
+PUSH_PUBLIC                   - Push the image to hub.docker.com/r/kthse
+SKIP_DRY_RUN                  - Skip the step where the new image is tested by running 'docker run image_id'
+BUILD_INFORMATION_OUTPUT_FILE - Print build info to js-module file 
+EVOLENE_DIRECTORY             - The working directory of evolene (used on jenkins to work properly)
+EXPERIMENTAL                  - Feature toogle for latest features
 ```
 
 Changes to this project are automatically sent to https://build.sys.kth.se
