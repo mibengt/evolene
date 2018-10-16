@@ -18,9 +18,8 @@ from modules.pipeline_steps.unit_test_step import UnitTestStep
 from modules.pipeline_steps.integration_test_step import IntegrationTestStep
 from modules.pipeline_steps.from_image_step import FromImageStep
 from modules.util.exceptions import PipelineException
-from modules.util.slack import Slack
 from modules.util.environment import Environment
-
+from modules.util.slack import Slack
 
 class DockerDeployPipeline(object):
 
@@ -73,8 +72,7 @@ class DockerDeployPipeline(object):
             Slack.send_to_slack('<!channel> {}'.format(p_ex.slack_message))
             sys.exit(1)
         else:
-            self.log.info('Build and push successful. Pipeline data: %s', data)
-            Slack.on_successful_deploy(data)
+            self.log.info('Pipeline done. Pipeline data: %s', data)
 
     def verify_environment(self):
         try:

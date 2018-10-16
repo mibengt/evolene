@@ -16,11 +16,20 @@ class Slack(object):
             body = Slack.get_payload_body(channel, message, icon)
             Slack.call_slack_endpoint(body)
 
+
     @staticmethod
-    def on_successful_deploy(data):
-        message = ('*{0}:{1}* pushed to registry, size {2}.'
+    def on_successful_private_push(data):
+        message = ('*{0}:{1}* pushed to KTH private :whale: registry, size {2}.'
                    .format(data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION], data[Data.IMAGE_SIZE]))
-        Slack.send_to_slack(message, icon=':travis:')
+        Slack.send_to_slack(message, icon=':jenkins:')
+
+
+    @staticmethod
+    def on_successful_public_push(data):
+        message = ('*{0}:{1}* pushed to https://hub.docker.com/r/kthse/{2}/tags/, size {3}.'
+                   .format(data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION], data[Data.IMAGE_NAME], data[Data.IMAGE_SIZE]))
+        Slack.send_to_slack(message, icon=':jenkins:')
+
 
     @staticmethod
     def on_warning(message):
