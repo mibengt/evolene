@@ -19,7 +19,7 @@ class Slack(object):
 
     @staticmethod
     def on_successful_private_push(image, size):
-        message = ('*{0}* pushed to KTH:s private :whale: registry, size {1}.'
+        message = ('*{0}* pushed to KTH:s private :docker: registry, size {1}.'
                    .format(image, size))
         Slack.send_to_slack(message, icon=':jenkins:')
 
@@ -27,7 +27,7 @@ class Slack(object):
     @staticmethod
     def on_successful_public_push(image, image_name, image_size):
         message = (
-            '*{0}* pushed to https://hub.docker.com/r/kthse/{1}/tags/, size {2}.'
+            '*{0}* pushed to :docker: https://hub.docker.com/r/kthse/{1}/tags/, size {2}.'
             .format(image,
                     image_name,
                     image_size)
