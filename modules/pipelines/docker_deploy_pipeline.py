@@ -38,8 +38,8 @@ class DockerDeployPipeline(object):
         next_step = next_step.set_next_step(FromImageStep())
         # Write information about the current build to a json-file.
         next_step = next_step.set_next_step(BuildEnvironmentToFileStep())
-        if Environment.get_experimental():
-            next_step = next_step.set_next_step(RepoSupervisorStep())
+        # Scan the repo for passwords, tokens or other suspicious looking strings  
+        next_step = next_step.set_next_step(RepoSupervisorStep())
         # Build the image to local registry
         next_step = next_step.set_next_step(BuildLocalStep())
         # Test run the image
