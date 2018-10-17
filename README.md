@@ -27,6 +27,17 @@ Latest feature:
 ```bash
 SLACK_CHANNELS='#team-studadm-build,#pipeline-logs' DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh
 ```
+## Security scaning
+By default files in your repo will be scanned for strings that looks like passwords or tokens. We use [RepoSupervisor](https://github.com/auth0/repo-supervisor/) for this.
+
+When your project is buildt a warning will be sent to SLACK_CHANNELS with the files that contain suspisious files. If a file gives you a false possitive, you can create a file in the root of your repository and name it `.scanignore`. In the .scanignore file you can add catalogs or files that the security scan should ignore.
+
+### .scanignore formatting
+```bash
+# Catalogs starting with, or specific files.
+/node_modules/
+/imported-data/personnumer.txt
+```
 
 
 # How to develop and run Evolene on your local machine
