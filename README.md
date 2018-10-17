@@ -86,7 +86,7 @@ The last block, environment, defines which environment variables should be passe
 
 With this file in place, Jenkins will try to run the integration tests. But for the tests to run successfully, the credentials has to be setup in Jenkins.
 
-## Jenkins credentials
+### Jenkins credentials
 Add credentials by going to the [Credentials](https://build.sys.kth.se/credentials/store/system/domain/_/) page in Jenkins, and create the credentials that should be passed into the docker container as ```Secret text```. In this example, one secret text should be created for each of the following:
 - CANVAS_API_URL
 - CANVAS_API_KEY
@@ -96,7 +96,7 @@ Add credentials by going to the [Credentials](https://build.sys.kth.se/credentia
 
 _However, this is not enough to actually tell Jenkins to pass the credentials into the build as environment variables._
 
-## Binding credentials to environment variables in Jenkins
+### Binding credentials to environment variables in Jenkins
 Go to the Jenkins project page, and choose configure ([lms-sync-users in this example](https://build.sys.kth.se/job/lms-sync-users/configure)).
 
 Under the ```Build Environment```, check the option ```Use secret text(s) or file(s)```. This will show a new block, named ```Bindings```.
