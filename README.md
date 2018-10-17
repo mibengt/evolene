@@ -5,6 +5,7 @@ Jenkins build as code.
 Features:
 * Verifies **docker.conf**
 * Verifies **Dockerfile**
+* Writes build information to a js-module file (i.e: /config/version.js)
 * Repo security scanning for passwords and secrets
 * Docker build
 * SemVer versioning of Docker images
