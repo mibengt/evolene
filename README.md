@@ -1,5 +1,5 @@
-# Evolene - Standradized building on Jenkins
-## Jenkins build as code.
+# Evolene
+## Build process as code.
 
 **Features:**
 * Verifies **docker.conf**
