@@ -1,7 +1,7 @@
 # Evolene - Standradized building on Jenkins
 ## Jenkins build as code.
 
-*Features:*
+**Features:**
 * Verifies **docker.conf**
 * Verifies **Dockerfile**
 * Writes build information to a js-module file (i.e: /config/version.js)
