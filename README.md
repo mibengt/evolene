@@ -10,7 +10,7 @@
 * SemVer versioning of Docker images
 * Push to Docker Registry
 * Slack integration for build information
-*  FROM 
+* Audit of FROM images
 * Contarinerized integration testing by running **docker-compose-integration-tests.yml**
 * Contarinerized unit testing by running **docker-compose-unit-tests.yml**
 
