@@ -39,26 +39,7 @@ When your project is buildt a warning will be sent to SLACK_CHANNELS with the fi
 /imported-data/personnumer.txt
 ```
 
-
-# How to develop and run Evolene on your local machine
-
-To run:
-```bash
-python run.py docker run-pipeline
-```
-
-To create dist:
-```bash
-./create_dist.sh
-```
-The version of the dist is defined in `setup.py`
-
-To run tests:
-```bash
-./run_tests.sh
-```
-
-All environment variables for configuration:
+## All environment variables for configuration:
 
 ```
 IMAGE_NAME                    - The name of the image to build (ex: 'kth-azure-app')
@@ -77,10 +58,8 @@ EVOLENE_DIRECTORY             - The working directory of evolene (used on jenkin
 EXPERIMENTAL                  - Feature toogle for latest features
 ```
 
-Changes to this project are automatically sent to https://build.sys.kth.se
-
-# Enable integration tests with docker-compose-integration-tests.yml
-## docker-compose-integration-tests.yml
+## Enable integration tests with docker-compose-integration-tests.yml
+### docker-compose-integration-tests.yml
 Creating a file named ```docker-compose-integration-tests.yml``` in the root of the project tells Jenkins to run integration tests.
 The following is an example file from the [lms-sync-users](https://github.com/KTH/lms-sync-users) app:
 ```
@@ -125,3 +104,24 @@ Under the ```Build Environment```, check the option ```Use secret text(s) or fil
 Add a ```Secret text``` binding for each of the above specified environment variables.
 
 Now everything should be setup for the integration tests to run successfully. Time to get some pop corn 🍿
+
+# How to develop and run Evolene on your local machine
+
+To run:
+```bash
+python run.py docker run-pipeline
+```
+
+To create dist:
+```bash
+./create_dist.sh
+```
+The version of the dist is defined in `setup.py`
+
+To run tests:
+```bash
+./run_tests.sh
+```
+
+Changes to this project are automatically sent to https://build.sys.kth.se
+
