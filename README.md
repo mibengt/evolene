@@ -1,8 +1,7 @@
 # Evolene - Standradized building on Jenkins
+## Jenkins build as code.
 
-Jenkins build as code.
-
-Features:
+*Features:*
 * Verifies **docker.conf**
 * Verifies **Dockerfile**
 * Writes build information to a js-module file (i.e: /config/version.js)
@@ -11,6 +10,7 @@ Features:
 * SemVer versioning of Docker images
 * Push to Docker Registry
 * Slack integration for build information
+*  FROM 
 * Contarinerized integration testing by running **docker-compose-integration-tests.yml**
 * Contarinerized unit testing by running **docker-compose-unit-tests.yml**
 
