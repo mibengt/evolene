@@ -12,7 +12,7 @@ class BuildEnvironmentToFileStepTest(unittest.TestCase):
     def test_get_default_output_file(self):
         step = BuildEnvironmentToFileStep()
         os.environ[Environment.PROJECT_ROOT] = "/tmp"
-        self.assertRaises(PipelineException, step.get_ouput_file)
+        self.assertNotEqual("/tmp", step.get_ouput_file)
 
     def test_get_output_file(self):
         step = BuildEnvironmentToFileStep()
@@ -33,7 +33,7 @@ class BuildEnvironmentToFileStepTest(unittest.TestCase):
         
         step = BuildEnvironmentToFileStep()
 
-        output = step.get_file_content_as_dict(data)
+        output = step.get_build_environment(data)
 
         self.assertEqual(output["gitBranch"], "master")
         self.assertEqual(output["gitCommit"], "12345a")

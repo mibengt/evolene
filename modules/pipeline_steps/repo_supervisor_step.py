@@ -12,6 +12,7 @@ from modules.util.slack import Slack
 
 class RepoSupervisorStep(AbstractPipelineStep):
 
+    SCANIGNORE_FILE = '/.scanignore'
     REPO_SUPERVISOR_IMAGE_NAME = 'kthse/repo-supervisor'
     REPO_MOUNTED_DIR = '/opt/scan_me'
     DEFAULT_PATTERNS = [
@@ -73,7 +74,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
         return result
 
     def get_ignore_patterns(self):
-        result = FileUtil.get_rows_as_array('.scanignore')
+        result = FileUtil.get_lines(RepoSupervisorStep.SCANIGNORE_FILE)
         result.extend(RepoSupervisorStep.DEFAULT_PATTERNS)
 
         return result

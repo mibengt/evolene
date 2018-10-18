@@ -7,9 +7,6 @@ from modules.util.data import Data
 
 class Docker(object):
 
-    UNIT_TEST_COMPOSE_FILENAME = 'docker-compose-unit-tests.yml'
-    INTEGRATION_TEST_COMPOSE_FILENAME = 'docker-compose-integration-tests.yml'
-
     @staticmethod
     def build(labels=None):
         build_cmd = 'docker build --quiet'

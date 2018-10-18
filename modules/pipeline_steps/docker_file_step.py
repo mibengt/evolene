@@ -1,11 +1,14 @@
 __author__ = 'tinglev'
 
-import os
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
+from modules.util.file_util import FileUtil
+
 
 class DockerFileStep(AbstractPipelineStep):
+
+    FILE_DOCKERFILE = "/Dockerfile"
 
     def get_required_env_variables(self): # pragma: no cover
         return [Environment.PROJECT_ROOT]
@@ -13,16 +16,11 @@ class DockerFileStep(AbstractPipelineStep):
     def get_required_data_keys(self): # pragma: no cover
         return []
 
-    def get_docker_file_path(self):
-        stripped_root = Environment.get_project_root().rstrip('/')
-        return '{}/Dockerfile'.format(stripped_root)
-
-    def docker_file_exists(self):
-        return os.path.isfile(self.get_docker_file_path())
-
     def run_step(self, data):
-        file_path = self.get_docker_file_path()
-        if not self.docker_file_exists():
-            self.handle_step_error('Could not find Dockerfile at "{}"'.format(file_path))
-        data[Data.DOCKER_FILE] = file_path
+        if not FileUtil.is_file(DockerFileStep.FILE_DOCKERFILE):
+            self.handle_step_error('Could not find Dockerfile at "{}"'.format(
+                DockerFileStep.FILE_DOCKERFILE))
+
+        data[Data.DOCKERFILE_FILE] = FileUtil.get_absolue_path(DockerFileStep.FILE_DOCKERFILE)
+
         return data

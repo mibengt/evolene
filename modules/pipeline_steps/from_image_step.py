@@ -1,14 +1,17 @@
 __author__ = 'tinglev'
 
-import os
-from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.environment import Environment
-from modules.util.data import Data
-from modules.util.slack import Slack
 import logging
+from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
+from modules.pipeline_steps.docker_file_step import DockerFileStep
+from modules.util.environment import Environment
+from modules.util.slack import Slack
+from modules.util.file_util import FileUtil
+from modules.util.image_version_util import ImageVersionUtil
+
 
 class FromImageStep(AbstractPipelineStep):
 
+    
     
     IMAGE_RULES = {
         # Tags starting with.
@@ -51,8 +54,7 @@ class FromImageStep(AbstractPipelineStep):
 
     def run_step(self, data):
         from_line = self.get_from_line()
-        log_prefix = "{}:{}".format(data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION])
-        if self.validate(from_line, log_prefix):
+        if self.validate(from_line):
             self.log.debug("'FROM:' statement '{}' in Dockerfile is valid.".format(from_line))
         else:
             message = "*{}*: Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(log_prefix, from_line)
@@ -61,53 +63,55 @@ class FromImageStep(AbstractPipelineStep):
         
         return data
 
-    def validate(self, from_line, log_prefix):
-        for image in self.IMAGE_RULES:
-            if image in from_line:
-                self.inform_if_change_image(image, log_prefix)
-                return self.is_valid_tag_for_image_name(from_line, image)
+    def validate(self, from_line, data):
+        for image_name in self.IMAGE_RULES:
+            if image_name in from_line:
+                self.inform_if_change_image(image_name, data)
+                return self.is_valid_tag_for_image_name(from_line, image_name)
         return True
 
-    def get_change_image_message(self, image, log_prefix):
+    def get_change_image_message(self, image_name, data):
 
-        if "kth-nodejs-web" == str(image):
-            return "*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-web_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
+        if str(image_name) == "kth-nodejs-web":
+            return ("*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. "
+                    "Image _kth-nodejs-web_ is depricated. "
+                    "Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(
+                        ImageVersionUtil.get_image(data)))
 
-        if "kth-nodejs-api" == str(image):
-            return "*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. Image _kth-nodejs-api_ is depricated. Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(log_prefix)
+        if str(image_name) == "kth-nodejs-api":
+            return ("*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. "
+                    "Image _kth-nodejs-api_ is depricated. "
+                    "Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(
+                        ImageVersionUtil.get_image(data)))
 
         return None
 
-    def inform_if_change_image(self, image, log_prefix):
+    def inform_if_change_image(self, image_name, data):
 
-        message = self.get_change_image_message(image, log_prefix)
+        message = self.get_change_image_message(image_name, data)
         
         if message:
             self.log.warn(message)
             Slack.on_warning(message)
 
-    def is_valid_tag_for_image_name(self, from_line, image):
+    def is_valid_tag_for_image_name(self, from_line, image_name):
         
         # If array is empty, allow no tags for that image name.
-        if not self.IMAGE_RULES[image]:
+        if not self.IMAGE_RULES[image_name]:
             return False
 
         # Allow all versions
-        if self.IMAGE_RULES[image][0] == "*":
+        if self.IMAGE_RULES[image_name][0] == "*":
             return True
 
-        for tag in self.IMAGE_RULES[image]:
+        for tag in self.IMAGE_RULES[image_name]:
             tag_pattern = ":{}".format(tag) # ex: docker.io/redis":2.3"
             if tag_pattern in from_line:
                 return True
         return False
 
     def get_from_line(self):
-        with open(self.get_docker_file_path()) as dockerfile:
-            for line in dockerfile:
-                if "FROM" in line:
-                    return line.strip()
-
-    def get_docker_file_path(self):
-        stripped_root = Environment.get_project_root().rstrip('/')
-        return '{}/Dockerfile'.format(stripped_root)
+        rows = FileUtil.get_lines(DockerFileStep.FILE_DOCKERFILE)
+        for row in rows:
+            if "FROM" in row:
+                return row

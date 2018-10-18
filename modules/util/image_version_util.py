@@ -45,5 +45,8 @@ class ImageVersionUtil(object):
     def prepend_registry(image):
         return '{}/{}'.format(Environment.get_registry_host(), image)
 
+    @staticmethod
+    def get_image_uri(image):
+        return ImageVersionUtil.prepend_registry(image)
 
     

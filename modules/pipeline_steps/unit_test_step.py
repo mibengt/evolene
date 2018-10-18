@@ -1,13 +1,17 @@
 __author__ = 'tinglev'
 
-import os
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.docker import Docker
 from modules.util.data import Data
 from modules.util.exceptions import PipelineException
+from modules.util.file_util import FileUtil
+from modules.util.image_version_util import ImageVersionUtil
+
 
 class UnitTestStep(AbstractPipelineStep):
+
+    UNIT_TEST_COMPOSE_FILENAME = '/docker-compose-unit-tests.yml'
 
     def get_required_env_variables(self):
         return [Environment.PROJECT_ROOT]
@@ -16,31 +20,26 @@ class UnitTestStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        
-        compose_test_file = self.get_absolut_test_file_path()
-        if self.test_file_exists(compose_test_file):
-            self.log.info('Running unit tests.')
-            self.run_unit_tests(compose_test_file, data)
-        else:
+
+        if not FileUtil.is_file(UnitTestStep.UNIT_TEST_COMPOSE_FILENAME):
             self.log.info('No file named "%s" found. No unit tests will be run.',
-                          compose_test_file)
+                          UnitTestStep.UNIT_TEST_COMPOSE_FILENAME)
+            return data
+
+        self.run_unit_tests(data)
+
         return data
 
-    def get_absolut_test_file_path(self):
-        stripped_root = Environment.get_project_root().rstrip('/')
-        return '{}/{}'.format(stripped_root, Docker.UNIT_TEST_COMPOSE_FILENAME)
-
-    def test_file_exists(self, compose_test_file):
-        return os.path.exists(compose_test_file)
-
-    def run_unit_tests(self, compose_test_file, data):
+    def run_unit_tests(self, data):
         try:
-            Docker.run_unit_test_compose(compose_test_file, data)
+            Docker.run_unit_test_compose(FileUtil.get_absolue_path(
+                UnitTestStep.UNIT_TEST_COMPOSE_FILENAME), data)
         except Exception as ex:
-            raise PipelineException(ex.message, self.get_slack_message(ex, data))
+            raise PipelineException(
+                ex.message, self.get_slack_message(ex, data))
 
     def get_slack_message(self, exception, data):
-        return '*{}* s unit tests failed: \n```...\n{}```\n:jenkins: {}console'.format(
-            data[Data.IMAGE_NAME], 
-            exception.message.replace('`', ' ')[-1000:], 
+        return '*{}* Unit test(s) failed: \n```...\n{}```\n:jenkins: {}console'.format(
+            ImageVersionUtil.get_image(data),
+            exception.message.replace('`', ' ')[-1000:],
             Environment.get_build_url())

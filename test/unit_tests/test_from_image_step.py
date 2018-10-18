@@ -2,9 +2,9 @@ __author__ = 'tinglev'
 
 import os
 import unittest
-from mock import patch
 from modules.util.environment import Environment
 from modules.pipeline_steps.from_image_step import FromImageStep
+from modules.util.data import Data
 
 class DockerFileTests(unittest.TestCase):
 
@@ -45,8 +45,16 @@ class DockerFileTests(unittest.TestCase):
         self.assertTrue(FromImageStep(self.TEST_ALLOWED_IMAGES).validate("FROM docker.io/redis:13.37", "kth-azure-app:13.37.0_abcdef"))
 
     def test_inform_if_change_image(self):
-        self.assertIsNotNone(FromImageStep().get_change_image_message("kth-nodejs-api", "kth-azure-app:13.37.0_abcdef"))
-        self.assertIsNotNone(FromImageStep().get_change_image_message("kth-nodejs-web", "kth-azure-app:13.37.0_abcdef"))
+        data = {
+            Data.IMAGE_NAME: "my-app",
+            Data.IMAGE_VERSION: "1.2.3_abcdef"
+        }
+        self.assertIsNotNone(FromImageStep().get_change_image_message("kth-nodejs-api", data))
+        self.assertIsNotNone(FromImageStep().get_change_image_message("kth-nodejs-web", data))
 
     def test_inform_if_change_image_is_empty(self):
-        self.assertIsNone(FromImageStep().get_change_image_message("should-not-return-a-message", "kth-azure-app:13.37.0_abcdef"))
+        data = {
+            Data.IMAGE_NAME: "my-app",
+            Data.IMAGE_VERSION: "1.2.3_abcdef"
+        }
+        self.assertIsNone(FromImageStep().get_change_image_message("should-not-return-a-message", data))

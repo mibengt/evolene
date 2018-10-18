@@ -5,7 +5,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
 from modules.util.image_version_util import ImageVersionUtil
-from modules.util.exceptions import PipelineException
+from modules.util.file_util import FileUtil
 
 class BuildEnvironmentToFileStep(AbstractPipelineStep):
 
@@ -20,27 +20,20 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
             self.write(data)
 
     def get_ouput_file(self):
-        stripped_root = Environment.get_project_root().rstrip('/')
-        output_file = Environment.get_build_information_output_file()
-
-        if output_file is None:
-            raise PipelineException("No output file specified in env {}".format(Environment.BUILD_INFORMATION_OUTPUT_FILE))
-
-        return '{}{}'.format(stripped_root, Environment.get_build_information_output_file())
+        return FileUtil.get_absolue_path(Environment.get_build_information_output_file())
 
     def write(self, data):
         try:
-            # If the output file already exists over write it.
-            with open(self.get_ouput_file(), 'w+') as output_file:
-                return output_file.write(self.to_js_module(self.get_file_content_as_dict(data)))
+            FileUtil.overwite(self.get_ouput_file(),
+                              self.to_js_module(self.get_build_environment(data)))
 
         except IOError as ioe:
             self.handle_step_error("Unable to write build information to file '{}'".format(self.get_ouput_file()), ioe)
 
-    def to_js_module(self, file_content_as_dict):
-        return "module.exports = {}".format(json.dumps(file_content_as_dict))
+    def to_js_module(self, build_info):
+        return "module.exports = {}".format(json.dumps(build_info))
 
-    def get_file_content_as_dict(self, data):
+    def get_build_environment(self, data):
 
         return {
                 "gitBranch": Environment.get_git_branch(),

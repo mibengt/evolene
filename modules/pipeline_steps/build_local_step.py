@@ -1,9 +1,7 @@
 __author__ = 'tinglev'
 
-import os
 import re
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.process import Process
 from modules.util.environment import Environment
 from modules.util.data import Data
 from modules.util.docker import Docker

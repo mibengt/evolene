@@ -15,7 +15,7 @@ class FileUtilTests(unittest.TestCase):
         rows_in_file = 3
         current_path = os.path.dirname(os.path.abspath(__file__))
         os.environ[Environment.PROJECT_ROOT] = os.path.join(current_path, '../data')
-        self.assertEqual(rows_in_file, len(FileUtil.get_rows_as_array('.scanignore')))
+        self.assertEqual(rows_in_file, len(FileUtil.get_lines('/.scanignore')))
 
     def test_is_directory(self):
         os.environ[Environment.PROJECT_ROOT] = self.get_test_data_project_root()
