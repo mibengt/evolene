@@ -54,7 +54,7 @@ class FromImageStep(AbstractPipelineStep):
 
     def run_step(self, data):
         from_line = self.get_from_line()
-        if self.validate(from_line):
+        if self.validate(from_line, data):
             self.log.debug("'FROM:' statement '{}' in Dockerfile is valid.".format(from_line))
         else:
             message = "*{}*: Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(log_prefix, from_line)
