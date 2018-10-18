@@ -14,11 +14,16 @@ class BuildEnvironmentToFileStepTest(unittest.TestCase):
         os.environ[Environment.PROJECT_ROOT] = "/tmp"
         self.assertNotEqual("/tmp", step.get_ouput_file)
 
-    def test_get_output_file(self):
+    def test_output_file_is_relative_path(self):
         step = BuildEnvironmentToFileStep()
         os.environ[Environment.PROJECT_ROOT] = "/tmp"
         os.environ[Environment.BUILD_INFORMATION_OUTPUT_FILE] = "/path/file.json"
-        self.assertEqual("/tmp/path/file.json", step.get_ouput_file())
+        self.assertEqual("/path/file.json", step.get_ouput_file())
+
+    def test_output_file_is_none(self):
+        step = BuildEnvironmentToFileStep()
+        os.environ[Environment.PROJECT_ROOT] = "/tmp"
+        self.assertIsNone(step.get_ouput_file())
 
     def test_output(self):
         

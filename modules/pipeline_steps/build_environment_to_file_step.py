@@ -20,7 +20,7 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
             self.write(data)
 
     def get_ouput_file(self):
-        return FileUtil.get_absolue_path(Environment.get_build_information_output_file())
+        return Environment.get_build_information_output_file()
 
     def write(self, data):
         try:
