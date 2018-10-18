@@ -28,14 +28,16 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
                               self.to_js_module(self.get_build_environment(data)))
 
         except IOError as ioe:
-            self.handle_step_error("Unable to write build information to file '{}'".format(self.get_ouput_file()), ioe)
+            self.handle_step_error("*{}* Unable to write build information to file '{}'".format(
+                ImageVersionUtil.get_image(data),
+                self.get_ouput_file()))
 
     def to_js_module(self, build_info):
         return "module.exports = {}".format(json.dumps(build_info))
 
     def get_build_environment(self, data):
 
-        return {
+        return {x
                 "gitBranch": Environment.get_git_branch(),
                 "gitCommit": Environment.get_git_commit(),
                 "jenkinsBuild": Environment.get_build_number(),
