@@ -10,6 +10,7 @@ from modules.util.file_util import FileUtil
 from modules.util.exceptions import PipelineException
 from modules.util.slack import Slack
 
+
 class RepoSupervisorStep(AbstractPipelineStep):
 
     SCANIGNORE_FILE = '/.scanignore'
@@ -19,10 +20,10 @@ class RepoSupervisorStep(AbstractPipelineStep):
         '/node_modules/'
     ]
 
-    def get_required_env_variables(self): #pragma: no cover
+    def get_required_env_variables(self):  # pragma: no cover
         return [Environment.PROJECT_ROOT]
 
-    def get_required_data_keys(self): #pragma: no cover
+    def get_required_data_keys(self):  # pragma: no cover
         return [Data.IMAGE_NAME, Data.IMAGE_VERSION]
 
     def run_step(self, data):
@@ -37,9 +38,9 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
     def _pull_image_if_missing(self, image_name):
         image_grep_output = None
-        try: 
+        try:
             image_grep_output = Docker.grep_image_id(image_name)
-            
+
             if not image_grep_output or image_name not in image_grep_output:
                 self.pull_image(image_name)
 
@@ -47,9 +48,9 @@ class RepoSupervisorStep(AbstractPipelineStep):
             self.pull_image(image_name)
 
     def pull_image(self, image_name):
-        self.log.debug('Couldnt find local image "%s". Pulling from docker.io.', image_name)
+        self.log.debug(
+            'Couldnt find local image "%s". Pulling from docker.io.', image_name)
         Docker.pull(image_name)
-
 
     def _process_supervisor_result(self, cmd_output, data):
         results = json.loads(cmd_output)
@@ -64,7 +65,10 @@ class RepoSupervisorStep(AbstractPipelineStep):
         self.log.info('Found suspicious string in files "%s"', filenames)
         msg = ('*{}:{}* Possible password or token in the following file(s).'
                ' Fix or add file or relative path to `/.scanignore`. ```{}```'
-               .format(data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION], self.format_filnames(filenames)))
+               .format(
+                   data[Data.IMAGE_NAME],
+                   data[Data.IMAGE_VERSION],
+                   self.format_filnames(filenames)))
         Slack.on_warning(msg)
 
     def format_filnames(self, filenames):
@@ -80,11 +84,13 @@ class RepoSupervisorStep(AbstractPipelineStep):
         return result
 
     def ignore(self, filename):
-        # Inside the Repo scaner container the root is 
+        # Inside the Repo scaner container the root is
         # /opt/scan_me/
         for pattern in self.get_ignore_patterns():
             if str(filename).startswith(RepoSupervisorStep.REPO_MOUNTED_DIR + pattern):
-                self.log.info("Security scan found '{}' but its ignored since it is matches .scanignore pattern '{}'.".format(filename, pattern))
+                self.log.info(
+                    "Security scan found '%s' but its ignored since it is matches .scanignore pattern '%s'.",
+                    filename, pattern)
                 return True
         return False
 
@@ -98,5 +104,6 @@ class RepoSupervisorStep(AbstractPipelineStep):
         except PipelineException as pipeline_ex:
             # Special handling while waiting for https://github.com/auth0/repo-supervisor/pull/5
             if 'Not detected any secrets in files' not in pipeline_ex.message:
-                self.log.warn('Ignoring error in repo supervisor step: "%s"', pipeline_ex.message)
+                self.log.warn(
+                    'Ignoring error in repo supervisor step: "%s"', pipeline_ex.message)
             return None
