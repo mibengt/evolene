@@ -37,7 +37,7 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
 
     def get_build_environment(self, data):
 
-        return {x
+        return {
                 "gitBranch": Environment.get_git_branch(),
                 "gitCommit": Environment.get_git_commit(),
                 "jenkinsBuild": Environment.get_build_number(),
