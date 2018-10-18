@@ -1,15 +1,16 @@
-# Evolene - Standradized building on Jenkins
+# Evolene
+## Build process as code.
 
-Jenkins build as code.
-
-Features:
+**Features:**
 * Verifies **docker.conf**
 * Verifies **Dockerfile**
+* Writes build information to a js-module file (i.e: /config/version.js)
 * Repo security scanning for passwords and secrets
 * Docker build
 * SemVer versioning of Docker images
 * Push to Docker Registry
 * Slack integration for build information
+* Audit of FROM images
 * Contarinerized integration testing by running **docker-compose-integration-tests.yml**
 * Contarinerized unit testing by running **docker-compose-unit-tests.yml**
 
@@ -39,26 +40,7 @@ When your project is buildt a warning will be sent to SLACK_CHANNELS with the fi
 /imported-data/personnumer.txt
 ```
 
-
-# How to develop and run Evolene on your local machine
-
-To run:
-```bash
-python run.py docker run-pipeline
-```
-
-To create dist:
-```bash
-./create_dist.sh
-```
-The version of the dist is defined in `setup.py`
-
-To run tests:
-```bash
-./run_tests.sh
-```
-
-All environment variables for configuration:
+## All environment variables for configuration:
 
 ```
 IMAGE_NAME                    - The name of the image to build (ex: 'kth-azure-app')
@@ -77,10 +59,8 @@ EVOLENE_DIRECTORY             - The working directory of evolene (used on jenkin
 EXPERIMENTAL                  - Feature toogle for latest features
 ```
 
-Changes to this project are automatically sent to https://build.sys.kth.se
-
-# Enable integration tests with docker-compose-integration-tests.yml
-## docker-compose-integration-tests.yml
+## Enable integration tests with docker-compose-integration-tests.yml
+### docker-compose-integration-tests.yml
 Creating a file named ```docker-compose-integration-tests.yml``` in the root of the project tells Jenkins to run integration tests.
 The following is an example file from the [lms-sync-users](https://github.com/KTH/lms-sync-users) app:
 ```
@@ -107,7 +87,7 @@ The last block, environment, defines which environment variables should be passe
 
 With this file in place, Jenkins will try to run the integration tests. But for the tests to run successfully, the credentials has to be setup in Jenkins.
 
-## Jenkins credentials
+### Jenkins credentials
 Add credentials by going to the [Credentials](https://build.sys.kth.se/credentials/store/system/domain/_/) page in Jenkins, and create the credentials that should be passed into the docker container as ```Secret text```. In this example, one secret text should be created for each of the following:
 - CANVAS_API_URL
 - CANVAS_API_KEY
@@ -117,7 +97,7 @@ Add credentials by going to the [Credentials](https://build.sys.kth.se/credentia
 
 _However, this is not enough to actually tell Jenkins to pass the credentials into the build as environment variables._
 
-## Binding credentials to environment variables in Jenkins
+### Binding credentials to environment variables in Jenkins
 Go to the Jenkins project page, and choose configure ([lms-sync-users in this example](https://build.sys.kth.se/job/lms-sync-users/configure)).
 
 Under the ```Build Environment```, check the option ```Use secret text(s) or file(s)```. This will show a new block, named ```Bindings```.
@@ -125,3 +105,24 @@ Under the ```Build Environment```, check the option ```Use secret text(s) or fil
 Add a ```Secret text``` binding for each of the above specified environment variables.
 
 Now everything should be setup for the integration tests to run successfully. Time to get some pop corn 🍿
+
+# How to develop and run Evolene on your local machine
+
+To run:
+```bash
+python run.py docker run-pipeline
+```
+
+To create dist:
+```bash
+./create_dist.sh
+```
+The version of the dist is defined in `setup.py`
+
+To run tests:
+```bash
+./run_tests.sh
+```
+
+Changes to this project are automatically sent to https://build.sys.kth.se
+
