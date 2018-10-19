@@ -5,6 +5,7 @@ from modules.util.environment import Environment
 from modules.util.exceptions import PipelineException
 from modules.util.data import Data
 
+
 class ImageVersionUtil(object):
 
     @staticmethod
@@ -48,5 +49,3 @@ class ImageVersionUtil(object):
     @staticmethod
     def get_image_uri(image):
         return ImageVersionUtil.prepend_registry(image)
-
-    

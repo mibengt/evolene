@@ -1,10 +1,8 @@
 __author__ = 'tinglev'
 
 import os
-import re
 import datetime
 import time
-
 
 class Environment(object):
 
