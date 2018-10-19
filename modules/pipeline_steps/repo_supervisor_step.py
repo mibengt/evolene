@@ -88,9 +88,9 @@ class RepoSupervisorStep(AbstractPipelineStep):
         # /opt/scan_me/
         for pattern in self.get_ignore_patterns():
             if str(filename).startswith(RepoSupervisorStep.REPO_MOUNTED_DIR + pattern):
-                self.log.info(
-                    "Security scan found '%s' but its ignored since it is matches .scanignore pattern '%s'.",
-                    filename.replace(RepoSupervisorStep.REPO_MOUNTED_DIR, ""), pattern)
+                self.log.info(("Security scan found '%s' but its ignored since it is matches "
+                               ".scanignore pattern '%s'."),
+                              filename.replace(RepoSupervisorStep.REPO_MOUNTED_DIR, ""), pattern)
                 return True
         return False
 

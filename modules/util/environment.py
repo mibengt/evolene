@@ -5,12 +5,14 @@ import re
 import datetime
 import time
 
+
 class Environment(object):
 
     IMAGE_NAME = 'IMAGE_NAME'
     PROJECT_ROOT = 'WORKSPACE'
     GIT_COMMIT = 'GIT_COMMIT'
     GIT_BRANCH = 'GIT_BRANCH'
+    GIT_COMMITTER_NAME = 'GIT_COMMITTER_NAME'
     BUILD_NUMBER = 'BUILD_NUMBER'
     BUILD_URL = 'BUILD_URL'
     BUILD_INFORMATION_OUTPUT_FILE = 'BUILD_INFORMATION_OUTPUT_FILE'
@@ -23,7 +25,6 @@ class Environment(object):
     EXPERIMENTAL = 'EXPERIMENTAL'
     SKIP_DRY_RUN = 'SKIP_DRY_RUN'
     PUSH_PUBLIC = 'PUSH_PUBLIC'
-    
 
     @staticmethod
     def get_registry_host():
@@ -52,6 +53,10 @@ class Environment(object):
         return os.environ.get(Environment.GIT_BRANCH)
 
     @staticmethod
+    def get_git_commiter_name():
+        return os.environ.get(Environment.GIT_COMMITTER_NAME)
+
+    @staticmethod
     def get_project_root():
         return os.environ.get(Environment.PROJECT_ROOT)
 
@@ -62,7 +67,7 @@ class Environment(object):
     @staticmethod
     def get_build_information_output_file():
         return os.environ.get(Environment.BUILD_INFORMATION_OUTPUT_FILE)
-        
+
     @staticmethod
     def get_slack_channels():
         channels = os.environ.get(Environment.SLACK_CHANNELS)
@@ -79,7 +84,7 @@ class Environment(object):
     @staticmethod
     def get_push_public():
         return Environment.is_true(Environment.PUSH_PUBLIC)
-    
+
     @staticmethod
     def get_experimental():
         return Environment.is_true(Environment.EXPERIMENTAL)
@@ -102,12 +107,6 @@ class Environment(object):
 
         return value.lower() in ['true', 'yes', 'y']
 
-    @staticmethod
-    def patch_version_exists(image_version):
-        if not re.match(r'^[0-9]+\.[0-9]+\.[0-9]+$', image_version):
-            return False
-        return True
-    
     @staticmethod
     def get_time():
         return datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
