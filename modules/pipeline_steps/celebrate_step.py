@@ -26,9 +26,9 @@ class CelebrateStep(AbstractPipelineStep):
             return "<!here> :clap: Get :clap: your  :clap: self  :clap:  a  :clap: coffee  :clap: break. This was the 100th build of {}!\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
 
         if int(Environment.get_build_number()) == 500:
-            return ":parrot_party: :parrot_party: :parrot_party: {} build number 500! You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
+            return "<!here> :parrot_party: :parrot_party: :parrot_party: {} build number 500! You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
 
         if int(Environment.get_build_number()) == 1000:
-            return ":drum_with_drumsticks: 1 000 builds of {} and counting! \nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
+            return "<!here> :drum_with_drumsticks: 1 000 builds of {} and counting! \nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
 
         return "Noting to do"
