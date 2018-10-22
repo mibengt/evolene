@@ -17,6 +17,7 @@ from modules.pipeline_steps.repo_supervisor_step import RepoSupervisorStep
 from modules.pipeline_steps.unit_test_step import UnitTestStep
 from modules.pipeline_steps.integration_test_step import IntegrationTestStep
 from modules.pipeline_steps.from_image_step import FromImageStep
+from modules.pipeline_steps.celebrate import Celebrate
 from modules.util.exceptions import PipelineException
 from modules.util.environment import Environment
 from modules.util.slack import Slack
@@ -42,6 +43,8 @@ class DockerDeployPipeline(object):
         next_step = next_step.set_next_step(RepoSupervisorStep())
         # Build the image to local registry
         next_step = next_step.set_next_step(BuildLocalStep())
+        # It never to late to party
+        next_step = next_step.set_next_step(Celebrate())
         # Test run the image
         if Environment.use_dry_run():
             next_step = next_step.set_next_step(DryRunStep())
