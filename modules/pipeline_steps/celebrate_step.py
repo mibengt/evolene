@@ -22,7 +22,7 @@ class CelebrateStep(AbstractPipelineStep):
             
     def get_party_message(self, data):
         
-        if int(Environment.get_build_number()) == 295:
+        if int(Environment.get_build_number()) == 100:
             return "<!here> :clap: Get :clap: your  :clap: self  :clap:  a  :clap: coffee  :clap: break. This was the 100th build of {}!\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
 
         if int(Environment.get_build_number()) == 500:

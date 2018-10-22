@@ -12,7 +12,7 @@ class CelebrateStepTests(unittest.TestCase):
         step = CelebrateStep()
         data = { Data.IMAGE_NAME: "app-name"}
 
-        os.environ[Environment.BUILD_NUMBER] = "295"
+        os.environ[Environment.BUILD_NUMBER] = "100"
         self.assertTrue("100" in step.get_party_message(data))
 
         os.environ[Environment.BUILD_NUMBER] = "500"
