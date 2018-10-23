@@ -1,8 +1,8 @@
 __author__ = 'tinglev'
 
-import os
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
+
 
 class SetupStep(AbstractPipelineStep):
 
@@ -21,7 +21,7 @@ class SetupStep(AbstractPipelineStep):
             "                                                    \n"
             "  ______                   _                        \n"
             " |  ____|                 | |                       \n"
-            " | |__    __   __   ___   | |   ___   _ __     ___  \n" 
+            " | |__    __   __   ___   | |   ___   _ __     ___  \n"
             " |  __|   \ \ / /  / _ \  | |  / _ \ | '_ \   / _ \ \n"
             " | |____   \ V /  | (_) | | | |  __/ | | | | |  __/ \n"
             " |______|   \_/    \___/  |_|  \___| |_| |_|  \___| \n"
@@ -32,9 +32,3 @@ class SetupStep(AbstractPipelineStep):
             "****************************************************\n"
             "                                                    \n"
         )
-        print "GIT_COMMITTER_NAME: {}".format(os.environ.get("GIT_COMMITTER_NAME"))
-        print "GIT_AUTHOR_NAME: {}".format(os.environ.get("GIT_AUTHOR_NAME"))
-        print "GIT_COMMITTER_EMAIL: {}".format(os.environ.get("GIT_COMMITTER_EMAIL"))
-        print "GIT_AUTHOR_EMAIL: {}".format(os.environ.get("GIT_AUTHOR_EMAIL"))
-                                                   
-                                                   
