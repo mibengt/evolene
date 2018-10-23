@@ -18,7 +18,9 @@ class CelebrateStep(AbstractPipelineStep):
         return data
 
     def do_we_have_a_reason_to_party(self, data):
-        Slack.send_to_slack(self.get_party_message(data), icon=":parrot_party:")
+        message = self.get_party_message(data)
+        if message:
+            Slack.send_to_slack(self.get_party_message(data), icon=":parrot_party:")
             
     def get_party_message(self, data):
         
@@ -31,4 +33,4 @@ class CelebrateStep(AbstractPipelineStep):
         if int(Environment.get_build_number()) == 1000:
             return "<!here> :drum_with_drumsticks: 1 000 builds of {} and counting! \nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
 
-        return "Noting to do"
+        return None
