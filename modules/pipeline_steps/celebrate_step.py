@@ -27,6 +27,15 @@ class CelebrateStep(AbstractPipelineStep):
         if int(Environment.get_build_number()) == 100:
             return "<!here> :clap: Get :clap: your  :clap: self  :clap:  a  :clap: coffee  :clap: break. This was the 100th build of {}!\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
 
+        if int(Environment.get_build_number()) == 200:
+            return "<!here> :parrot_party: :parrot_party: :parrot_party: {} build number 200! You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
+
+        if int(Environment.get_build_number()) == 300:
+            return "<!here> :parrot_party: :parrot_party: :parrot_party: {} build number 300! You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
+
+        if int(Environment.get_build_number()) == 400:
+            return "<!here> :parrot_party: :parrot_party: :parrot_party: {} build number 400! You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
+
         if int(Environment.get_build_number()) == 500:
             return "<!here> :parrot_party: :parrot_party: :parrot_party: {} build number 500! You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[Data.IMAGE_NAME])
 
