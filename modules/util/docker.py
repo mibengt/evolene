@@ -68,7 +68,8 @@ class Docker(object):
 
     @staticmethod
     def run_test(compose_test_file, data):
-        cmd = 'LOCAL_IMAGE_ID={} docker-compose --file {} up --no-recreate --build --abort-on-container-exit'.format(
+        Process.run_with_output("docker inspect {} | grep imageVersion".format(Data.LOCAL_IMAGE_ID))
+        cmd = 'LOCAL_IMAGE_ID={} docker-compose --file {} up  --abort-on-container-exit --always-recreate-deps'.format(
                                                 data[Data.LOCAL_IMAGE_ID],
                                                 compose_test_file)
         return Process.run_with_output(cmd)
