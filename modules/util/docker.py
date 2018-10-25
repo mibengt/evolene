@@ -70,7 +70,5 @@ class Docker(object):
     def run_test(compose_test_file, data):
         cmd = 'LOCAL_IMAGE_ID={} docker-compose --file {} up --no-recreate --build --abort-on-container-exit'.format(
                                                 data[Data.LOCAL_IMAGE_ID],
-                                                data[Data.IMAGE_NAME],
-                                                data[Data.IMAGE_VERSION],
                                                 compose_test_file)
         return Process.run_with_output(cmd)
