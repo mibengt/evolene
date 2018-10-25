@@ -64,14 +64,10 @@ class Docker(object):
 
     @staticmethod
     def run_integration_tests(compose_test_file, data):
-        print Process.run_with_output("docker inspect {} | grep imageVersion".format(data[Data.LOCAL_IMAGE_ID]))
-        output = Docker.run_test(compose_test_file, data)
-        print Process.run_with_output("docker inspect {} | grep imageVersion".format(data[Data.LOCAL_IMAGE_ID]))
-        return output
+        return Docker.run_test(compose_test_file, data)
 
     @staticmethod
     def run_test(compose_test_file, data):
-        print Process.run_with_output("docker inspect {} | grep imageVersion".format(data[Data.LOCAL_IMAGE_ID]))
         cmd = 'LOCAL_IMAGE_ID={} docker-compose --file {} up  --abort-on-container-exit --always-recreate-deps'.format(
                                                 data[Data.LOCAL_IMAGE_ID],
                                                 compose_test_file)
