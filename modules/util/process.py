@@ -4,7 +4,7 @@ import subprocess
 import logging
 import sys
 from modules.util.exceptions import PipelineException
-from modules.util.data import Data
+
 
 class Process(object):
 
@@ -19,6 +19,7 @@ class Process(object):
         except subprocess.CalledProcessError as cpe:
             if cpe.output:
                 raise PipelineException(cpe.output)
-            raise PipelineException("".format(cpe))
+            raise PipelineException("{}".format(cpe))
         except:
-            raise PipelineException("Unabled exception. {}".format(sys.exc_info()[0]))
+            raise PipelineException(
+                "Unabled exception. {}".format(sys.exc_info()[0]))
