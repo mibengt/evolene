@@ -5,6 +5,7 @@ from modules.util.environment import Environment
 from modules.util.exceptions import PipelineException
 from modules.util.data import Data
 
+
 class Docker(object):
 
     @staticmethod
@@ -14,7 +15,7 @@ class Docker(object):
             for label in labels:
                 build_cmd = '{} --label {}'.format(build_cmd, label)
         return Process.run_with_output('{} {}'
-                                       .format(build_cmd, 
+                                       .format(build_cmd,
                                                Environment.get_project_root()))
 
     @staticmethod
@@ -68,7 +69,9 @@ class Docker(object):
 
     @staticmethod
     def run_test(compose_test_file, data):
-        cmd = 'LOCAL_IMAGE_ID={} docker-compose --file {} up  --abort-on-container-exit --always-recreate-deps'.format(
-                                                data[Data.LOCAL_IMAGE_ID],
-                                                compose_test_file)
+        cmd = ('LOCAL_IMAGE_ID={} docker-compose --file {} up '
+               '--abort-on-container-exit '
+               '--always-recreate-deps').format(
+                   data[Data.LOCAL_IMAGE_ID],
+                   compose_test_file)
         return Process.run_with_output(cmd)
