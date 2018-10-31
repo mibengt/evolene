@@ -5,6 +5,8 @@ tests are run inside Docker containers, eliminating most Jenkins plugins.
 
 Evolene uses Convention Over Configuration. That means that Evolene is configure by following standard naming convensions rather then per project configuration.
 
+![Example](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
+
 ## :exclamation: User Requirements
 
 For our app to build using Evolene you need to have two files in your projects root directory.
@@ -257,12 +259,9 @@ REGISTRY_PASSWORD='very-secret-pwd'
 REGISTRY_USER='jenkins-ci'
 ```
 
-# 3. Test your setup
+### 3. Test your setup
 Test your setup by adding a Docker application that follows Evolene and run *Execute shell*
 `$EVOLENE_DIRECTORY/run.sh`
-
-
-![Example](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
 
 ## :bulb: How to develop and run Evolene on your local machine
 
