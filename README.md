@@ -190,32 +190,31 @@ EXPERIMENTAL='True' # True or False
 ## Evolene versioning
 
 Path to the directory of a Evolene dist version.
-Used in Jenkins for envoking the Evolene itself `$EVOLENE_DIRECTORY/run.sh`
+Used in Jenkin builds for shorter path when envoking the Evolene itself `$EVOLENE_DIRECTORY/run.sh`.
+Also gives you a way of specifing what version of Evolene that is used.
 
 ```bash
 EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6`'
 ```
 
-
-
 # How to develop and run Evolene on your local machine
 
-To run:
+## Run the code locally
+
 ```bash
 python run.py docker run-pipeline
 ```
 
-To create dist:
-```bash
-./create_dist.sh
-```
-The version of the dist is defined in `setup.py`
+## Create a distribution
 
-To run tests:
+Note! The version of the dist is defined in `setup.py`
+
+```bash
+./create_dist.sh`
+```
+
+## Run unit tests
 
 ```bash
 ./run_tests.sh
 ```
-
-Changes to this project are automatically sent to https://build.sys.kth.se
-
