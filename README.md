@@ -186,6 +186,8 @@ services:
       DB_USER: "admin"
     ports:
       - 80
+    depends_on:
+      - db
 
   db:
     image: mongodb:latest
