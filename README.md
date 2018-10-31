@@ -12,11 +12,11 @@ Evolene uses Convention Over Configuration. That means that Evolene is configure
 For your app to build using Evolene you need to have two files in your projects root directory.
 A `Dockerfile`, and a Evolene meta-data file called `docker.conf`.
 
-```bash
+The example bellow will on the *40th* build on Jenkins create `tamarack:2.3.40_f2486d7`. Where `f2486d7` is the Git Commit of that exact code built.
 
-# 
+```bash
+#
 # Name to use when tagging the image
-# E.g: kth-nodejs -> "kthse/kth-nodejs:9.11.0_c25cca9"
 #
 IMAGE_NAME=tamarack
 
@@ -32,6 +32,7 @@ IMAGE_VERSION=2.3
 # 
 # You can override using $BUILD_NUMBER as patch number for SemVer by 
 # explicitly adding it aswell.
+# If this was set, the result whould be tamarack:2.3.0_f2486d7
 #
 # PATCH_VERSION=0
 
