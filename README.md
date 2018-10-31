@@ -138,11 +138,47 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 ## :teset: Testing
 
 ### Unit Testing
+
 Add a file in the root of your project called  `docker-compose-unit-tests.yml`
+
+```
+version: '3'
+services:
+  web:
+    build: .
+    image: $LOCAL_IMAGE_ID
+    volumes:
+      - ./tests:/tests
+    command: npm test
+```
+
 
 
 ### Integration Testing
 Add a file in the root of your project called  `docker-compose-integration-tests.yml`
+
+```
+version: '3'
+
+services:
+
+  web:
+    build: .
+    image: $LOCAL_IMAGE_ID
+    environment:
+      DB_URL: "https://example.com:1234"
+      DB_USER: "admin"
+      ENV_TEST: "SECRET_VALUE_ON__MONITOR."
+
+    ports:
+      - 3000
+  
+  integration-tests:
+    build: ./tests/integration-tests
+    depends_on:
+      - web
+```
+
 
 ## :lips: Slack Integration
 
