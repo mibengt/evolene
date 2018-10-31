@@ -40,7 +40,7 @@ That is it, you will get notified by Evolene about all other things in console l
 Happy Coding!
 
 
-## Evolene Features
+## :+1: Evolene Features
 
 * Verifies /docker.conf
 * Verifies /Dockerfile
