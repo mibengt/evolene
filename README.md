@@ -40,7 +40,7 @@ When your project is buildt a warning will be sent to SLACK_CHANNELS with the fi
 If BUILD_INFORMATION_OUTPUT_FILE ends with `.js` a module will be writen to the specified file.
 
 ```bash
-BUILD_INFORMATION_OUTPUT_FILE='info.js`'
+BUILD_INFORMATION_OUTPUT_FILE='/info.js`'
 ```
 
 ```javascript
@@ -74,7 +74,7 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 }
 ```
 
-# Build
+# Build SemVer Docker Image 
 
 ## Overide the Name
 Override the IMAGE_NAME in docker.conf for the image to build.
@@ -154,7 +154,7 @@ The private `REGISTRY_HOST`:s  BASIC_AUTH users password.
 REGISTRY_PASSWORD='qwerty123' $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Åublic repository
+### Public repository
 
 Set to `true` When you whant to push your image to `hub.docker.com/r/kthse`. This will push two tags,
 the ususual SemVer with commit `tamarack:2.3.40_f2486d7`, but also and also a short tag with only SemVer `tamarack:2.3.40`. This is done to enable reuse of tags.
