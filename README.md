@@ -71,7 +71,7 @@ If BUILD_INFORMATION_OUTPUT_FILE ends with `.json` a module will be writen to th
 }
 ```
 
-## All environment variables for configuration:
+# All environment variables for configuration:
 
 ```
 IMAGE_NAME                    - The name of the image to build (ex: 'kth-azure-app')
