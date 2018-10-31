@@ -141,12 +141,19 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 
 Add a file in the root of your project called  `docker-compose-unit-tests.yml`
 
-```
+Before unit tests are run, the image is built and it´s id is availeble to
+the Docker Compose file via `$LOCAL_IMAGE_ID`.
+
+One way is then to mount your test directly into the docker images and run your tests on
+that very image.
+
+```yaml
 version: '3'
 services:
   web:
     build: .
     image: $LOCAL_IMAGE_ID
+    # Mount and run tests.
     volumes:
       - ./tests:/tests
     command: npm test
@@ -155,20 +162,24 @@ services:
 
 
 ### Integration Testing
-Add a file in the root of your project called  `docker-compose-integration-tests.yml`
 
-```
+Add a file in the root of your project called  `docker-compose-integration-tests.yml`.
+Before integration tests are run, the image is built and it´s id is availeble to
+the Docker Compose file via `$LOCAL_IMAGE_ID`.
+
+One way is then to start up your service and from other container run queries against
+our server.  
+
+```yaml
 version: '3'
 
 services:
-
   web:
     build: .
     image: $LOCAL_IMAGE_ID
     environment:
       DB_URL: "mongodb://db:4444"
       DB_USER: "admin"
-      ENV_TEST: "SECRET_VALUE_ON__MONITOR."
     ports:
       - 80
 
@@ -177,16 +188,16 @@ services:
     ports:
       - 4444
 
+  # Run curl commands from integration-tests against http://web:80
   integration-tests:
     build: ./tests/integration-tests
     depends_on:
       - web
 ```
 
-
 ## :lips: Slack Integration
 
-### Slack web hook 
+### Slack web hook
 
 The Slack webhook endpoint where the `SLACK_CHANNELS` can be found.
 
@@ -207,7 +218,7 @@ SLACK_CHANNELS='#pipeline-logs,#devops' $EVOLENE_DIRECTORY/run.sh
 
 By default files in your repo will be scanned for strings that looks like passwords or tokens. We use [RepoSupervisor](https://github.com/auth0/repo-supervisor/) for this.
 
-When your project is buildt a warning will be sent to SLACK_CHANNELS with the files that contain suspisious files. If a file gives you a false possitive, you can create a file in the root of your repository and name it `.scanignore`. In the .scanignore file you can add catalogs or files that the security scan should ignore.
+When your project is built a warning will be sent to SLACK_CHANNELS with the files that contain suspisious files. If a file gives you a false possitive, you can create a file in the root of your repository and name it `.scanignore`. In the .scanignore file you can add catalogs or files that the security scan should ignore.
 
 ### .scanignore formatting
 
