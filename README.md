@@ -1,5 +1,4 @@
-# Evolene
-## Build process as code.
+# Evolene - Build process as code.
 
 **Features:**
 * Verifies **docker.conf**
@@ -28,7 +27,7 @@ Latest feature:
 ```bash
 SLACK_CHANNELS='#team-studadm-build,#pipeline-logs' DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh
 ```
-## Security scaning
+# Security scaning
 By default files in your repo will be scanned for strings that looks like passwords or tokens. We use [RepoSupervisor](https://github.com/auth0/repo-supervisor/) for this.
 
 When your project is buildt a warning will be sent to SLACK_CHANNELS with the files that contain suspisious files. If a file gives you a false possitive, you can create a file in the root of your repository and name it `.scanignore`. In the .scanignore file you can add catalogs or files that the security scan should ignore.
@@ -40,7 +39,9 @@ When your project is buildt a warning will be sent to SLACK_CHANNELS with the fi
 /imported-data/personnumer.txt
 ```
 
-### Build information to file
+# Build information to file
+
+### Module
 If BUILD_INFORMATION_OUTPUT_FILE ends with `.js` a module will be writen to the specified file.
 
 ```javascript
@@ -57,6 +58,7 @@ module.exports = {
 
 If BUILD_INFORMATION_OUTPUT_FILE ends with `.json` a module will be writen to the specified file.
 
+# JSON
 ```json
 {
   "jenkinsBuildDate": "2018-10-31 12:49:14",
