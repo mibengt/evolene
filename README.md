@@ -223,7 +223,7 @@ exprimental.
 EXPERIMENTAL='True' # True or False
 ```
 
-### Evolene versioning
+### Current Evolene running
 
 Path to the directory of a Evolene dist version.
 Used in Jenkin builds for shorter path when envoking the Evolene itself `$EVOLENE_DIRECTORY/run.sh`.
