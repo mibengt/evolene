@@ -9,7 +9,7 @@ Evolene uses Convention Over Configuration. That means that Evolene is configure
 
 ## :exclamation: User Requirements
 
-For our app to build using Evolene you need to have two files in your projects root directory.
+For your app to build using Evolene you need to have two files in your projects root directory.
 A `Dockerfile`, and a Evolene meta-data file called `docker.conf`.
 
 ```bash
