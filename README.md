@@ -1,12 +1,11 @@
-# Evolene - Build process as code.
+# Evolene
 
-Evolene runs a sequence of steps that build, test and in the end does a `docker push` on a 
-SemVer tagged Docker image like `tamarack:2.3.40_f2486d7'. All steps including unit and integration
-tests are run inside Docker containers, eliminating all Jenkins plugins.
+*Build process as code* Evolene runs a sequence of steps that build, test and in the end does a `docker push` on a  SemVer tagged Docker image like `tamarack:2.3.40_f2486d7`. All steps including unit and integration
+tests are run inside Docker containers, eliminating most Jenkins plugins.
 
 Evolene uses Convention Over Configuration. That means that Evolene is configure by following standard naming convensions rather then per project configuration.
 
-## Build Requirement
+## User Requirement
 
 For our app to build using Evolene you need to have two files in your projects root directory.
 A `Dockerfile`, and a Evolene meta-data file called `docker.conf`.
