@@ -149,12 +149,43 @@ The private REGISTRY_HOST:s  BASIC_AUTH users password.
 REGISTRY_PASSWORD='qwerty123' $EVOLENE_DIRECTORY/run.sh
 ```
 
-PUSH_PUBLIC                   - Push the image to hub.docker.com/r/kthse
-SKIP_DRY_RUN                  - Skip the step where the new image is tested by running 'docker run image_id'
-BUILD_INFORMATION_OUTPUT_FILE - Print build info  file 
-EVOLENE_DIRECTORY             - The working directory of evolene (used on jenkins to work properly)
-EXPERIMENTAL                  - Feature toogle for latest features
+### Push the image to a public repository
+
+Set to `true` When you whant to push your image to `hub.docker.com/r/kthse`. This will push two tags,
+the ususual SemVer with commit `my-app:1.2.3_abcdefg`, but also and also a short tag with only SemVer `my-app:1.2.3`. This is done to enable reuse of tags.
+
+```bash
+PUSH_PUBLIC='True' # True or False
 ```
+
+### Skip dry run step
+
+Normally Evolene does a `docker run IMAGE_ID` to see that the image is build correctly and can start.
+Some images does not support this (os-images) and therefor exits causing the pipeline to exit. 
+
+```bash
+SKIP_DRY_RUN='True' # True or False
+```
+
+### Feature flag for building
+
+Sometimes we add new features that are sort of in beta. If you would like to try these out allow
+exprimental.
+
+```bash
+EXPERIMENTAL='True' # True or False
+```
+
+### Feature flag for building
+
+Path to the directory of a Evolene dist version.
+Used in Jenkins for envoking the Evolene itself `$EVOLENE_DIRECTORY/run.sh`
+
+```bash
+EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6`'
+```
+
+
 
 # How to develop and run Evolene on your local machine
 
