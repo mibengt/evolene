@@ -232,7 +232,7 @@ Also gives you a way of specifing what version of Evolene that is used.
 EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6`'
 ```
 
-## :computer: How to setup Evolene on Jenkins
+## :clipboard: How to setup Evolene on Jenkins
 
 ### 1. Set up a build task that builds Evolene
 Add an *Execute shell* Step and run.
@@ -264,7 +264,7 @@ REGISTRY_USER='jenkins-ci'
 Test your setup by adding a Docker application that follows Evolene and run *Execute shell*
 `$EVOLENE_DIRECTORY/run.sh`
 
-## :bulb: How to develop and run Evolene on your local machine
+## :computer: How to develop and run Evolene on your local machine
 
 ### Run the code locally
 
