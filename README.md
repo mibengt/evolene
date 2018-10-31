@@ -45,10 +45,10 @@ That is it, you will get notified by Evolene about all other things in console l
 ## :+1: Evolene Features
 
 * No configuration, unless you want it
-* Works on Jenkins, exactly as on your dev machine
-* Testing and integration tests, your way
+* You need no Jenkins knowledge (almost), works on Jenkins, exactly as on your dev machine
+* Testing and full integration testing
 * SemVer for the win
-* Push to Docker Registry
+* Handles all the Docker stuff
 * Slack integrations of course
 * Scan for passwords in your code
 * ... and more
