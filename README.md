@@ -55,7 +55,7 @@ Happy Coding!
 * Contarinerized unit testing by running **docker-compose-unit-tests.yml**
 
 
-# Build SemVer Docker Image 
+# :hammer: Build SemVer Docker Image 
 
 ## Overide the Name
 Override the IMAGE_NAME in docker.conf for the image to build.
@@ -91,7 +91,7 @@ BUILD_NUMBER='40'  $EVOLENE_DIRECTORY/run.sh
 ```
 
 
-# Build information to file
+# :page_facing_up: Build information to file
 
 ### Module
 If BUILD_INFORMATION_OUTPUT_FILE ends with `.js` a module will be writen to the specified file.
@@ -131,7 +131,7 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 }
 ```
 
-# Slack Integration
+# :lips: Slack Integration
 
 ## Slack web hook 
 
@@ -150,7 +150,7 @@ failures an push information.
 SLACK_CHANNELS='#pipeline-logs,#devops' $EVOLENE_DIRECTORY/run.sh
 ```
 
-# Security scaning
+# :cop: Security scaning
 
 By default files in your repo will be scanned for strings that looks like passwords or tokens. We use [RepoSupervisor](https://github.com/auth0/repo-supervisor/) for this.
 
@@ -164,7 +164,7 @@ When your project is buildt a warning will be sent to SLACK_CHANNELS with the fi
 /imported-data/personnumer.txt
 ```
 
-# Docker Registries
+# :whale: Docker Registries
 
 ## Private Docker Registry
 
@@ -229,7 +229,7 @@ Also gives you a way of specifing what version of Evolene that is used.
 EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6`'
 ```
 
-# How to setup Evolene on Jenkins
+# :computer: How to setup Evolene on Jenkins
 
 ## 1. Set up a build task that builds Evolene
 Add an *Execute shell* Step and run.
@@ -262,7 +262,7 @@ Test your setup by adding a Docker application that follows Evolene and run *Exe
 
 ![Example](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
 
-# How to develop and run Evolene on your local machine
+# :bulb: How to develop and run Evolene on your local machine
 
 ## Run the code locally
 
