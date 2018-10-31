@@ -231,10 +231,10 @@ Also gives you a way of specifing what version of Evolene that is used.
 EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6`'
 ```
 
-## :clipboard: How to setup Evolene on Jenkins
+## :clipboard: Setup Evolene on Jenkins
 
 
-### 1. Add default envs for builds on the Jenkins server.
+### 1. Add default envs for builds on the Jenkins server
 
 We recommend that the following envs are available to each Jenkins job. The can be overridden by
 env arguments per build as shown above.
@@ -265,9 +265,9 @@ chmod -R 700 dist/latest
 Test your setup by adding a Docker application that follows Evolene [Usage Requirements](https://gita.sys.kth.se/Infosys/evolene/blob/master/README.md#exclamation-user-requirements) and run a *Execute shell*.
 `$EVOLENE_DIRECTORY/run.sh`
 
-## :computer: How to develop and run Evolene on your local machine
+## :computer: Develop and run Evolene on your local machine
 
-### Run the code locally
+### Setup Evolene for development
 
 ```bash
 python run.py docker run-pipeline
