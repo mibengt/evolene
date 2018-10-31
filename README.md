@@ -5,7 +5,7 @@ tests are run inside Docker containers, eliminating most Jenkins plugins.
 
 Evolene uses Convention Over Configuration. That means that Evolene is configure by following standard naming convensions rather then per project configuration.
 
-## :exclamation: User Requirement
+## :exclamation: User Requirements
 
 For our app to build using Evolene you need to have two files in your projects root directory.
 A `Dockerfile`, and a Evolene meta-data file called `docker.conf`.
