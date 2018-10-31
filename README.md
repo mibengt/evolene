@@ -10,7 +10,7 @@ Evolene uses Convention Over Configuration. That means that Evolene is configure
 For our app to build using Evolene you need to have two files in your projects root directory.
 A `Dockerfile`, and a Evolene meta-data file called `docker.conf`.
 
-```conf
+```bash
 
 # 
 # Name to use when tagging the image
@@ -40,7 +40,7 @@ That is it, you will get notified by Evolene about all other things in console l
 Happy Coding!
 
 
-## Features
+## Evolene Features
 
 * Verifies /docker.conf
 * Verifies /Dockerfile
