@@ -39,6 +39,10 @@ When your project is buildt a warning will be sent to SLACK_CHANNELS with the fi
 ### Module
 If BUILD_INFORMATION_OUTPUT_FILE ends with `.js` a module will be writen to the specified file.
 
+```bash
+BUILD_INFORMATION_OUTPUT_FILE='info.js`'
+```
+
 ```javascript
 module.exports = {
   "jenkinsBuildDate": "2018-10-31 12:49:14",
@@ -52,6 +56,10 @@ module.exports = {
 ```
 
 If BUILD_INFORMATION_OUTPUT_FILE ends with `.json` a module will be writen to the specified file.
+
+```bash
+BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
+```
 
 ### JSON
 ```json
