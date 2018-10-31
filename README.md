@@ -18,17 +18,7 @@ Do use Evolene on Jenkins simply [add a build step](https://build.sys.kth.se/vie
 
 ![KTH on Azure](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
 
-Default configuration
-
-```bash
-SLACK_CHANNELS='#team-studadm-build' BUILD_INFORMATION_OUTPUT_FILE='/config/version.js' $EVOLENE_DIRECTORY/run.sh
-```
-
-Latest feature:
-
-```bash
-SLACK_CHANNELS='#team-studadm-build,#pipeline-logs' DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh
-```
+Evolene runs a sequence of steps that in the end results in a `docker push` that is a SemVer based image including the git commit appended. `tamarack:2.3.40_f2486d7`
 
 # Security scaning
 
@@ -76,89 +66,98 @@ If BUILD_INFORMATION_OUTPUT_FILE ends with `.json` a module will be writen to th
 }
 ```
 
-# All environment variables for configuration:
+# Build
 
-### Overide the name
-Override the IMAGE_NAME in docker.conf forthe image to build.
+## Overide the Name
+Override the IMAGE_NAME in docker.conf for the image to build.
 
 ```bash
-IMAGE_NAME='kth-azure-app'  $EVOLENE_DIRECTORY/run.sh
+IMAGE_NAME='other-name'  $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Project root
+## Project Root
 
 Build your project from an other directory.
+If set the  $WORKSPACE set by Jenkins will be ignored.
 
 ```bash
-PROJECT_ROOT='/other/jenkis/workspace/app-name/'  $EVOLENE_DIRECTORY/run.sh
+PROJECT_ROOT='/other/jenkis/workspace/other-repo/'  $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Override gitcommit
-
-Reuse a commit hash of the push that triggered the build (usually set by Jenkins)
+## Override Git Commit
+Reuse a commit hash of the push that triggered the build.
+If set the  $GIT_COMMIT set by Jenkins will be ignored.
 
 ```bash
 GIT_COMMIT='abcdefhijkl1234456'  $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Ignore Jenins build number
-
-The number of the current build (usually set by Jenkins)
+## Specify SemVer path versoin
+The patch version in the SemVer tag is the Jenkins $BUILD_NUMBER.
+If set the $BUILD_NUMBER set by Jenkins will be ignored, and patch version
+will always be tag tamarack:2.3.`40`. 
 
 ```bash
-BUILD_NUMBER='2'  $EVOLENE_DIRECTORY/run.sh
+BUILD_NUMBER='40'  $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Slack web hook 
+# Slack Integration
 
-The Slack webhook endpoint to use
+## Slack web hook 
+
+The Slack webhook endpoint where the `SLACK_CHANNELS` can be found.
 
 ```bash
 SLACK_WEB_HOOK='https://api.slack.com/token1234/' $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Slack channels to post build information to
+## Slack channels to post build information to
 
-Comma separated list of channels to post messages to.
+Comma separated list of channels to post messages to. Messages are build inforation,
+failures an push information.
 
 ```bash
 SLACK_CHANNELS='#pipeline-logs,#devops' $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Private Docker Registy.
+# Docker Registries
+
+## Private Docker Registry
 
 Unless `PUSH_PUBLIC` is set to `true`, this registry will be used.
 The host without protocol.
 
 ```bash
-REGISTRY_HOST='registry.mycompany.com' $EVOLENE_DIRECTORY/run.sh
+REGISTRY_HOST='private-docker-registry.mycompany.com' $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Private Docker Registy User
-The private REGISTRY_HOST:s  BASIC_AUTH user who has the rights to read and push to the private registry.
+## Private Docker Registry User
+The private `REGISTRY_HOST`:s  BASIC_AUTH user who has the rights to read and push to the private registry.
 
 ```bash
 REGISTRY_USER='myuser' $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Private Docker Registy User
+## Private Docker Registry User
 
-The private REGISTRY_HOST:s  BASIC_AUTH users password. 
+The private `REGISTRY_HOST`:s  BASIC_AUTH users password.
 
 ```bash
 REGISTRY_PASSWORD='qwerty123' $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Push the image to a public repository
+### Åublic repository
 
 Set to `true` When you whant to push your image to `hub.docker.com/r/kthse`. This will push two tags,
-the ususual SemVer with commit `my-app:1.2.3_abcdefg`, but also and also a short tag with only SemVer `my-app:1.2.3`. This is done to enable reuse of tags.
+the ususual SemVer with commit `tamarack:2.3.40_f2486d7`, but also and also a short tag with only SemVer `tamarack:2.3.40`. This is done to enable reuse of tags.
 
 ```bash
 PUSH_PUBLIC='True' # True or False
 ```
 
-### Skip dry run step
+# Other 
+
+## Skip dry run step
 
 Normally Evolene does a `docker run IMAGE_ID` to see that the image is build correctly and can start.
 Some images does not support this (os-images) and therefor exits causing the pipeline to exit. 
@@ -167,7 +166,7 @@ Some images does not support this (os-images) and therefor exits causing the pip
 SKIP_DRY_RUN='True' # True or False
 ```
 
-### Feature flag for building
+## Feature flag for building
 
 Sometimes we add new features that are sort of in beta. If you would like to try these out allow
 exprimental.
@@ -176,7 +175,9 @@ exprimental.
 EXPERIMENTAL='True' # True or False
 ```
 
-### Feature flag for building
+# Evolene on Jenkins configuration
+
+## Evolene versioning
 
 Path to the directory of a Evolene dist version.
 Used in Jenkins for envoking the Evolene itself `$EVOLENE_DIRECTORY/run.sh`
