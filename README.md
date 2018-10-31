@@ -265,9 +265,9 @@ chmod -R 700 dist/latest
 Test your setup by adding a Docker application that follows Evolene [Usage Requirements](https://gita.sys.kth.se/Infosys/evolene/blob/master/README.md#exclamation-user-requirements) and run a *Execute shell*.
 `$EVOLENE_DIRECTORY/run.sh`
 
-## :computer: Develop and run Evolene on your local machine
+## :computer: Setup Evolene for development
 
-### Setup Evolene for development
+### Run locally
 
 ```bash
 python run.py docker run-pipeline
