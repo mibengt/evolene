@@ -240,7 +240,7 @@ We recommend that the following envs are available to each Jenkins job. The can 
 env arguments per build as shown above.
 
 ```bash
-EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6`'
+EVOLENE_DIRECTORY='/var/lib/jenkins/workspace/evolene/dist/evolene-1.6'
 SLACK_WEB_HOOK='https://hooks.slack.com/services/1234asdfasd/'
 REGISTRY_HOST='private-docker-registry.mycompany.com'
 REGISTRY_PASSWORD='very-secret-pwd'
