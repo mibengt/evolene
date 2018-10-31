@@ -58,7 +58,7 @@ module.exports = {
 
 If BUILD_INFORMATION_OUTPUT_FILE ends with `.json` a module will be writen to the specified file.
 
-# JSON
+### JSON
 ```json
 {
   "jenkinsBuildDate": "2018-10-31 12:49:14",
