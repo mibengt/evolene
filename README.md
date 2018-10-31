@@ -1,9 +1,51 @@
 # Evolene - Build process as code.
 
-**Features:**
-* Verifies **docker.conf**
-* Verifies **Dockerfile**
-* Writes build information to a js-module file (i.e: /config/version.js)
+Evolene runs a sequence of steps that build, test and in the end does a `docker push` on a 
+SemVer tagged Docker image like `tamarack:2.3.40_f2486d7'. All steps including unit and integration
+tests are run inside Docker containers, eliminating all Jenkins plugins.
+
+Evolene uses Convention Over Configuration. That means that Evolene is configure by following standard naming convensions rather then per project configuration.
+
+## Build Requirement
+
+For our app to build using Evolene you need to have two files in your projects root directory.
+A `Dockerfile`, and a Evolene meta-data file called `docker.conf`.
+
+```conf
+
+# 
+# Name to use when tagging the image
+# E.g: kth-nodejs -> "kthse/kth-nodejs:9.11.0_c25cca9"
+#
+IMAGE_NAME=tamarack
+
+#
+# Evolene tags docker images using https://semver.org/ notation, major.minor.path.
+# 
+# IMAGE_VERSION=major.minor
+# The Patch is normally added by Evolene at build time using $BUILD_NUMBER
+#
+
+IMAGE_VERSION=2.3
+
+# 
+# You can override using $BUILD_NUMBER as patch number for SemVer by 
+# explicitly adding it aswell.
+#
+# PATCH_VERSION=0
+
+```
+
+That is it, you will get notified by Evolene about all other things in console log and to the `SLACK_CHANNELS` when you need to know them.
+
+Happy Coding!
+
+
+## Features
+
+* Verifies /docker.conf
+* Verifies /Dockerfile
+* Writes build information to file
 * Repo security scanning for passwords and secrets
 * Docker build
 * SemVer versioning of Docker images
@@ -12,13 +54,6 @@
 * Audit of FROM images
 * Contarinerized integration testing by running **docker-compose-integration-tests.yml**
 * Contarinerized unit testing by running **docker-compose-unit-tests.yml**
-
-## How to use on Jenkins
-Do use Evolene on Jenkins simply [add a build step](https://build.sys.kth.se/view/team-pipeline/job/kth-azure-app/configure) that executes run.sh. Evolene uses Convention Over Configuration. That means that Evolene is configure by following standard naming convensions rather then per project configuration.
-
-![KTH on Azure](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
-
-Evolene runs a sequence of steps that in the end results in a `docker push` that is a SemVer based image including the git commit appended. `tamarack:2.3.40_f2486d7`
 
 
 # Build SemVer Docker Image 
@@ -104,7 +139,7 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 The Slack webhook endpoint where the `SLACK_CHANNELS` can be found.
 
 ```bash
-SLACK_WEB_HOOK='https://api.slack.com/token1234/' $EVOLENE_DIRECTORY/run.sh
+SLACK_WEB_HOOK='https://hooks.slack.com/services/1234asdfasd/' $EVOLENE_DIRECTORY/run.sh
 ```
 
 ## Slack channels to post build information to
@@ -165,7 +200,7 @@ the ususual SemVer with commit `tamarack:2.3.40_f2486d7`, but also and also a sh
 PUSH_PUBLIC='True' # True or False
 ```
 
-# Other 
+# Misc 
 
 ## Skip dry run step
 
@@ -184,8 +219,6 @@ exprimental.
 ```bash
 EXPERIMENTAL='True' # True or False
 ```
-
-# Evolene on Jenkins configuration
 
 ## Evolene versioning
 
@@ -214,7 +247,8 @@ This will create a executable Evolene dist in `/var/lib/jenkins/workspace/evolen
 
 ## 2. Add default envs for builds on the Jenkins server.
 
-We recommend that the following envs are available as to each Jenkins job.
+We recommend that the following envs are available to each Jenkins job. The can be overridden by
+env arguments per build as shown above.
 
 EVOLENE_DIRECTORY
 EVOLENE_SLACK_WEB_HOOK
@@ -225,6 +259,9 @@ REGISTRY_USER
 # 3. Test your setup
 Test your setup by adding a Docker application that follows Evolene and run *Execute shell*
 `$EVOLENE_DIRECTORY/run.sh`
+
+
+![Example](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
 
 # How to develop and run Evolene on your local machine
 
