@@ -199,7 +199,7 @@ the ususual SemVer with commit `tamarack:2.3.40_f2486d7`, but also and also a sh
 PUSH_PUBLIC='True' # True or False
 ```
 
-# Misc 
+## Other envs
 
 ### Skip dry run step
 
@@ -249,11 +249,13 @@ This will create a executable Evolene dist in `/var/lib/jenkins/workspace/evolen
 We recommend that the following envs are available to each Jenkins job. The can be overridden by
 env arguments per build as shown above.
 
-EVOLENE_DIRECTORY
-EVOLENE_SLACK_WEB_HOOK
-REGISTRY_HOST
-REGISTRY_PASSWORD
-REGISTRY_USER
+```bash
+EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6`'
+SLACK_WEB_HOOK='https://hooks.slack.com/services/1234asdfasd/'
+REGISTRY_HOST='private-docker-registry.mycompany.com'
+REGISTRY_PASSWORD='very-secret-pwd'
+REGISTRY_USER='jenkins-ci'
+```
 
 # 3. Test your setup
 Test your setup by adding a Docker application that follows Evolene and run *Execute shell*
