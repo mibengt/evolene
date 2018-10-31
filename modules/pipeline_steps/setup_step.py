@@ -18,6 +18,7 @@ class SetupStep(AbstractPipelineStep):
 
     def print_header(self):
         print (
+            "\033[95m"
             "                                                    \n"
             "  ______                   _                        \n"
             " |  ____|                 | |                       \n"
@@ -26,6 +27,7 @@ class SetupStep(AbstractPipelineStep):
             " | |____   \ V /  | (_) | | | |  __/ | | | | |  __/ \n"
             " |______|   \_/    \___/  |_|  \___| |_| |_|  \___| \n"
             "                                                    \n"
+            "\033[0m"
             "****************************************************\n"
             " Help make Evolene better!                          \n"
             " https://gita.sys.kth.se/Infosys/evolene            \n"
