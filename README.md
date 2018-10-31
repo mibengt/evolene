@@ -88,7 +88,7 @@ The patch version in the SemVer tag is the Jenkins $BUILD_NUMBER.
 If set the $BUILD_NUMBER set by Jenkins will be ignored, and patch version
 will always be tag tamarack:2.3.`40`.
 
-Patch version can also be set in docker.conf with PATCH_VERSION=40
+Patch version can also be set in `docker.conf` with PATCH_VERSION=40
 
 ```bash
 BUILD_NUMBER='40'  $EVOLENE_DIRECTORY/run.sh
@@ -134,6 +134,15 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
   "gitBranch": "origin/master"
 }
 ```
+
+## :teset: Testing
+
+### Unit Testing
+Add a file in the root of your project called  `docker-compose-unit-tests.yml`
+
+
+### Integration Testing
+Add a file in the root of your project called  `docker-compose-integration-tests.yml`
 
 ## :lips: Slack Integration
 
