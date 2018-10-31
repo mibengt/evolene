@@ -7,7 +7,7 @@ Evolene uses Convention Over Configuration. That means that Evolene is configure
 
 ![Example](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
 
-## :exclamation: User Requirements
+## :exclamation: Usage Requirements
 
 For your app to build using Evolene you need to have two files in your projects root directory.
 A `Dockerfile`, and a Evolene meta-data file called `docker.conf`.
