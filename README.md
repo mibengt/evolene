@@ -166,13 +166,17 @@ services:
     build: .
     image: $LOCAL_IMAGE_ID
     environment:
-      DB_URL: "https://example.com:1234"
+      DB_URL: "mongodb://db:4444"
       DB_USER: "admin"
       ENV_TEST: "SECRET_VALUE_ON__MONITOR."
-
     ports:
-      - 3000
-  
+      - 80
+
+  db:
+    image: mongodb:latest
+    ports:
+      - 4444
+
   integration-tests:
     build: ./tests/integration-tests
     depends_on:
