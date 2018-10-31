@@ -19,20 +19,25 @@ Do use Evolene on Jenkins simply [add a build step](https://build.sys.kth.se/vie
 ![KTH on Azure](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
 
 Default configuration
+
 ```bash
 SLACK_CHANNELS='#team-studadm-build' BUILD_INFORMATION_OUTPUT_FILE='/config/version.js' $EVOLENE_DIRECTORY/run.sh
 ```
 
 Latest feature:
+
 ```bash
 SLACK_CHANNELS='#team-studadm-build,#pipeline-logs' DEBUG=True EXPERIMENTAL=True $EVOLENE_DIRECTORY/run.sh
 ```
+
 # Security scaning
+
 By default files in your repo will be scanned for strings that looks like passwords or tokens. We use [RepoSupervisor](https://github.com/auth0/repo-supervisor/) for this.
 
 When your project is buildt a warning will be sent to SLACK_CHANNELS with the files that contain suspisious files. If a file gives you a false possitive, you can create a file in the root of your repository and name it `.scanignore`. In the .scanignore file you can add catalogs or files that the security scan should ignore.
 
 ### .scanignore formatting
+
 ```bash
 # Catalogs starting with, or specific files.
 /node_modules/
@@ -81,6 +86,7 @@ IMAGE_NAME='kth-azure-app'  $EVOLENE_DIRECTORY/run.sh
 ```
 
 ### Project root
+
 Build your project from an other directory.
 
 ```bash
@@ -88,6 +94,7 @@ PROJECT_ROOT='/other/jenkis/workspace/app-name/'  $EVOLENE_DIRECTORY/run.sh
 ```
 
 ### Override gitcommit
+
 Reuse a commit hash of the push that triggered the build (usually set by Jenkins)
 
 ```bash
@@ -95,6 +102,7 @@ GIT_COMMIT='abcdefhijkl1234456'  $EVOLENE_DIRECTORY/run.sh
 ```
 
 ### Ignore Jenins build number
+
 The number of the current build (usually set by Jenkins)
 
 ```bash
@@ -102,6 +110,7 @@ BUILD_NUMBER='2'  $EVOLENE_DIRECTORY/run.sh
 ```
 
 ### Slack web hook 
+
 The Slack webhook endpoint to use
 
 ```bash
@@ -109,14 +118,37 @@ SLACK_WEB_HOOK='https://api.slack.com/token1234/' $EVOLENE_DIRECTORY/run.sh
 ```
 
 ### Slack channels to post build information to
+
 Comma separated list of channels to post messages to.
 
 ```bash
 SLACK_CHANNELS='#pipeline-logs,#devops' $EVOLENE_DIRECTORY/run.sh
 ```
-REGISTRY_HOST                 - The host (without protocol) of the Docker registry to use (ex: 'kthregistryv2.sys.kth.se')
-REGISTRY_USER                 - Registry user
-REGISTRY_PASSWORD             - Registry password
+
+### Private Docker Registy.
+
+Unless `PUSH_PUBLIC` is set to `true`, this registry will be used.
+The host without protocol.
+
+```bash
+REGISTRY_HOST='registry.mycompany.com' $EVOLENE_DIRECTORY/run.sh
+```
+
+### Private Docker Registy User
+The private REGISTRY_HOST:s  BASIC_AUTH user who has the rights to read and push to the private registry.
+
+```bash
+REGISTRY_USER='myuser' $EVOLENE_DIRECTORY/run.sh
+```
+
+### Private Docker Registy User
+
+The private REGISTRY_HOST:s  BASIC_AUTH users password. 
+
+```bash
+REGISTRY_PASSWORD='qwerty123' $EVOLENE_DIRECTORY/run.sh
+```
+
 PUSH_PUBLIC                   - Push the image to hub.docker.com/r/kthse
 SKIP_DRY_RUN                  - Skip the step where the new image is tested by running 'docker run image_id'
 BUILD_INFORMATION_OUTPUT_FILE - Print build info  file 
@@ -138,6 +170,7 @@ To create dist:
 The version of the dist is defined in `setup.py`
 
 To run tests:
+
 ```bash
 ./run_tests.sh
 ```
