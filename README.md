@@ -135,7 +135,7 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 }
 ```
 
-## :teset: Testing
+## :bell: Testing
 
 ### Unit Testing
 
