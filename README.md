@@ -40,8 +40,7 @@ IMAGE_VERSION=2.3
 
 That is it, you will get notified by Evolene about all other things in console log and to the `SLACK_CHANNELS` when you need to know them.
 
-Happy Coding!
-
+:boom: :tada: Happy Coding!
 
 ## :+1: Evolene Features
 
