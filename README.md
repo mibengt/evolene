@@ -44,18 +44,14 @@ That is it, you will get notified by Evolene about all other things in console l
 
 ## :+1: Evolene Features
 
-* Verifies /docker.conf
-* Verifies /Dockerfile
-* Writes build information to file
-* Repo security scanning for passwords and secrets
-* Docker build
-* SemVer versioning of Docker images
+* Works on Jenkins, exactly as on your dev machine
+* Testing and integration tests, your way
+* No configuration, unless you want it
+* SemVer for the win
 * Push to Docker Registry
-* Slack integration for build information
-* Audit of FROM images
-* Contarinerized integration testing by running **docker-compose-integration-tests.yml**
-* Contarinerized unit testing by running **docker-compose-unit-tests.yml**
-
+* Slack integrations of course
+* Scan for passwords in your code
+* ... and more
 
 ## :hammer: Build SemVer Docker Image 
 
