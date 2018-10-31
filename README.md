@@ -73,8 +73,11 @@ If BUILD_INFORMATION_OUTPUT_FILE ends with `.json` a module will be writen to th
 
 # All environment variables for configuration:
 
+### The name of the image to build (ex: 'kth-azure-app')
+```bash
+IMAGE_NAME=kth-azure-app  $EVOLENE_DIRECTORY/run.sh
 ```
-IMAGE_NAME                    - The name of the image to build (ex: 'kth-azure-app')
+
 PROJECT_ROOT                  - The path to the root of the project to build (ex: '/Users/projects/kth-azure-app')
 GIT_COMMIT                    - The commit hash of the push that triggered the build (usually set by Jenkins)
 BUILD_NUMBER                  - The number of the current build (usually set by Jenkins)
