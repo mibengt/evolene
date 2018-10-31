@@ -197,6 +197,35 @@ Also gives you a way of specifing what version of Evolene that is used.
 EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6`'
 ```
 
+# How to setup Evolene on Jenkins
+
+## 1. Set up a build task that builds Evolene
+Add an *Execute shell* Step and run.
+```bash
+/create_dist.sh
+LATEST_DIST=$(ls -tp dist | grep -v / | head -1)
+tar xvf dist/$LATEST_DIST -C dist
+rm -rf dist/latest
+mkdir dist/latest
+tar xvf dist/$LATEST_DIST -C dist/latest --strip 1
+chmod -R 700 dist/latest
+```
+This will create a executable Evolene dist in `/var/lib/jenkins/workspace/evolene/dist/evolene-1.6`.
+
+## 2. Add default envs for builds on the Jenkins server.
+
+We recommend that the following envs are available as to each Jenkins job.
+
+EVOLENE_DIRECTORY
+EVOLENE_SLACK_WEB_HOOK
+REGISTRY_HOST
+REGISTRY_PASSWORD
+REGISTRY_USER
+
+# 3. Test your setup
+Test your setup by adding a Docker application that follows Evolene and run *Execute shell*
+`$EVOLENE_DIRECTORY/run.sh`
+
 # How to develop and run Evolene on your local machine
 
 ## Run the code locally
