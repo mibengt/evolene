@@ -83,10 +83,12 @@ If set the  $GIT_COMMIT set by Jenkins will be ignored.
 GIT_COMMIT='abcdefhijkl1234456'  $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Specify SemVer path versoin
+### Specify SemVer patch version
 The patch version in the SemVer tag is the Jenkins $BUILD_NUMBER.
 If set the $BUILD_NUMBER set by Jenkins will be ignored, and patch version
-will always be tag tamarack:2.3.`40`. 
+will always be tag tamarack:2.3.`40`.
+
+Patch version can also be set in docker.conf with PATCH_VERSION=40
 
 ```bash
 BUILD_NUMBER='40'  $EVOLENE_DIRECTORY/run.sh
