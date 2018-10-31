@@ -73,16 +73,47 @@ If BUILD_INFORMATION_OUTPUT_FILE ends with `.json` a module will be writen to th
 
 # All environment variables for configuration:
 
-### The name of the image to build (ex: 'kth-azure-app')
+### Overide the name
+Override the IMAGE_NAME in docker.conf forthe image to build.
+
 ```bash
-IMAGE_NAME=kth-azure-app  $EVOLENE_DIRECTORY/run.sh
+IMAGE_NAME='kth-azure-app'  $EVOLENE_DIRECTORY/run.sh
 ```
 
-PROJECT_ROOT                  - The path to the root of the project to build (ex: '/Users/projects/kth-azure-app')
-GIT_COMMIT                    - The commit hash of the push that triggered the build (usually set by Jenkins)
-BUILD_NUMBER                  - The number of the current build (usually set by Jenkins)
-SLACK_WEB_HOOK                - The Slack webhook endpoint to use
-SLACK_CHANNELS                - Comma separated list of channels to post messages to (ex: '#pipeline-logs,#zermatt')
+### Project root
+Build your project from an other directory.
+
+```bash
+PROJECT_ROOT='/other/jenkis/workspace/app-name/'  $EVOLENE_DIRECTORY/run.sh
+```
+
+### Override gitcommit
+Reuse a commit hash of the push that triggered the build (usually set by Jenkins)
+
+```bash
+GIT_COMMIT='abcdefhijkl1234456'  $EVOLENE_DIRECTORY/run.sh
+```
+
+### Ignore Jenins build number
+The number of the current build (usually set by Jenkins)
+
+```bash
+BUILD_NUMBER='2'  $EVOLENE_DIRECTORY/run.sh
+```
+
+### Slack web hook 
+The Slack webhook endpoint to use
+
+```bash
+SLACK_WEB_HOOK='https://api.slack.com/token1234/' $EVOLENE_DIRECTORY/run.sh
+```
+
+### Slack channels to post build information to
+Comma separated list of channels to post messages to.
+
+```bash
+SLACK_CHANNELS='#pipeline-logs,#devops' $EVOLENE_DIRECTORY/run.sh
+```
 REGISTRY_HOST                 - The host (without protocol) of the Docker registry to use (ex: 'kthregistryv2.sys.kth.se')
 REGISTRY_USER                 - Registry user
 REGISTRY_PASSWORD             - Registry password
