@@ -20,19 +20,42 @@ Do use Evolene on Jenkins simply [add a build step](https://build.sys.kth.se/vie
 
 Evolene runs a sequence of steps that in the end results in a `docker push` that is a SemVer based image including the git commit appended. `tamarack:2.3.40_f2486d7`
 
-# Security scaning
 
-By default files in your repo will be scanned for strings that looks like passwords or tokens. We use [RepoSupervisor](https://github.com/auth0/repo-supervisor/) for this.
+# Build SemVer Docker Image 
 
-When your project is buildt a warning will be sent to SLACK_CHANNELS with the files that contain suspisious files. If a file gives you a false possitive, you can create a file in the root of your repository and name it `.scanignore`. In the .scanignore file you can add catalogs or files that the security scan should ignore.
-
-### .scanignore formatting
+## Overide the Name
+Override the IMAGE_NAME in docker.conf for the image to build.
 
 ```bash
-# Catalogs starting with, or specific files.
-/node_modules/
-/imported-data/personnumer.txt
+IMAGE_NAME='other-name'  $EVOLENE_DIRECTORY/run.sh
 ```
+
+## Project Root
+
+Build your project from an other directory.
+If set the  $WORKSPACE set by Jenkins will be ignored.
+
+```bash
+PROJECT_ROOT='/other/jenkis/workspace/other-repo/'  $EVOLENE_DIRECTORY/run.sh
+```
+
+## Override Git Commit
+Reuse a commit hash of the push that triggered the build.
+If set the  $GIT_COMMIT set by Jenkins will be ignored.
+
+```bash
+GIT_COMMIT='abcdefhijkl1234456'  $EVOLENE_DIRECTORY/run.sh
+```
+
+## Specify SemVer path versoin
+The patch version in the SemVer tag is the Jenkins $BUILD_NUMBER.
+If set the $BUILD_NUMBER set by Jenkins will be ignored, and patch version
+will always be tag tamarack:2.3.`40`. 
+
+```bash
+BUILD_NUMBER='40'  $EVOLENE_DIRECTORY/run.sh
+```
+
 
 # Build information to file
 
@@ -74,41 +97,6 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 }
 ```
 
-# Build SemVer Docker Image 
-
-## Overide the Name
-Override the IMAGE_NAME in docker.conf for the image to build.
-
-```bash
-IMAGE_NAME='other-name'  $EVOLENE_DIRECTORY/run.sh
-```
-
-## Project Root
-
-Build your project from an other directory.
-If set the  $WORKSPACE set by Jenkins will be ignored.
-
-```bash
-PROJECT_ROOT='/other/jenkis/workspace/other-repo/'  $EVOLENE_DIRECTORY/run.sh
-```
-
-## Override Git Commit
-Reuse a commit hash of the push that triggered the build.
-If set the  $GIT_COMMIT set by Jenkins will be ignored.
-
-```bash
-GIT_COMMIT='abcdefhijkl1234456'  $EVOLENE_DIRECTORY/run.sh
-```
-
-## Specify SemVer path versoin
-The patch version in the SemVer tag is the Jenkins $BUILD_NUMBER.
-If set the $BUILD_NUMBER set by Jenkins will be ignored, and patch version
-will always be tag tamarack:2.3.`40`. 
-
-```bash
-BUILD_NUMBER='40'  $EVOLENE_DIRECTORY/run.sh
-```
-
 # Slack Integration
 
 ## Slack web hook 
@@ -126,6 +114,20 @@ failures an push information.
 
 ```bash
 SLACK_CHANNELS='#pipeline-logs,#devops' $EVOLENE_DIRECTORY/run.sh
+```
+
+# Security scaning
+
+By default files in your repo will be scanned for strings that looks like passwords or tokens. We use [RepoSupervisor](https://github.com/auth0/repo-supervisor/) for this.
+
+When your project is buildt a warning will be sent to SLACK_CHANNELS with the files that contain suspisious files. If a file gives you a false possitive, you can create a file in the root of your repository and name it `.scanignore`. In the .scanignore file you can add catalogs or files that the security scan should ignore.
+
+## .scanignore formatting
+
+```bash
+# Catalogs starting with, or specific files.
+/node_modules/
+/imported-data/personnumer.txt
 ```
 
 # Docker Registries
