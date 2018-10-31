@@ -40,6 +40,35 @@ When your project is buildt a warning will be sent to SLACK_CHANNELS with the fi
 /imported-data/personnumer.txt
 ```
 
+### Build information to file
+If BUILD_INFORMATION_OUTPUT_FILE ends with `.js` a module will be writen to the specified file.
+
+```javascript
+module.exports = {
+  "jenkinsBuildDate": "2018-10-31 12:49:14",
+  "dockerVersion": "2.3.40_f2486d7",
+  "jenkinsBuild": "40",
+  "dockerName": "tamarack",
+  "dockerImage": "kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7",
+  "gitCommit": "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
+  "gitBranch": "origin/master"
+}
+```
+
+If BUILD_INFORMATION_OUTPUT_FILE ends with `.json` a module will be writen to the specified file.
+
+```json
+{
+  "jenkinsBuildDate": "2018-10-31 12:49:14",
+  "dockerVersion": "2.3.40_f2486d7",
+  "jenkinsBuild": "40",
+  "dockerName": "tamarack",
+  "dockerImage": "kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7",
+  "gitCommit": "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
+  "gitBranch": "origin/master"
+}
+```
+
 ## All environment variables for configuration:
 
 ```
@@ -54,57 +83,10 @@ REGISTRY_USER                 - Registry user
 REGISTRY_PASSWORD             - Registry password
 PUSH_PUBLIC                   - Push the image to hub.docker.com/r/kthse
 SKIP_DRY_RUN                  - Skip the step where the new image is tested by running 'docker run image_id'
-BUILD_INFORMATION_OUTPUT_FILE - Print build info to js-module file 
+BUILD_INFORMATION_OUTPUT_FILE - Print build info  file 
 EVOLENE_DIRECTORY             - The working directory of evolene (used on jenkins to work properly)
 EXPERIMENTAL                  - Feature toogle for latest features
 ```
-
-## Enable integration tests with docker-compose-integration-tests.yml
-### docker-compose-integration-tests.yml
-Creating a file named ```docker-compose-integration-tests.yml``` in the root of the project tells Jenkins to run integration tests.
-The following is an example file from the [lms-sync-users](https://github.com/KTH/lms-sync-users) app:
-```
-version: '3.2'
-
-services:
-  web:
-    build: .
-    image: $LOCAL_IMAGE_ID
-
-    volumes:
-      - ./test:/test
-      - ./node_modules:/node_modules
-    tty: true
-    command: npm run test:docker-integration
-    environment:
-      - CANVAS_API_URL
-      - CANVAS_API_KEY
-      - AZURE_HOST
-      - AZURE_SHARED_ACCESS_KEY_NAME
-      - AZURE_SHARED_ACCESS_KEY
-```
-The last block, environment, defines which environment variables should be passed into the docker container.
-
-With this file in place, Jenkins will try to run the integration tests. But for the tests to run successfully, the credentials has to be setup in Jenkins.
-
-### Jenkins credentials
-Add credentials by going to the [Credentials](https://build.sys.kth.se/credentials/store/system/domain/_/) page in Jenkins, and create the credentials that should be passed into the docker container as ```Secret text```. In this example, one secret text should be created for each of the following:
-- CANVAS_API_URL
-- CANVAS_API_KEY
-- AZURE_HOST
-- AZURE_SHARED_ACCESS_KEY_NAME
-- AZURE_SHARED_ACCESS_KEY
-
-_However, this is not enough to actually tell Jenkins to pass the credentials into the build as environment variables._
-
-### Binding credentials to environment variables in Jenkins
-Go to the Jenkins project page, and choose configure ([lms-sync-users in this example](https://build.sys.kth.se/job/lms-sync-users/configure)).
-
-Under the ```Build Environment```, check the option ```Use secret text(s) or file(s)```. This will show a new block, named ```Bindings```.
-
-Add a ```Secret text``` binding for each of the above specified environment variables.
-
-Now everything should be setup for the integration tests to run successfully. Time to get some pop corn 🍿
 
 # How to develop and run Evolene on your local machine
 
