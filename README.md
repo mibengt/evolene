@@ -139,13 +139,16 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 
 ### Unit Testing
 
-Add a file in the root of your project called  `docker-compose-unit-tests.yml`
+Add a file in the root of your project called  `docker-compose-unit-tests.yml`. This
+file is then run 
 
 Before unit tests are run, the image is built and it´s id is availeble to
 the Docker Compose file via `$LOCAL_IMAGE_ID`.
 
 One way is then to mount your test directly into the docker images and run your tests on
 that very image.
+
+On your local machine you can run the same test using `docker-compose --file docker-compose-unit-tests.yml up --abort-on-container-exit --always-recreate-deps`.
 
 ```yaml
 version: '3'
@@ -160,7 +163,6 @@ services:
 ```
 
 
-
 ### Integration Testing
 
 Add a file in the root of your project called  `docker-compose-integration-tests.yml`.
@@ -169,6 +171,8 @@ the Docker Compose file via `$LOCAL_IMAGE_ID`.
 
 One way is then to start up your service and from other container run queries against
 our server.  
+
+On your local machine you can run the same test using `docker-compose --file docker-compose-integration-tests.yml up --abort-on-container-exit --always-recreate-deps`.
 
 ```yaml
 version: '3'
