@@ -32,7 +32,7 @@ class InstructionStep(AbstractPipelineStep):
         return False
 
     def get_change_message(self, instruction, data):
-        return "*{}*: Please change {}  to `{}`.".format(
+        return "*{}*: Please change container start instruction from {} to: ```{}```.".format(
             ImageVersionUtil.get_image(data),
             instruction,
             self.get_change_to_instruction(instruction))
