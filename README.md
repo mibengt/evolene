@@ -38,12 +38,9 @@ IMAGE_VERSION=2.3
 
 ```
 
-In Jenkins add a job that pulls your Git repository and runs this command inside *Execute shell*:
+In Jenkins add a job that pulls your Git repository and runs this command inside *Execute shell*: `SLACK_CHANNELS='#my-dev-channel' $EVOLENE_DIRECTORY/run.sh` or if you have no Slack `$EVOLENE_DIRECTORY/run.sh`
 
-If your have a Evolene Slack Integration configured on Jenkins.
-`SLACK_CHANNELS='#my-dev-channel' $EVOLENE_DIRECTORY/run.sh` or if you have no Slack `$EVOLENE_DIRECTORY/run.sh`
-
-That is it, you will get notified by Evolene about all other things in console log and to the `SLACK_CHANNELS` when you need to know them.
+*That is it!* Evolene will tell you will all other things in your Slack channels or in the Jenkins console log, when you build your app.
 
 :boom: :tada: Happy Coding!
 
