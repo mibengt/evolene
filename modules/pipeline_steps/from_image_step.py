@@ -27,16 +27,17 @@ class FromImageStep(AbstractPipelineStep):
         "kth-nodejs-api": [ "2.4" ],
         "kth-play1": [ "1.5" ],
         "kth-play2": [ "2.2" ],
-        
+        "kth-python": [ "3.6" ],
+
         #
         #  Allow all tags
         #
         "redis": ["*"],
+        "openjdk": ["*"],
 
         #
         # Disallow all tags
         #
-        "kth-python": [ ],
         "kth-java": [ ],
         "oracle": [ ],
     }
