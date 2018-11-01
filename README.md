@@ -38,24 +38,25 @@ IMAGE_VERSION=2.3
 
 ```
 
+In Jenkins add a job that pulls your Git repository and runs this command inside *Execute shell*:
+
+If your have a Evolene Slack Integration configured on Jenkins.
+`SLACK_CHANNELS='#my-dev-channel' $EVOLENE_DIRECTORY/run.sh` or if you have no Slack `$EVOLENE_DIRECTORY/run.sh`
+
 That is it, you will get notified by Evolene about all other things in console log and to the `SLACK_CHANNELS` when you need to know them.
 
 :boom: :tada: Happy Coding!
 
 ## :+1: Evolene Features
 
-* Verifies /docker.conf
-* Verifies /Dockerfile
-* Writes build information to file
-* Repo security scanning for passwords and secrets
-* Docker build
-* SemVer versioning of Docker images
-* Push to Docker Registry
-* Slack integration for build information
-* Audit of FROM images
-* Contarinerized integration testing by running **docker-compose-integration-tests.yml**
-* Contarinerized unit testing by running **docker-compose-unit-tests.yml**
-
+* No configuration, unless you want it
+* You need no Jenkins knowledge (almost), works on Jenkins, exactly as on your dev machine
+* Testing and full integration testing
+* SemVer for the win
+* Handles all the Docker stuff
+* Slack integrations of course
+* Scan for passwords in your code
+* ... and more
 
 ## :hammer: Build SemVer Docker Image 
 
