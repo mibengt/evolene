@@ -98,9 +98,10 @@ BUILD_NUMBER='40'  $EVOLENE_DIRECTORY/run.sh
 
 ## :page_facing_up: Build information to file
 
-### Module
+If you whould like to get build information writen to a file. Set `BUILD_INFORMATION_OUTPUT_FILE` to a relative path
+in your repo. Depending on the file extension a different file type will be created. (overwritten if it already exists).
 
-If BUILD_INFORMATION_OUTPUT_FILE ends with `.js` a module will be writen to the specified file.
+### Module
 
 ```bash
 BUILD_INFORMATION_OUTPUT_FILE='/info.js`'
@@ -118,9 +119,7 @@ module.exports = {
 }
 ```
 
-### Typesript
-
-If BUILD_INFORMATION_OUTPUT_FILE ends with `.ts` a module will be writen to the specified file.
+### Typescript
 
 ```bash
 BUILD_INFORMATION_OUTPUT_FILE='/info.ts`'
@@ -140,8 +139,6 @@ exports const buildInfo {
 
 ### JSON
 
-If BUILD_INFORMATION_OUTPUT_FILE ends with `.json` a module will be writen to the specified file.
-
 ```bash
 BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 ```
@@ -159,8 +156,6 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 ```
 
 ### Conf-file
-
-If BUILD_INFORMATION_OUTPUT_FILE ends with `.conf` a module will be writen to the specified file.
 
 ```bash
 BUILD_INFORMATION_OUTPUT_FILE='/info.conf`'
@@ -242,7 +237,7 @@ services:
       - web
 ```
 
-## :lips: Slack Integration
+## :mega: Slack Integration
 
 ### Slack web hook
 
