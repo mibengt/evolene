@@ -13,7 +13,7 @@ class PrintUtil(object):
 
     @staticmethod
     def black(line):
-        PrintUtil.color(line, '\033[95m')
+        PrintUtil.color(line, '\033[0m')
 
     @staticmethod
     def pink(line):
