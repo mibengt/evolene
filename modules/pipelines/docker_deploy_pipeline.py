@@ -18,6 +18,7 @@ from modules.pipeline_steps.unit_test_step import UnitTestStep
 from modules.pipeline_steps.integration_test_step import IntegrationTestStep
 from modules.pipeline_steps.from_image_step import FromImageStep
 from modules.pipeline_steps.celebrate_step import CelebrateStep
+from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
 from modules.util.environment import Environment
 from modules.util.slack import Slack
@@ -61,6 +62,7 @@ class DockerDeployPipeline(object):
             next_step = next_step.set_next_step(PushPublicImageStep())
         else:
             next_step = next_step.set_next_step(PushImageStep())
+        data = next_step = next_step.set_next_step(DoneStep())
 
     def run_pipeline(self):
         self.verify_environment()
