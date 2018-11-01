@@ -98,6 +98,10 @@ BUILD_NUMBER='40'  $EVOLENE_DIRECTORY/run.sh
 If you whould like to get build information writen to a file. Set `BUILD_INFORMATION_OUTPUT_FILE` to a relative path
 in your repo. Depending on the file extension a different file type will be created. (overwritten if it already exists).
 
+```bash
+BUILD_INFORMATION_OUTPUT_FILE='/info.js`' $EVOLENE_DIRECTORY/run.sh
+```
+
 ### Module
 
 ```bash
