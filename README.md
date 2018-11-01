@@ -161,7 +161,7 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 BUILD_INFORMATION_OUTPUT_FILE='/info.conf`'
 ```
 
-```conf
+```bash
 jenkinsBuildDate=2018-10-31 12:49:14,
 dockerVersion=2.3.40_f2486d7,
 jenkinsBuild=40,
