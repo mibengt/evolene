@@ -98,7 +98,8 @@ BUILD_NUMBER='40'  $EVOLENE_DIRECTORY/run.sh
 
 ## :page_facing_up: Build information to file
 
-#### Module
+### Module
+
 If BUILD_INFORMATION_OUTPUT_FILE ends with `.js` a module will be writen to the specified file.
 
 ```bash
@@ -117,13 +118,34 @@ module.exports = {
 }
 ```
 
+### Typesript
+
+If BUILD_INFORMATION_OUTPUT_FILE ends with `.ts` a module will be writen to the specified file.
+
+```bash
+BUILD_INFORMATION_OUTPUT_FILE='/info.ts`'
+```
+
+```javascript
+exports const buildInfo {
+  "jenkinsBuildDate": "2018-10-31 12:49:14",
+  "dockerVersion": "2.3.40_f2486d7",
+  "jenkinsBuild": "40",
+  "dockerName": "tamarack",
+  "dockerImage": "kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7",
+  "gitCommit": "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
+  "gitBranch": "origin/master"
+}
+```
+
+### JSON
+
 If BUILD_INFORMATION_OUTPUT_FILE ends with `.json` a module will be writen to the specified file.
 
 ```bash
 BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 ```
 
-#### JSON
 ```json
 {
   "jenkinsBuildDate": "2018-10-31 12:49:14",
@@ -134,6 +156,24 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
   "gitCommit": "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
   "gitBranch": "origin/master"
 }
+```
+
+### Conf-file
+
+If BUILD_INFORMATION_OUTPUT_FILE ends with `.conf` a module will be writen to the specified file.
+
+```bash
+BUILD_INFORMATION_OUTPUT_FILE='/info.conf`'
+```
+
+```conf
+jenkinsBuildDate=2018-10-31 12:49:14,
+dockerVersion=2.3.40_f2486d7,
+jenkinsBuild=40,
+dockerName=tamarack,
+dockerImage=kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7,
+gitCommit=f2486d79abf3af26225aa1dbde0fddfcd702c7e6,
+gitBranch=origin/master
 ```
 
 ## :bell: Testing
