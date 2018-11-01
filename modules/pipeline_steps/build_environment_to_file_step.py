@@ -38,8 +38,13 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
             return self.to_js_module(data)
         if str(output_file).endswith(".json"):
             return self.to_json(data)
+        if str(output_file).endswith(".ts"):
+            return self.to_ts_const(data)
         if str(output_file).endswith(".conf"):
             return self.to_conf(data)
+
+    def to_ts_const(self, data):
+        return "export const buildInfo = {}".format(json.dumps(self.get_build_environment(data)))
 
     def to_json(self, data):
         return json.dumps(self.get_build_environment(data))
