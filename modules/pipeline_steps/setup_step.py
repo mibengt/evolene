@@ -18,14 +18,14 @@ class SetupStep(AbstractPipelineStep):
         self.print_header()
         return data
 
-    def color(self, line, color='\033[0m'):
+    def print_color(self, line, color='\033[0m'):
         print "{}{}\033[0m\n".format(color, line)
     
     def print_black(self, line):
-        self.color(line, color='\033[95m')
+        self.print_color(line, '\033[95m')
 
     def print_pink(self, line):
-        self.print_black(line, color='\033[95m')
+        self.print_color(line, '\033[95m')
 
     def print_header(self):
         self.print_black("                                                    ")
