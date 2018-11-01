@@ -17,6 +17,7 @@ from modules.pipeline_steps.repo_supervisor_step import RepoSupervisorStep
 from modules.pipeline_steps.unit_test_step import UnitTestStep
 from modules.pipeline_steps.integration_test_step import IntegrationTestStep
 from modules.pipeline_steps.from_image_step import FromImageStep
+from modules.pipeline_steps.instruction_step import InstructionStep
 from modules.pipeline_steps.celebrate_step import CelebrateStep
 from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
@@ -38,6 +39,8 @@ class DockerDeployPipeline(object):
         next_step = next_step.set_next_step(DockerFileStep())
         # Check Dockerfiles FROM statement
         next_step = next_step.set_next_step(FromImageStep())
+        # Check that ENTRYPOINT is not used
+        next_step = next_step.set_next_step(InstructionStep())
         # Write information about the current build to a json-file.
         next_step = next_step.set_next_step(BuildEnvironmentToFileStep())
         # Scan the repo for passwords, tokens or other suspicious looking strings  
