@@ -99,13 +99,13 @@ If you whould like to get build information writen to a file. Set `BUILD_INFORMA
 in your repo. Depending on the file extension a different file type will be created. (overwritten if it already exists).
 
 ```bash
-BUILD_INFORMATION_OUTPUT_FILE='/config/version.js`' $EVOLENE_DIRECTORY/run.sh
+BUILD_INFORMATION_OUTPUT_FILE='/config/version.js' $EVOLENE_DIRECTORY/run.sh
 ```
 
 ### Module
 
 ```bash
-BUILD_INFORMATION_OUTPUT_FILE='/info.js`'
+BUILD_INFORMATION_OUTPUT_FILE='/info.js'
 ```
 
 ```javascript
@@ -123,7 +123,7 @@ module.exports = {
 ### Typescript
 
 ```bash
-BUILD_INFORMATION_OUTPUT_FILE='/info.ts`'
+BUILD_INFORMATION_OUTPUT_FILE='/info.ts'
 ```
 
 ```javascript
@@ -141,7 +141,7 @@ exports const buildInfo {
 ### JSON
 
 ```bash
-BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
+BUILD_INFORMATION_OUTPUT_FILE='/config/info.json'
 ```
 
 ```json
@@ -159,7 +159,7 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json`'
 ### Conf-file
 
 ```bash
-BUILD_INFORMATION_OUTPUT_FILE='/info.conf`'
+BUILD_INFORMATION_OUTPUT_FILE='/info.conf'
 ```
 
 ```bash
@@ -333,7 +333,7 @@ Used in Jenkin builds for shorter path when envoking the Evolene itself `$EVOLEN
 Also gives you a way of specifing what version of Evolene that is used.
 
 ```bash
-EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6`'
+EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6'
 ```
 
 ## :clipboard: Setup Evolene on Jenkins
