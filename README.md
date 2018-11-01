@@ -99,7 +99,7 @@ If you whould like to get build information writen to a file. Set `BUILD_INFORMA
 in your repo. Depending on the file extension a different file type will be created. (overwritten if it already exists).
 
 ```bash
-BUILD_INFORMATION_OUTPUT_FILE='/info.js`' $EVOLENE_DIRECTORY/run.sh
+BUILD_INFORMATION_OUTPUT_FILE='/config/version.js`' $EVOLENE_DIRECTORY/run.sh
 ```
 
 ### Module
