@@ -23,7 +23,8 @@ class InstructionStep(AbstractPipelineStep):
             if self.is_instrucation_entrypoint(instruction):
                 message = self.get_change_message(instruction, data)
                 self.log.warn(message)
-                Slack.on_warning(message)                
+                Slack.on_warning(message)        
+        return data        
 
     def is_instrucation_entrypoint(self, instruction):
         if str(instruction).startswith("ENTRYPOINT"):
