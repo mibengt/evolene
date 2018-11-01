@@ -14,12 +14,15 @@ class FromImageStep(AbstractPipelineStep):
     
     
     IMAGE_RULES = {
-        # Tags starting with.
-        # 
+        #
+        #  Tags starting with the following are considered
+        # to be safe to use.
+        #
         # i.e: kthse/kth-os:3.8.0
-        # "kth-os": [ "3.8" ]
-        # "kth-os": [ "3.8.0" ]
-        # "kth-os": [ "3.8.0_abcdef" ]
+        # "kth-os": [ "2.8" ] -> False
+        # "kth-os": [ "3.8" ] -> False
+        # "kth-os": [ "3.8.0" ] -> True
+        # "kth-os": [ "3.8.0_abcdef" ] -> True
         #
         "kth-os": [ "3.8" ],
         "kth-nodejs": [ "8.11", "9.11"],
@@ -30,13 +33,14 @@ class FromImageStep(AbstractPipelineStep):
         "kth-python": [ "3.6" ],
 
         #
-        #  Allow all tags
+        #  Allow all tags for an image.
+        #  "openjdk": ["*"]
         #
         "redis": ["*"],
         "openjdk": ["*"],
 
         #
-        # Disallow all tags
+        # Disallow all tags for a image.
         #
         "kth-java": [ ],
         "oracle": [ ],
