@@ -23,19 +23,29 @@ class Environment(object):
     EXPERIMENTAL = 'EXPERIMENTAL'
     SKIP_DRY_RUN = 'SKIP_DRY_RUN'
     PUSH_PUBLIC = 'PUSH_PUBLIC'
+    PUSH_AZURE = 'PUSH_AZURE'
+    AZURE_REGISTRY_HOST = 'AZURE_REGISTRY_HOST'
+    AZURE_REGISTRY_USER 'AZURE_REGISTRY_USER'
+    AZURE_REGISTRY_PASSWORD 'AZURE_REGISTRY_PASSWORD'
 
     @staticmethod
     def get_registry_host():
         if Environment.get_push_public():
             return "docker.io/kthse"
+        if Environment.get_push_azure():
+            return os.environ.get(Environment.AZURE_REGISTRY_HOST)
         return os.environ.get(Environment.REGISTRY_HOST)
 
     @staticmethod
     def get_registry_user():
+        if Environment.get_push_azure():
+            return os.environ.get(Environment.AZURE_REGISTRY_USER)
         return os.environ.get(Environment.REGISTRY_USER)
 
     @staticmethod
     def get_registry_password():
+        if Environment.get_push_azure():
+            return os.environ.get(Environment.AZURE_REGISTRY_PASSWORD)
         return os.environ.get(Environment.REGISTRY_PASSWORD)
 
     @staticmethod
@@ -82,6 +92,10 @@ class Environment(object):
     @staticmethod
     def get_push_public():
         return Environment.is_true(Environment.PUSH_PUBLIC)
+
+    @staticmethod
+    def get_push_azure():
+        return Environment.is_true(Environment.PUSH_AZURE)
 
     @staticmethod
     def get_experimental():
