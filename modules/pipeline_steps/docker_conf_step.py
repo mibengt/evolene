@@ -24,7 +24,7 @@ class DockerConfPipelineStep(AbstractPipelineStep):
 
         if self.has_missing_conf_vars(conf_lines):
             self.handle_step_error('Missing the following configuration variables in `/docker.conf`: {}'
-                                   .format(self.get_missing_conf_vars))
+                                   .format(self.get_missing_conf_vars(conf_lines)))
 
         data = self.add_conf_vars(conf_lines, data)
         
