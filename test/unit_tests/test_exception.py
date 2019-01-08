@@ -18,4 +18,4 @@ class ExceptionsTests(unittest.TestCase):
 
     def test_slack_message_is_not_regular_message(self):
         exception = PipelineException("Regular message", "Slack message")
-        self.assertEquals(exception.message, "Regular message")
+        self.assertEquals(str(exception), "Regular message")

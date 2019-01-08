@@ -28,7 +28,7 @@ class DockerTests(unittest.TestCase):
             self._test_grep_image_id()
             self._test_stop_and_rm_container()
         except Exception as ex:
-            print 'Error was: {}'.format(ex.message)
+            print(f'Error was: {str(ex)}')
             self.tearDownClass()
 
     def test_grep_image_id_missing(self):

@@ -2,7 +2,6 @@
 
 set -e
 
-virtualenv env
-env/bin/pip install -r requirements.txt
+pipenv install
 ./run_tests.sh
-env/bin/python setup.py sdist
+pipenv run python setup.py sdist

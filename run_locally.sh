@@ -10,4 +10,4 @@ REGISTRY_USER=jenkins \
 SLACK_CHANNELS=#pipeline-logs \
 EVOLENE_SLACK_WEB_HOOK=https://not_at_this_time \
 EVOLENE_DIRECTORY=$(pwd) \
-env/bin/python run.py docker run-pipeline
+pipenv run python run.py docker run-pipeline

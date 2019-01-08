@@ -5,6 +5,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
 from modules.util.docker import Docker
+from modules.util.exceptions import PipelineException
 
 class BuildLocalStep(AbstractPipelineStep):
 
@@ -19,6 +20,8 @@ class BuildLocalStep(AbstractPipelineStep):
         image_grep_output = self.verify_built_image(image_id)
         size = self.get_image_size(image_grep_output)
         data[Data.IMAGE_SIZE] = size
+        if size == '0' or size == 'N/A':
+            raise PipelineException('Built image has no size')
         data[Data.LOCAL_IMAGE_ID] = image_id
         self.log.info('Built image with id "%s" and size "%s"', image_id, size)
         return data
@@ -39,7 +42,7 @@ class BuildLocalStep(AbstractPipelineStep):
         self.log.info('image_grep_output contains: "%s"', image_grep_output)
         size = re.search(r'[0-9\.]+MB', image_grep_output)
         if size:
-            return size.group(0)
+            return size.group(0).strip()
         return 'N/A'
 
     def run_build(self, data):

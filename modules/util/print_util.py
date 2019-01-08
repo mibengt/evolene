@@ -5,7 +5,7 @@ class PrintUtil(object):
 
     @staticmethod
     def color(line, color='\033[0m'):
-        print "{}{}\033[0m".format(color, line)
+        print(f'{color}{line}\033[0m')
 
     @staticmethod
     def green(line):

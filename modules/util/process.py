@@ -14,12 +14,14 @@ class Process(object):
     def run_with_output(cmd):
         try:
             Process.log.debug('Running command with output: "%s"', cmd)
-            return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+            output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+            if output:
+                return output.decode('utf-8')
 
         except subprocess.CalledProcessError as cpe:
             if cpe.output:
-                raise PipelineException(cpe.output)
-            raise PipelineException("{}".format(cpe))
+                raise PipelineException(cpe.output.decode('utf-8'))
+            raise PipelineException(f"{str(cpe)}")
         except:
             raise PipelineException(
                 "Unabled exception. {}".format(sys.exc_info()[0]))

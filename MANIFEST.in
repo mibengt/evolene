@@ -4,5 +4,5 @@ recursive-include env *
 include run.py
 include run_tests.sh
 include run.sh
-include requirements.txt
+include Pipfile
 include README.md
