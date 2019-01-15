@@ -56,7 +56,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
         results = json.loads(cmd_output)
         filenames = [f_name.replace(RepoSupervisorStep.REPO_MOUNTED_DIR, '').encode('utf-8')
                      for (f_name, _)
-                     in results['result'].iteritems()
+                     in results['result'].items()
                      if not self.ignore(f_name)]
         if filenames:
             self._log_warning_and_send_to_slack(filenames, data)
