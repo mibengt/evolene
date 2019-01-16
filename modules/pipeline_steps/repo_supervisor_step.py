@@ -103,7 +103,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
             return Process.run_with_output(cmd)
         except PipelineException as pipeline_ex:
             # Special handling while waiting for https://github.com/auth0/repo-supervisor/pull/5
-            if 'Not detected any secrets in files' not in pipeline_ex.message:
+            if 'Not detected any secrets in files' not in str(pipeline_ex):
                 self.log.warn(
-                    'Ignoring error in repo supervisor step: "%s"', pipeline_ex.message)
+                    'Ignoring error in repo supervisor step: "%s"', str(pipeline_ex))
             return None

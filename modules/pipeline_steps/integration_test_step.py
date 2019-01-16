@@ -35,10 +35,10 @@ class IntegrationTestStep(AbstractPipelineStep):
             Docker.run_integration_tests(FileUtil.get_absolue_path(IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME), data)
 
         except Exception as ex:
-            raise PipelineException(ex.message, self.get_slack_message(ex, data))
+            raise PipelineException(str(ex), self.get_slack_message(ex, data))
 
     def get_slack_message(self, exception, data):
         return '*{}* s integration tests failed: \n```...\n{}```\n:jenkins: {}console'.format(
             ImageVersionUtil.get_image(data), 
-            exception.message.replace('`', ' ')[-1000:], 
+            str(exception).replace('`', ' ')[-1000:], 
             Environment.get_build_url())
