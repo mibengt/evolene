@@ -23,12 +23,9 @@ class Docker(object):
         try:
             return Process.run_with_output('docker images | grep {}'
                                            .format(image_id))
-        except PipelineException as pipeline_err:
-            if '""' in str(pipeline_err):
-                # We got an empty output, which means that the grep failed
-                # which in turn means that no image was found, return None
-                return None
-            raise
+        except PipelineException:
+            # An exception here means that the grep failed and that the image is missing
+            return None
 
     @staticmethod
     def get_container_status(container_id):

@@ -8,13 +8,19 @@ class FileUtil(object):
     @staticmethod
     def get_lines(relative_file_path):
         result = []
-
         if FileUtil.is_file(relative_file_path):
             with open(FileUtil.get_absolue_path(relative_file_path)) as afile:
                 for line in afile:
                     result.append(line.strip())
 
         return result
+
+    @staticmethod
+    def read_as_string(relative_file_path):
+        if FileUtil.is_file(relative_file_path):
+            with open(FileUtil.get_absolue_path(relative_file_path)) as afile:
+                return afile.read()
+        return None
 
     @staticmethod
     def get_absolue_path(relative_file_path):

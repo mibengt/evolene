@@ -32,7 +32,8 @@ class DockerTests(unittest.TestCase):
             self.tearDownClass()
 
     def test_grep_image_id_missing(self):
-        self.assertRaises(PipelineException, Docker.grep_image_id, 'none-existing-image-id')
+        grep_return = Docker.grep_image_id('none-existing-image-id')
+        self.assertIsNone(grep_return)
 
     def _test_build(self):
         current_path = os.path.dirname(os.path.abspath(__file__))

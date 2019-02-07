@@ -2,11 +2,8 @@ __author__ = 'tinglev'
 
 import unittest
 import os
-from mock import patch
 from modules.pipeline_steps.image_version_step import ImageVersionStep
-from modules.util.exceptions import PipelineException
 from modules.util.environment import Environment
-from modules.util.image_version_util import ImageVersionUtil
 
 class ImageVersionStepTests(unittest.TestCase):
 
@@ -28,12 +25,12 @@ class ImageVersionStepTests(unittest.TestCase):
     def test_format_image_version_with_build_number_as_patch(self):
         ivs = ImageVersionStep()
         result = ivs.get_sem_ver('1.2', 123)
-        self.assertEquals(result, '1.2.123')
+        self.assertEqual(result, '1.2.123')
 
     def test_format_image_version_to_long(self):
         ivs = ImageVersionStep()
         try:
             ivs.get_sem_ver('1.2.321', 1)
             self.assertEqual("", "Should not be allowed to come here.")
-        except Exception as e:
-            self.assertTrue(True)
+        except Exception:
+            pass

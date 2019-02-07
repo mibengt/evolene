@@ -5,7 +5,6 @@ from modules.util.environment import Environment
 from modules.util.exceptions import PipelineException
 from modules.util.data import Data
 
-
 class ImageVersionUtil(object):
 
     @staticmethod
@@ -22,24 +21,18 @@ class ImageVersionUtil(object):
 
     @staticmethod
     def get_image(data):
-
         if data[Data.IMAGE_NAME] is None:
             raise PipelineException("Missing the name of the image.")
-
         if data[Data.IMAGE_VERSION] is None:
             raise PipelineException("Missing the version for the image.")
-
         return '{}:{}'.format(data[Data.IMAGE_NAME], data[Data.IMAGE_VERSION])
 
     @staticmethod
     def get_image_only_semver(data):
-
         if data[Data.IMAGE_NAME] is None:
             raise PipelineException("Missing the name of the image.")
-
         if data[Data.SEM_VER] is None:
             raise PipelineException("Missing the SemVer for the image.")
-
         return '{}:{}'.format(data[Data.IMAGE_NAME], data[Data.SEM_VER])
 
     @staticmethod

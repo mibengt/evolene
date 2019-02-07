@@ -27,18 +27,32 @@
 import os
 import sys
 import logging
-import fire
 from modules.pipelines.docker_deploy_pipeline import DockerDeployPipeline
+from modules.pipelines.npm_pipeline import NpmPipeline
 from modules.util.environment import Environment
+from modules.util.file_util import FileUtil
 import modules.util.log as log
 
-if __name__ == '__main__':
+def select_and_run_pipeline():
+    docker_conf = FileUtil.get_absolue_path('/docker.conf')
+    has_docker_conf = os.path.isfile(docker_conf)
+    npm_conf = FileUtil.get_absolue_path('/npm.conf')
+    has_npm_conf = os.path.isfile(npm_conf)
+    if has_docker_conf:
+        pipeline = DockerDeployPipeline()
+        pipeline.run_pipeline()
+    elif has_npm_conf:
+        pipeline = NpmPipeline()
+        pipeline.run_pipeline()
+
+def main():
     log.init_logging()
     evo_dir = Environment.get_evolene_directory()
     if not evo_dir:
         logging.getLogger(__name__).fatal('Missing EVOLENE_DIRECTORY environment')
         sys.exit(1)
     os.chdir(evo_dir)
-    fire.Fire({
-        'docker': DockerDeployPipeline
-        })
+    select_and_run_pipeline()
+
+if __name__ == '__main__':
+    main()

@@ -1,2 +1,2 @@
 #!/bin/sh
-pipenv run green "test" -vv --run-coverage
+pipenv run green -vv --run-coverage --failfast "test"

@@ -14,7 +14,7 @@ class ConcretePipelineStep(AbstractPipelineStep):
     def run_step(self, data):
         if not 'counter' in data:
             data['counter'] = 0
-        data['counter'] += 1            
+        data['counter'] += 1
         return data
 
     def get_required_env_variables(self):
@@ -81,8 +81,8 @@ class AbstractPipelineStepTests(unittest.TestCase):
         cps1 = ConcretePipelineStep()
         cps2 = ConcretePipelineStep()
         cpsr = cps1.set_next_step(cps2)
-        self.assertEquals(cps1.next_step, cps2)
-        self.assertEquals(cpsr, cps2)
+        self.assertEqual(cps1.next_step, cps2)
+        self.assertEqual(cpsr, cps2)
 
     @patch.object(AbstractPipelineStep, 'step_environment_ok')
     @patch.object(AbstractPipelineStep, 'step_data_is_ok')
@@ -95,5 +95,5 @@ class AbstractPipelineStepTests(unittest.TestCase):
         cps1.set_next_step(cps2)
         cps2.set_next_step(cps3)
         result = cps1.run_pipeline_step({})
-        self.assertEquals(result['counter'], 3)
+        self.assertEqual(result['counter'], 3)
         self.assertRaises(TypeError, cps1.run_pipeline_step, {'counter': 'error'})

@@ -2,7 +2,6 @@ __author__ = 'tinglev'
 
 import os
 import unittest
-from mock import patch
 from modules.util.environment import Environment
 from modules.pipeline_steps.docker_file_step import DockerFileStep
 from modules.util.data import Data

@@ -15,7 +15,6 @@ pylint = "*"
 requests = "==2.20.1"
 coloredlogs = "==10.0"
 setuptools = "==34.3.2"
-fire = "==0.1.0"
 
 [requires]
 python_version = "3.6"

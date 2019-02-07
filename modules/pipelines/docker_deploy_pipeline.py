@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 import logging
 import sys
 from modules.pipeline_steps.setup_step import SetupStep
-from modules.pipeline_steps.docker_conf_step import DockerConfPipelineStep
+from modules.pipeline_steps.read_conf_step import ReadConfFileStep
 from modules.pipeline_steps.image_version_step import ImageVersionStep
 from modules.pipeline_steps.docker_file_step import DockerFileStep
 from modules.pipeline_steps.build_local_step import BuildLocalStep
@@ -33,7 +33,7 @@ class DockerDeployPipeline(object):
         # Configure pipeline
         self.first_step = SetupStep()
         # Check the content of docker.conf
-        next_step = self.first_step.set_next_step(DockerConfPipelineStep())
+        next_step = self.first_step.set_next_step(ReadConfFileStep('docker.conf'))
         # Build new image version major.minor.path_githash
         next_step = next_step.set_next_step(ImageVersionStep())
         # Check Dockerfile exists

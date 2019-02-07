@@ -4,8 +4,6 @@ import unittest
 import os
 from modules.pipeline_steps.repo_supervisor_step import RepoSupervisorStep
 from modules.util.environment import Environment
-from modules.util.data import Data
-from modules.util.exceptions import PipelineException
 
 class RepoSupervisorStepTest(unittest.TestCase):
 

@@ -1,13 +1,11 @@
 __author__ = 'tinglev'
 
 import unittest
-import os
 from mock import patch
 from modules.pipeline_steps.build_local_step import BuildLocalStep
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.docker import Docker
 from modules.util.data import Data
-from modules.util.environment import Environment
 
 class BuildLocalStepTests(unittest.TestCase):
 

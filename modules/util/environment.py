@@ -27,6 +27,21 @@ class Environment(object):
     AZURE_REGISTRY_HOST = 'AZURE_REGISTRY_HOST'
     AZURE_REGISTRY_USER = 'AZURE_REGISTRY_USER'
     AZURE_REGISTRY_PASSWORD = 'AZURE_REGISTRY_PASSWORD'
+    NPM_USER = 'NPM_USER'
+    NPM_PASSWORD = 'NPM_PASSWORD'
+    NPM_EMAIL = 'NPM_EMAIL'
+
+    @staticmethod
+    def get_npm_email():
+        return os.environ.get(Environment.NPM_EMAIL)
+
+    @staticmethod
+    def get_npm_user():
+        return os.environ.get(Environment.NPM_USER)
+
+    @staticmethod
+    def get_npm_password():
+        return os.environ.get(Environment.NPM_PASSWORD)
 
     @staticmethod
     def get_registry_host():

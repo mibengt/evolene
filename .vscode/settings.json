@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "env/bin/python",
+    "python.pythonPath": "/Users/tinglev/.local/share/virtualenvs/evolene-4wgh_sg-/bin/python",
     "python.unitTest.unittestArgs": [
         "-v",
         "-s",

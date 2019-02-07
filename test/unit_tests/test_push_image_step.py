@@ -12,7 +12,7 @@ class PushImageStepTests(unittest.TestCase):
     def test_verify_image_in_tags(self):
         pis = PushImageStep()
         data = {Data.IMAGE_VERSION: '1.1.23_2135'}
-        result = pis.verify_image_version_in_tags(['1.1.23_2135', '1.2.0_1234'], data)
+        pis.verify_image_version_in_tags(['1.1.23_2135', '1.2.0_1234'], data)
         self.assertRaises(PipelineException,
                           pis.verify_image_version_in_tags, ['1.1.23_2136', '1.2.0_1234'], data)
 
@@ -30,4 +30,3 @@ class PushImageStepTests(unittest.TestCase):
         data = {Data.IMAGE_VERSION: '1.2.0_1234', Data.IMAGE_NAME: 'kth-azure-app'}
         result = pis.create_registry_url(data)
         self.assertEqual(result, 'https://kthregistryv2.sys.kth.se/v2/kth-azure-app/tags/list')
-

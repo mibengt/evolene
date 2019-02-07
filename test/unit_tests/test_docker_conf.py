@@ -2,10 +2,9 @@ __author__ = 'tinglev'
 
 import unittest
 import os
-from mock import patch
 from modules.util.environment import Environment
 from modules.util.data import Data
-from modules.pipeline_steps.docker_conf_step import DockerConfPipelineStep
+from modules.pipeline_steps.read_conf_step import ReadConfFileStep
 from modules.util.file_util import FileUtil
 
 class DockerConfStepTests(unittest.TestCase):
@@ -15,7 +14,7 @@ class DockerConfStepTests(unittest.TestCase):
         return os.path.join(current_path, '../data')
 
     def test_clean_variable_value(self):
-        dcs = DockerConfPipelineStep()
+        dcs = ReadConfFileStep('docker.conf')
         result = dcs.clean_variable_value('""bla""')
         self.assertEqual(result, 'bla')
         result = dcs.clean_variable_value('b"l"a')
@@ -24,7 +23,7 @@ class DockerConfStepTests(unittest.TestCase):
         self.assertEqual(result, 'b\\"l\\"a')
 
     def test_trim(self):
-        dcs = DockerConfPipelineStep()
+        dcs = ReadConfFileStep('docker.conf')
         lines = []
         result = dcs.trim(lines)
         self.assertEqual(result, [])
@@ -54,7 +53,7 @@ class DockerConfStepTests(unittest.TestCase):
         self.assertEqual(result, ['ENV=1.0'])
 
     def test_add_conf_vars(self):
-        dcs = DockerConfPipelineStep()
+        dcs = ReadConfFileStep('docker.conf')
         env_lines = None
         result = dcs.add_conf_vars(env_lines, {'data':'abc'})
         self.assertEqual(result, {'data':'abc'})
@@ -69,25 +68,22 @@ class DockerConfStepTests(unittest.TestCase):
         self.assertEqual(result['test_key'], 'test_val')
         self.assertEqual(result['test_2_key'], 'test_2_val')
 
-    
     def test_image_version_in_data(self):
-        dcs = DockerConfPipelineStep()
-
-        env_lines = dcs.trim(['#comment', 'IMAGE_NAME=TEST', 'IMAGE_VERSION=1.3', 'PATCH_VERSION=0'])
-
+        dcs = ReadConfFileStep('docker.conf')
+        env_lines = dcs.trim(['#comment', 'IMAGE_NAME=TEST',
+                              'IMAGE_VERSION=1.3', 'PATCH_VERSION=0'])
         result = dcs.add_conf_vars(env_lines, {})
-
         self.assertEqual(result[Data.PATCH_VERSION], '0')
-        
+
     def test_get_docker_conf_lines(self):
         os.environ[Environment.PROJECT_ROOT] = self.get_test_data_project_root()
-        dcs = DockerConfPipelineStep()
+        ReadConfFileStep('docker.conf')
         result = FileUtil.get_lines("/docker.conf")
         self.assertEqual(len(result), 13)
         self.assertEqual(result[12], 'ADDITIONAL_ENV="Some value"')
 
     def test_missing_conf_vars(self):
-        dcs = DockerConfPipelineStep()
+        dcs = ReadConfFileStep('docker.conf')
         lines = None
         result = dcs.get_missing_conf_vars(lines)
         self.assertEqual(result, [Environment.IMAGE_NAME, Data.IMAGE_VERSION])
