@@ -2,10 +2,8 @@ __author__ = 'tinglev'
 
 import os
 import unittest
-from unittest import mock
 from modules.pipeline_steps.npm_version_step import NpmVersionStep
 from modules.pipeline_steps.load_package_json_step import LoadPackageJsonStep
-from modules.util.process import Process
 from modules.util.data import Data
 from modules.util.environment import Environment
 
