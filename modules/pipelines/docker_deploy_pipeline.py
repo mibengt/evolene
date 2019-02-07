@@ -24,6 +24,7 @@ from modules.util.exceptions import PipelineException
 from modules.util.environment import Environment
 from modules.util.print_util import PrintUtil
 from modules.util.slack import Slack
+from modules.util.data import Data
 
 class DockerDeployPipeline(object):
 
@@ -33,7 +34,9 @@ class DockerDeployPipeline(object):
         # Configure pipeline
         self.first_step = SetupStep()
         # Check the content of docker.conf
-        next_step = self.first_step.set_next_step(ReadConfFileStep('docker.conf'))
+        next_step = self.first_step.set_next_step(
+            ReadConfFileStep('docker.conf', [Environment.IMAGE_NAME, Data.IMAGE_VERSION])
+        )
         # Build new image version major.minor.path_githash
         next_step = next_step.set_next_step(ImageVersionStep())
         # Check Dockerfile exists

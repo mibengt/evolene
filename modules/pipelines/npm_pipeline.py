@@ -5,15 +5,18 @@ import sys
 from modules.pipeline_steps.setup_step import SetupStep
 from modules.pipeline_steps.read_conf_step import ReadConfFileStep
 from modules.pipeline_steps.npm_build_step import NpmBuildStep
+from modules.pipeline_steps.npm_test_step import NpmTestStep
 from modules.pipeline_steps.npm_login_step import NpmLoginStep
 from modules.pipeline_steps.load_package_json_step import LoadPackageJsonStep
 from modules.pipeline_steps.npm_version_step import NpmVersionStep
 from modules.pipeline_steps.npm_package_name_step import NpmPackageNameStep
 from modules.pipeline_steps.npm_version_changed_step import NpmVersionChangedStep
 from modules.pipeline_steps.start_nvm_step import StartNvmStep
+from modules.pipeline_steps.init_node_environment_step import InitNodeEnvironmentStep
 from modules.util.exceptions import PipelineException
 from modules.util.print_util import PrintUtil
 from modules.util.slack import Slack
+from modules.util.data import Data
 from modules.util import pipeline
 
 class NpmPipeline(object):
@@ -22,14 +25,27 @@ class NpmPipeline(object):
         self.log = logging.getLogger(__name__)
         # Configure pipeline
         self.pipeline_steps = pipeline.create_pipeline_from_array([
+            # Setup
             SetupStep(),
+            # Source nvm.sh and make sure nvm is executable
             StartNvmStep(),
+            # Read and parse the package.json file
             LoadPackageJsonStep(),
-            ReadConfFileStep('npm.conf'),
+            # Read and validate the npm.conf file
+            ReadConfFileStep('npm.conf', [Data.NPM_CONF_NODE_VERSION]),
+            # Install the requested node version if missing in nvm
+            InitNodeEnvironmentStep(),
+            # Read the npm version from package.json
             NpmVersionStep(),
+            # Read the npm package name from package.json
             NpmPackageNameStep(),
+            # Check if the latest published version differs from this one
             NpmVersionChangedStep(),
+            # Login to npm
             NpmLoginStep(),
+            # Run npm test
+            NpmTestStep(),
+            # Run npm build
             NpmBuildStep()
         ])
 

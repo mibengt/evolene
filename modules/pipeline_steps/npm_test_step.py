@@ -5,7 +5,7 @@ from modules.util.environment import Environment
 from modules.util.data import Data
 from modules.util import nvm
 
-class NpmBuildStep(AbstractPipelineStep):
+class NpmTestStep(AbstractPipelineStep):
 
     def __init__(self):
         AbstractPipelineStep.__init__(self)
@@ -17,6 +17,6 @@ class NpmBuildStep(AbstractPipelineStep):
         return [Data.NPM_CONF_NODE_VERSION]
 
     def run_step(self, data):
-        result = nvm.nvm_exec(data, 'npm build')
-        self.log.debug('Output from npm build was: "%s"', result)
+        result = nvm.nvm_exec(data, 'npm test')
+        self.log.debug('Output from npm test was: "%s"', result)
         return data

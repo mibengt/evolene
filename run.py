@@ -45,7 +45,7 @@ def main():
         logging.getLogger(__name__).fatal('Missing EVOLENE_DIRECTORY environment')
         sys.exit(1)
     os.chdir(evo_dir)
-    verify_npm_cli_version()
+    #verify_npm_cli_version()
     select_and_run_pipeline()
 
 if __name__ == '__main__':
