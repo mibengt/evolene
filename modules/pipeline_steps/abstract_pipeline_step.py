@@ -71,7 +71,7 @@ class AbstractPipelineStep:
     def report_error_to_slack(self, message):
         workspace = Environment.get_project_root()
         if workspace:
-            message = f'({workspace}) {message}'
+            message = f'[`{workspace}`] {message}'
         Slack.send_to_slack(message)
 
     def run_pipeline_step(self, data):
