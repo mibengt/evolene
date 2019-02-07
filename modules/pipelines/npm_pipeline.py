@@ -10,6 +10,7 @@ from modules.pipeline_steps.load_package_json_step import LoadPackageJsonStep
 from modules.pipeline_steps.npm_version_step import NpmVersionStep
 from modules.pipeline_steps.npm_package_name_step import NpmPackageNameStep
 from modules.pipeline_steps.npm_version_changed_step import NpmVersionChangedStep
+from modules.pipeline_steps.start_nvm_step import StartNvmStep
 from modules.util.exceptions import PipelineException
 from modules.util.print_util import PrintUtil
 from modules.util.slack import Slack
@@ -22,6 +23,7 @@ class NpmPipeline(object):
         # Configure pipeline
         self.pipeline_steps = pipeline.create_pipeline_from_array([
             SetupStep(),
+            StartNvmStep(),
             LoadPackageJsonStep(),
             ReadConfFileStep('npm.conf'),
             NpmVersionStep(),

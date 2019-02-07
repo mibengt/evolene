@@ -20,9 +20,11 @@ def select_and_run_pipeline():
     if has_docker_conf:
         pipeline = DockerDeployPipeline()
         pipeline.run_pipeline()
-    elif has_npm_conf:
+        return
+    if has_npm_conf:
         pipeline = NpmPipeline()
         pipeline.run_pipeline()
+        return
     else:
         logger.error('No suitable configuration file found for project')
 

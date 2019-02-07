@@ -10,7 +10,7 @@ from modules.util.file_util import FileUtil
 from modules.util.image_version_util import ImageVersionUtil
 
 class IntegrationTestStep(AbstractPipelineStep):
-    
+
     INTEGRATION_TEST_COMPOSE_FILENAME = '/docker-compose-integration-tests.yml'
 
     def get_required_env_variables(self):
