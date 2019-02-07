@@ -1,6 +1,7 @@
 __author__ = 'tinglev'
 
 import unittest
+from unittest import mock
 import os
 from modules.pipeline_steps.image_version_step import ImageVersionStep
 from modules.util.environment import Environment
@@ -29,8 +30,6 @@ class ImageVersionStepTests(unittest.TestCase):
 
     def test_format_image_version_to_long(self):
         ivs = ImageVersionStep()
-        try:
-            ivs.get_sem_ver('1.2.321', 1)
-            self.assertEqual("", "Should not be allowed to come here.")
-        except Exception:
-            pass
+        ImageVersionStep.handle_step_error = mock.MagicMock()
+        ivs.get_sem_ver('1.2.321', 1)
+        ImageVersionStep.handle_step_error.assert_called_once()
