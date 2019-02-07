@@ -34,6 +34,7 @@ from modules.util.file_util import FileUtil
 import modules.util.log as log
 
 def select_and_run_pipeline():
+    logger = logging.getLogger(__name__)
     docker_conf = FileUtil.get_absolue_path('/docker.conf')
     has_docker_conf = os.path.isfile(docker_conf)
     npm_conf = FileUtil.get_absolue_path('/npm.conf')
@@ -44,6 +45,8 @@ def select_and_run_pipeline():
     elif has_npm_conf:
         pipeline = NpmPipeline()
         pipeline.run_pipeline()
+    else:
+        logger.error('No suitable configuration file found for project')
 
 def main():
     log.init_logging()

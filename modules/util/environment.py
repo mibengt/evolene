@@ -94,7 +94,9 @@ class Environment(object):
     @staticmethod
     def get_slack_channels():
         channels = os.environ.get(Environment.SLACK_CHANNELS)
-        return [channel.rstrip() for channel in channels.split(',')]
+        if channels:
+            return [channel.rstrip() for channel in channels.split(',')]
+        return []
 
     @staticmethod
     def get_slack_web_hook():
@@ -131,7 +133,6 @@ class Environment(object):
         value = os.environ.get(env_key)
         if value is None:
             return False
-
         return value.lower() in ['true', 'yes', 'y']
 
     @staticmethod
