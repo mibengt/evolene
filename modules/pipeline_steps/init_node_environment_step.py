@@ -4,6 +4,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.process import Process
 from modules.util.data import Data
+from modules.util.exceptions import PipelineException
 from modules.util import nvm
 
 class InitNodeEnvironmentStep(AbstractPipelineStep):
@@ -20,10 +21,14 @@ class InitNodeEnvironmentStep(AbstractPipelineStep):
     def run_step(self, data):
         conf_version = data[Data.NPM_CONF_NODE_VERSION]
         self.log.debug('Configured node version is: "%s"', conf_version)
-        nvm_installed_version = self.get_nvm_installed_version(conf_version, data)
-        if nvm_installed_version.strip() == 'N/A':
-            self.log.debug('Configured node version not installed; installing')
-            self.install_version(conf_version, data)
+        try:
+            self.get_nvm_installed_version(conf_version, data)
+        except PipelineException as nvm_ex:
+            if 'N/A' in str(nvm_ex):
+                self.log.debug('Configured node version not installed; installing')
+                self.install_version(conf_version, data)
+            else:
+                raise
         self.log.debug('Node version %s installed with nvm', conf_version)
         return data
 
