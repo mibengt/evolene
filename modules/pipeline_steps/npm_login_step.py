@@ -20,9 +20,9 @@ class NpmLoginStep(AbstractPipelineStep):
         # npm login doesn't support non-interactive login, so we'll do this
         # through a docker image
         cmd = (f'docker run '
-               f'-e NPM_USER={Environment.get_npm_user()} '
-               f'-e NPM_PASS={Environment.get_npm_password()} '
-               f'-e NPM_EMAIL={Environment.get_npm_email()} '
+               f'-e NPM_USER="{Environment.get_npm_user()}" '
+               f'-e NPM_PASS="{Environment.get_npm_password()}" '
+               f'-e NPM_EMAIL="{Environment.get_npm_email()}" '
                f'bravissimolabs/generate-npm-authtoken '
                f'> ~/.npmrc')
         result = Process.run_with_output(cmd)
