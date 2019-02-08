@@ -7,3 +7,6 @@ def nvm_exec(data, cmd):
     conf_version = data[Data.NPM_CONF_NODE_VERSION]
     return Process.run_with_output(f'. /var/lib/jenkins/.nvm/nvm.sh && '
                                    f'nvm exec --silent {conf_version} {cmd}').strip()
+
+def nvm_run(cmd):
+    return Process.run_with_output(f'. /var/lib/jenkins/.nvm/nvm.sh && {cmd}')
