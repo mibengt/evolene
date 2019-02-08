@@ -3,7 +3,6 @@ __author__ = 'tinglev'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
-from modules.util.process import Process
 from modules.util import nvm
 
 class NpmVersionChangedStep(AbstractPipelineStep):
@@ -21,6 +20,7 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         current_version = data[Data.NPM_VERSION]
         package_name = data[Data.NPM_PACKAGE_NAME]
         result = self.get_latest_version(package_name, data)
+        self.log.debug('Latest version published is: "%s"', result)
         data[Data.NPM_VERSION_CHANGED] = (current_version != result)
         self.log.debug('npm version has changed "%s"', data[Data.NPM_VERSION_CHANGED])
         return data

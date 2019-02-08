@@ -1,8 +1,6 @@
 __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.environment import Environment
-from modules.util.process import Process
 from modules.util.data import Data
 from modules.util.exceptions import PipelineException
 from modules.util import nvm

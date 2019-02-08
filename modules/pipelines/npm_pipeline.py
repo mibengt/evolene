@@ -13,6 +13,10 @@ from modules.pipeline_steps.npm_package_name_step import NpmPackageNameStep
 from modules.pipeline_steps.npm_version_changed_step import NpmVersionChangedStep
 from modules.pipeline_steps.start_nvm_step import StartNvmStep
 from modules.pipeline_steps.init_node_environment_step import InitNodeEnvironmentStep
+from modules.pipeline_steps.npm_package_lock_step import NpmPackageLockStep
+from modules.pipeline_steps.npm_audit_step import NpmAuditStep
+from modules.pipeline_steps.npm_publish_step import NpmPublishStep
+from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
 from modules.util.print_util import PrintUtil
 from modules.util.slack import Slack
@@ -43,10 +47,18 @@ class NpmPipeline(object):
             NpmVersionChangedStep(),
             # Login to npm
             NpmLoginStep(),
+            # Create our package.lock file
+            NpmPackageLockStep(),
             # Run npm test
             NpmTestStep(),
             # Run npm build
-            NpmBuildStep()
+            NpmBuildStep(),
+            # Run package audit
+            NpmAuditStep(),
+            # Publish the package if version has changed
+            NpmPublishStep(),
+            # Print done
+            DoneStep()
         ])
 
     def run_pipeline(self):

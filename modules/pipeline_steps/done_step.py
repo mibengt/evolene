@@ -14,5 +14,4 @@ class DoneStep(AbstractPipelineStep):
 
     def run_step(self, data):
         PrintUtil.green("Built, tested and pushed to registry!")
-        
         return data

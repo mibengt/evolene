@@ -3,6 +3,7 @@ __author__ = 'tinglev'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.process import Process
+from modules.util import nvm
 
 class NpmLoginStep(AbstractPipelineStep):
 
@@ -27,4 +28,6 @@ class NpmLoginStep(AbstractPipelineStep):
                f'> ~/.npmrc')
         result = Process.run_with_output(cmd)
         self.log.debug('Output from npm login was: "%s"', result)
+        result = nvm.exec_npm_command(data, 'whoami')
+        self.log.debug('Output from npm whoami was: "%s"', result)
         return data
