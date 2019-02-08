@@ -3,6 +3,7 @@ __author__ = 'tinglev'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.process import Process
+from modules.util.exceptions import PipelineException
 from modules.util import nvm
 
 class NpmLoginStep(AbstractPipelineStep):
@@ -26,8 +27,20 @@ class NpmLoginStep(AbstractPipelineStep):
                f'-e NPM_EMAIL="{Environment.get_npm_email()}" '
                f'bravissimolabs/generate-npm-authtoken '
                f'> ~/.npmrc')
-        result = Process.run_with_output(cmd)
+        try:
+            result = Process.run_with_output(cmd)
+        except PipelineException as docker_ex:
+            self.handle_step_error(
+                'Exception when trying to get auth token from npm via docker',
+                docker_ex
+            )
         self.log.debug('Output from npm login was: "%s"', result)
-        result = nvm.exec_npm_command(data, 'whoami')
+        try:
+            result = nvm.exec_npm_command(data, 'whoami')
+        except PipelineException as npm_ex:
+            self.handle_step_error(
+                'Exception when trying to verify identify with npm whoami',
+                npm_ex
+            )
         self.log.debug('Output from npm whoami was: "%s"', result)
         return data

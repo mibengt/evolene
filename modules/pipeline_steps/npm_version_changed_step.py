@@ -3,6 +3,7 @@ __author__ = 'tinglev'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
+from modules.util.exceptions import PipelineException
 from modules.util import nvm
 
 class NpmVersionChangedStep(AbstractPipelineStep):
@@ -26,4 +27,10 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         return data
 
     def get_latest_version(self, package_name, data):
-        return nvm.exec_npm_command(data, f'show {package_name} version')
+        try:
+            return nvm.exec_npm_command(data, f'show {package_name} version')
+        except PipelineException as npm_ex:
+            self.handle_step_error(
+                'Exception when getting published npm version for package',
+                npm_ex
+            )

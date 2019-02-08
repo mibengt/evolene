@@ -26,7 +26,11 @@ class InitNodeEnvironmentStep(AbstractPipelineStep):
                 self.log.debug('Configured node version not installed; installing')
                 self.install_version(conf_version)
             else:
-                raise
+                self.handle_step_error(
+                    'Unhandled exception when getting installed '
+                    'node version',
+                    nvm_ex
+                )
         self.log.debug('Node version %s installed with nvm', conf_version)
         return data
 
@@ -34,4 +38,11 @@ class InitNodeEnvironmentStep(AbstractPipelineStep):
         return nvm.exec_nvm_command(f'version {version}')
 
     def install_version(self, version):
-        nvm.exec_nvm_command(f'install {version}')
+        try:
+            nvm.exec_nvm_command(f'install {version}')
+        except PipelineException as pipeline_ex:
+            self.handle_step_error(
+                'Exception when trying to install node version. '
+                'Is NODE_VERSION in npm.conf set to a valid version?',
+                pipeline_ex
+            )

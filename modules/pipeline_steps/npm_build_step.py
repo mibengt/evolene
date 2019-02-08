@@ -3,6 +3,7 @@ __author__ = 'tinglev'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
+from modules.util.exceptions import PipelineException
 from modules.util import nvm
 
 class NpmBuildStep(AbstractPipelineStep):
@@ -17,6 +18,12 @@ class NpmBuildStep(AbstractPipelineStep):
         return [Data.NPM_CONF_NODE_VERSION]
 
     def run_step(self, data):
-        result = nvm.run_npm_script(data, 'build')
+        try:
+            result = nvm.run_npm_script(data, 'build')
+        except PipelineException as npm_ex:
+            self.handle_step_error(
+                'npm build failed',
+                npm_ex
+            )
         self.log.debug('Output from npm build was: "%s"', result)
         return data

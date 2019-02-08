@@ -21,4 +21,7 @@ class LoadPackageJsonStep(AbstractPipelineStep):
         package_content = FileUtil.read_as_string('/package.json')
         if package_content:
             data[Data.PACKAGE_JSON] = json.loads(package_content)
+        else:
+            self.handle_step_error('Could not load package.json for the project. '
+                                   'Is the file missing or renamed?')
         return data
