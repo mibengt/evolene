@@ -26,4 +26,4 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         return data
 
     def get_latest_version(self, package_name, data):
-        return nvm.nvm_exec(data, f'npm show {package_name} version')
+        return nvm.exec_npm_command(data, f'show {package_name} version')

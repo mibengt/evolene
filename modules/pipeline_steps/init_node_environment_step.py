@@ -33,7 +33,7 @@ class InitNodeEnvironmentStep(AbstractPipelineStep):
         return data
 
     def get_nvm_installed_version(self, version):
-        return nvm.nvm_run(f'nvm version {version}')
+        return nvm.exec_nvm_command(f'version {version}')
 
     def install_version(self, version):
-        nvm.nvm_run(f'nvm install {version}')
+        nvm.exec_nvm_command(f'install {version}')
