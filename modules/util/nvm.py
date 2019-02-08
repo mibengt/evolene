@@ -1,10 +1,11 @@
 __author__ = 'tinglev@kth.se'
 
+import os
 from modules.util.data import Data
 from modules.util.process import Process
 from modules.util.environment import Environment
 
-NVM_DIR = '$HOME/.nvm/nvm.sh'
+NVM_DIR = f'{os.environ.get("HOME")}/.nvm/nvm.sh'
 
 def get_nvm_source():
     return f'. {NVM_DIR}'
