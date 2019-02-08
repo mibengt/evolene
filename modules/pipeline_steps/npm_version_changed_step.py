@@ -15,7 +15,7 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         return [Environment.PROJECT_ROOT]
 
     def get_required_data_keys(self):
-        return [Data.NPM_VERSION, Data.NPM_PACKAGE_NAME]
+        return [Data.NPM_PACKAGE_VERSION, Data.NPM_PACKAGE_NAME]
 
     def run_step(self, data):
         current_version = data[Data.NPM_PACKAGE_VERSION]

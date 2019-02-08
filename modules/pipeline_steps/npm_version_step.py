@@ -20,6 +20,6 @@ class NpmVersionStep(AbstractPipelineStep):
             npm_version = data[Data.PACKAGE_JSON]["version"]
         except KeyError as key_error:
             self.handle_step_error('Missing "version" in package.json', key_error)
-        data[Data.NPM_VERSION] = npm_version
+        data[Data.NPM_PACKAGE_VERSION] = npm_version
         self.log.debug('npm version of application is "%s"', npm_version)
         return data

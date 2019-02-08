@@ -16,4 +16,4 @@ class NpmVersionStepTests(unittest.TestCase):
         step = NpmVersionStep()
         data = load_step.run_step({})
         result = step.run_step(data)
-        self.assertEqual(result[Data.NPM_VERSION], '1.0.0')
+        self.assertEqual(result[Data.NPM_PACKAGE_VERSION], '1.0.0')
