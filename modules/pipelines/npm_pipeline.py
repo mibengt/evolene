@@ -17,6 +17,7 @@ from modules.pipeline_steps.npm_package_lock_step import NpmPackageLockStep
 from modules.pipeline_steps.npm_audit_step import NpmAuditStep
 from modules.pipeline_steps.npm_publish_step import NpmPublishStep
 from modules.pipeline_steps.install_nvm_step import InstallNvmStep
+from modules.pipeline_steps.npm_author_policy import NpmAuthorPolicy
 from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
 from modules.util.print_util import PrintUtil
@@ -38,6 +39,8 @@ class NpmPipeline(object):
             StartNvmStep(),
             # Read and parse the package.json file
             LoadPackageJsonStep(),
+            # Make sure author exists and has name and email set
+            NpmAuthorPolicy(),
             # Read and validate the npm.conf file
             ReadConfFileStep('npm.conf', [Data.NPM_CONF_NODE_VERSION]),
             # Install the requested node version if missing in nvm

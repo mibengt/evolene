@@ -18,10 +18,11 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         return [Data.NPM_VERSION, Data.NPM_PACKAGE_NAME]
 
     def run_step(self, data):
-        current_version = data[Data.NPM_VERSION]
+        current_version = data[Data.NPM_PACKAGE_VERSION]
         package_name = data[Data.NPM_PACKAGE_NAME]
         result = self.get_latest_version(package_name, data)
         self.log.debug('Latest version published is: "%s"', result)
+        data[Data.NPM_LATEST_VERSION] = result
         data[Data.NPM_VERSION_CHANGED] = (current_version != result)
         self.log.debug('npm version has changed "%s"', data[Data.NPM_VERSION_CHANGED])
         return data
