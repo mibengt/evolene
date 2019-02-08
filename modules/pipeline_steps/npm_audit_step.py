@@ -27,6 +27,7 @@ class NpmAuditStep(AbstractPipelineStep):
                 npm_ex
             )
         audit_json = json.loads(result)
+        self.approve_audit(data, audit_json)
         self.log.debug('Audit result was "%s"', json.dumps(audit_json))
         return data
 
