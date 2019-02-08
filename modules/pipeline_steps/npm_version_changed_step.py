@@ -4,6 +4,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.data import Data
 from modules.util.process import Process
+from modules.util import nvm
 
 class NpmVersionChangedStep(AbstractPipelineStep):
 
@@ -19,10 +20,10 @@ class NpmVersionChangedStep(AbstractPipelineStep):
     def run_step(self, data):
         current_version = data[Data.NPM_VERSION]
         package_name = data[Data.NPM_PACKAGE_NAME]
-        result = self.get_latest_version(package_name)
+        result = self.get_latest_version(package_name, data)
         data[Data.NPM_VERSION_CHANGED] = (current_version != result)
         self.log.debug('npm version has changed "%s"', data[Data.NPM_VERSION_CHANGED])
         return data
 
-    def get_latest_version(self, package_name):
-        return Process.run_with_output(f'npm show {package_name} version')
+    def get_latest_version(self, package_name, data):
+        return nvm.nvm_exec(data, f'npm show {package_name} version')

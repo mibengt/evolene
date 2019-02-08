@@ -28,16 +28,6 @@ def select_and_run_pipeline():
     else:
         logger.error('No suitable configuration file found for project')
 
-def verify_npm_cli_version():
-    logger = logging.getLogger(__name__)
-    result = Process.run_with_output('npm -v').replace("\n", "")
-    pattern = r'6+\.[4-9]+\.[0-9]+'
-    match = re.match(pattern, result)
-    if not match:
-        logger.fatal('npm is not installed with the correct version.'
-                     'Installed version is "%s" and required is "%s"', result, pattern)
-        sys.exit(1)
-
 def main():
     log.init_logging()
     evo_dir = Environment.get_evolene_directory()
@@ -45,7 +35,6 @@ def main():
         logging.getLogger(__name__).fatal('Missing EVOLENE_DIRECTORY environment')
         sys.exit(1)
     os.chdir(evo_dir)
-    #verify_npm_cli_version()
     select_and_run_pipeline()
 
 if __name__ == '__main__':
