@@ -17,6 +17,6 @@ class NpmTestStep(AbstractPipelineStep):
         return [Data.NPM_CONF_NODE_VERSION]
 
     def run_step(self, data):
-        result = nvm.exec_npm_command(data, 'test')
+        result = nvm.run_npm_script(data, 'test')
         self.log.debug('Output from npm test was: "%s"', result)
         return data

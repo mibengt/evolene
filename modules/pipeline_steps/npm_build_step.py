@@ -17,6 +17,6 @@ class NpmBuildStep(AbstractPipelineStep):
         return [Data.NPM_CONF_NODE_VERSION]
 
     def run_step(self, data):
-        result = nvm.exec_npm_command(data, 'build')
+        result = nvm.run_npm_script(data, 'build')
         self.log.debug('Output from npm build was: "%s"', result)
         return data
