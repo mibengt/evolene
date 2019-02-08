@@ -36,11 +36,9 @@ class ReadConfFileStep(AbstractPipelineStep):
             for env in env_lines:
                 self.log.debug('Adding %s value for: %s', self.conf_file, env.split('=')[0])
                 data[env.split('=')[0]] = self.clean_variable_value(env.split('=')[1])
-
         except TypeError as t_err:
             self.log.warning('TypeError in add_conf_vars: %s', t_err, exc_info=True)
-            return data
-                
+            return data              
         return data
 
     def trim(self, raw_lines):

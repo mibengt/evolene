@@ -15,7 +15,7 @@ class StartNvmStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        Process.run_with_output('. ~/.nvm/nvm.sh')
+        Process.run_with_output('. /var/lib/jenkins/.nvm')
         result = Process.run_with_output('nvm --version')
         self.log.debug('nvm version is: "%s"', result)
         return data
