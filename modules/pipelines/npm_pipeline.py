@@ -16,6 +16,7 @@ from modules.pipeline_steps.init_node_environment_step import InitNodeEnvironmen
 from modules.pipeline_steps.npm_package_lock_step import NpmPackageLockStep
 from modules.pipeline_steps.npm_audit_step import NpmAuditStep
 from modules.pipeline_steps.npm_publish_step import NpmPublishStep
+from modules.pipeline_steps.install_nvm_step import InstallNvmStep
 from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
 from modules.util.print_util import PrintUtil
@@ -31,6 +32,8 @@ class NpmPipeline(object):
         self.pipeline_steps = pipeline.create_pipeline_from_array([
             # Setup
             SetupStep(),
+            # Install nvm if not installed already
+            InstallNvmStep(),
             # Source nvm.sh and make sure nvm is executable
             StartNvmStep(),
             # Read and parse the package.json file

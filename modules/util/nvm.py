@@ -4,8 +4,10 @@ from modules.util.data import Data
 from modules.util.process import Process
 from modules.util.environment import Environment
 
+NVM_DIR = '$HOME/.nvm/nvm.sh'
+
 def get_nvm_source():
-    return f'. $HOME/.nvm/nvm.sh'
+    return f'. {NVM_DIR}'
 
 def get_nvm_exec_base(data):
     nvm_source = get_nvm_source()
