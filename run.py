@@ -8,7 +8,7 @@ from modules.pipelines.docker_deploy_pipeline import DockerDeployPipeline
 from modules.pipelines.npm_pipeline import NpmPipeline
 from modules.util.environment import Environment
 from modules.util import file_util
-from modules.util.process import Process
+from modules.util import process
 import modules.util.log as log
 
 def select_and_run_pipeline():

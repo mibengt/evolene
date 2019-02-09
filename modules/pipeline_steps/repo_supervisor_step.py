@@ -3,7 +3,7 @@ __author__ = 'tinglev@kth.se'
 import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import docker
-from modules.util.process import Process
+from modules.util import process
 from modules.util.environment import Environment
 from modules.util import pipeline_data
 from modules.util import file_util
@@ -100,7 +100,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
                'JSON_OUTPUT=1 node /opt/repo-supervisor/dist/cli.js {0}"'
                .format(RepoSupervisorStep.REPO_MOUNTED_DIR, image_name))
         try:
-            return Process.run_with_output(cmd)
+            return process.run_with_output(cmd)
         except PipelineException as pipeline_ex:
             # Special handling while waiting for https://github.com/auth0/repo-supervisor/pull/5
             if 'Not detected any secrets in files' not in str(pipeline_ex):

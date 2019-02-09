@@ -4,7 +4,7 @@ import os
 import unittest
 from modules.util.environment import Environment
 from modules.util import docker
-from modules.util.process import Process
+from modules.util import process
 from modules.util.exceptions import PipelineException
 
 
@@ -15,8 +15,8 @@ class DockerTests(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        Process.run_with_output('docker rm -f {}'.format(DockerTests.CONTAINER_ID))
-        Process.run_with_output('docker rmi -f {}'.format(DockerTests.IMAGE_ID))
+        process.run_with_output('docker rm -f {}'.format(DockerTests.CONTAINER_ID))
+        process.run_with_output('docker rmi -f {}'.format(DockerTests.IMAGE_ID))
 
     def test_all(self):
         try:
