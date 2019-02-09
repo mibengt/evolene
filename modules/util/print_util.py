@@ -1,24 +1,16 @@
 __author__ = 'tinglev'
 
+def color(line, color_code='\033[0m'):
+    print(f'{color_code}{line}\033[0m')
 
-class PrintUtil(object):
+def green(line):
+    color(line, '\033[32m')
 
-    @staticmethod
-    def color(line, color='\033[0m'):
-        print(f'{color}{line}\033[0m')
+def black(line):
+    color(line, '\033[0m')
 
-    @staticmethod
-    def green(line):
-        PrintUtil.color(line, '\033[32m')
+def pink(line):
+    color(line, '\033[95m')
 
-    @staticmethod
-    def black(line):
-        PrintUtil.color(line, '\033[0m')
-
-    @staticmethod
-    def pink(line):
-        PrintUtil.color(line, '\033[95m')
-    
-    @staticmethod
-    def red(line):
-        PrintUtil.color(line, '\033[31m')
+def red(line):
+    color(line, '\033[31m')

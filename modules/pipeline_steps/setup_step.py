@@ -2,7 +2,7 @@ __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
-from modules.util.print_util import PrintUtil
+from modules.util import print_util
 
 
 class SetupStep(AbstractPipelineStep):
@@ -18,17 +18,17 @@ class SetupStep(AbstractPipelineStep):
         return data
 
     def print_header(self):
-        PrintUtil.black("                                                    ")
-        PrintUtil.pink("  ______                   _                        ")
-        PrintUtil.pink(" |  ____|                 | |                       ")
-        PrintUtil.pink(" | |__    __   __   ___   | |   ___   _ __     ___  ")
-        PrintUtil.pink(" |  __|   \ \ / /  / _ \  | |  / _ \ | '_ \   / _ \ ")
-        PrintUtil.pink(" | |____   \ V /  | (_) | | | |  __/ | | | | |  __/ ")
-        PrintUtil.pink(" |______|   \_/    \___/  |_|  \___| |_| |_|  \___| ")
-        PrintUtil.black("                                                    ")
-        PrintUtil.black("                                                    ")
-        PrintUtil.black("****************************************************")
-        PrintUtil.black(" Help make Evolene better!                          ")
-        PrintUtil.black(" https://gita.sys.kth.se/Infosys/evolene            ")
-        PrintUtil.black("****************************************************")
-        PrintUtil.black("                                                    ")
+        print_util.black("                                                    ")
+        print_util.pink("  ______                   _                        ")
+        print_util.pink(" |  ____|                 | |                       ")
+        print_util.pink(" | |__    __   __   ___   | |   ___   _ __     ___  ")
+        print_util.pink(" |  __|   \ \ / /  / _ \  | |  / _ \ | '_ \   / _ \ ")
+        print_util.pink(" | |____   \ V /  | (_) | | | |  __/ | | | | |  __/ ")
+        print_util.pink(" |______|   \_/    \___/  |_|  \___| |_| |_|  \___| ")
+        print_util.black("                                                    ")
+        print_util.black("                                                    ")
+        print_util.black("****************************************************")
+        print_util.black(" Help make Evolene better!                          ")
+        print_util.black(" https://gita.sys.kth.se/Infosys/evolene            ")
+        print_util.black("****************************************************")
+        print_util.black("                                                    ")

@@ -20,7 +20,7 @@ from modules.pipeline_steps.install_nvm_step import InstallNvmStep
 from modules.pipeline_steps.npm_author_policy import NpmAuthorPolicy
 from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
-from modules.util.print_util import PrintUtil
+from modules.util import print_util
 from modules.util.slack import Slack
 from modules.util import pipeline_data
 from modules.util import pipeline
@@ -78,7 +78,7 @@ class NpmPipeline(object):
         except PipelineException as p_ex:
             self.log.fatal('%s'.encode('UTF-8'), p_ex, exc_info=False)
             Slack.send_to_slack('<!channel> {}'.format(p_ex.slack_message))
-            PrintUtil.red("Such bad, very learning")
+            print_util.red("Such bad, very learning")
             sys.exit(1)
         else:
             self.log.info('Pipeline done. Pipeline data: %s', data)
