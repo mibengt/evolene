@@ -4,7 +4,7 @@ import os
 import unittest
 from modules.pipeline_steps.npm_version_step import NpmVersionStep
 from modules.pipeline_steps.load_package_json_step import LoadPackageJsonStep
-from modules.util.data import Data
+from modules.util import pipeline_data
 from modules.util.environment import Environment
 
 class NpmVersionStepTests(unittest.TestCase):
@@ -16,4 +16,4 @@ class NpmVersionStepTests(unittest.TestCase):
         step = NpmVersionStep()
         data = load_step.run_step({})
         result = step.run_step(data)
-        self.assertEqual(result[Data.NPM_PACKAGE_VERSION], '1.0.0')
+        self.assertEqual(result[pipeline_data.NPM_PACKAGE_VERSION], '1.0.0')

@@ -1,8 +1,7 @@
 __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.data import Data
-from modules.util import nvm
+from modules.util import nvm, pipeline_data
 
 class NpmPublishStep(AbstractPipelineStep):
 
@@ -13,16 +12,16 @@ class NpmPublishStep(AbstractPipelineStep):
         return []
 
     def get_required_data_keys(self):
-        return [Data.NPM_VERSION_CHANGED, Data.NPM_PACKAGE_VERSION,
-                Data.NPM_LATEST_VERSION]
+        return [pipeline_data.NPM_VERSION_CHANGED, pipeline_data.NPM_PACKAGE_VERSION,
+                pipeline_data.NPM_LATEST_VERSION]
 
     def run_step(self, data):
-        if data[Data.NPM_VERSION_CHANGED]:
+        if data[pipeline_data.NPM_VERSION_CHANGED]:
             self.log.info(
                 'Package will be published. Local version is %s and '
                 'latest version on npm is %s',
-                data[Data.NPM_PACKAGE_VERSION],
-                data[Data.NPM_LATEST_VERSION]
+                data[pipeline_data.NPM_PACKAGE_VERSION],
+                data[pipeline_data.NPM_LATEST_VERSION]
             )
             #result = nvm.exec_npm_command(data, 'publish')
             result = 'PUBLISHED'

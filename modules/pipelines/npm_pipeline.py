@@ -22,7 +22,7 @@ from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
 from modules.util.print_util import PrintUtil
 from modules.util.slack import Slack
-from modules.util.data import Data
+from modules.util import pipeline_data
 from modules.util import pipeline
 
 class NpmPipeline(object):
@@ -42,7 +42,7 @@ class NpmPipeline(object):
             # Make sure author exists and has name and email set
             NpmAuthorPolicy(),
             # Read and validate the npm.conf file
-            ReadConfFileStep('npm.conf', [Data.NPM_CONF_NODE_VERSION]),
+            ReadConfFileStep('npm.conf', [pipeline_data.NPM_CONF_NODE_VERSION]),
             # Install the requested node version if missing in nvm
             InitNodeEnvironmentStep(),
             # Read the npm version from package.json

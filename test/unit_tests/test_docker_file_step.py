@@ -4,7 +4,7 @@ import os
 import unittest
 from modules.util.environment import Environment
 from modules.pipeline_steps.docker_file_step import DockerFileStep
-from modules.util.data import Data
+from modules.util import pipeline_data
 
 class DockerFileTests(unittest.TestCase):
 
@@ -16,4 +16,4 @@ class DockerFileTests(unittest.TestCase):
         step = DockerFileStep()
         os.environ[Environment.PROJECT_ROOT] = self.get_test_data_project_root()
         data = step.run_step({})
-        self.assertTrue(str(data[Data.DOCKERFILE_FILE]).endswith(DockerFileStep.FILE_DOCKERFILE))
+        self.assertTrue(str(data[pipeline_data.DOCKERFILE_FILE]).endswith(DockerFileStep.FILE_DOCKERFILE))

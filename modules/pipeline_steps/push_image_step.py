@@ -4,7 +4,7 @@ from requests import get, HTTPError, ConnectTimeout, RequestException
 from requests.auth import HTTPBasicAuth
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
-from modules.util.data import Data
+from modules.util import pipeline_data
 from modules.util.exceptions import PipelineException
 from modules.util.docker import Docker
 from modules.util.image_version_util import ImageVersionUtil
@@ -19,7 +19,7 @@ class PushImageStep(AbstractPipelineStep):
 
     def get_required_data_keys(self): #pragma: no cover
 
-        return [Data.IMAGE_VERSION, Data.IMAGE_NAME]
+        return [pipeline_data.IMAGE_VERSION, pipeline_data.IMAGE_NAME]
 
     def run_step(self, data):
         self.push_image(data)
@@ -31,7 +31,7 @@ class PushImageStep(AbstractPipelineStep):
         self.verify_image_version_in_tags(tags, data)
 
     def verify_image_version_in_tags(self, tags, data):
-        if not data[Data.IMAGE_VERSION] in tags:
+        if not data[pipeline_data.IMAGE_VERSION] in tags:
             self.log.error('Pushed tag could not be found in tag list on registry')
             raise PipelineException('Could not verify tag with remote registry')
         self.log.info('Found tag in tag list. Verification successful.')
@@ -50,7 +50,7 @@ class PushImageStep(AbstractPipelineStep):
 
     def create_registry_url(self, data):
         return 'https://{}/v2/{}/tags/list'.format(Environment.get_registry_host(),
-                                                   data[Data.IMAGE_NAME])
+                                                   data[pipeline_data.IMAGE_NAME])
 
     def get_tags_from_response(self, response): #pragma: no cover
         try:
@@ -78,5 +78,5 @@ class PushImageStep(AbstractPipelineStep):
     def push_image(self, data):
         registry_image_name = self.get_image_to_push(data)
         Docker.push(registry_image_name)
-        Slack.on_successful_private_push(ImageVersionUtil.get_image(data), data[Data.IMAGE_SIZE])
+        Slack.on_successful_private_push(ImageVersionUtil.get_image(data), data[pipeline_data.IMAGE_SIZE])
         self.log.info('Pushed image %s to KTH registry.', registry_image_name)

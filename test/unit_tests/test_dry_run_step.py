@@ -5,7 +5,7 @@ import time
 from mock import patch, call
 from modules.pipeline_steps.dry_run_step import DryRunStep
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.data import Data
+from modules.util import pipeline_data
 
 class DryRunStepTests(unittest.TestCase):
 
@@ -42,7 +42,7 @@ class DryRunStepTests(unittest.TestCase):
         mock_start.return_value = 'test_container_id'
         drs = DryRunStep()
         data = {}
-        data[Data.LOCAL_IMAGE_ID] = 'image_id'
+        data[pipeline_data.LOCAL_IMAGE_ID] = 'image_id'
         result = drs.run_step(data)
         self.assertEqual(result, data)
         mock_start.assert_called_once()

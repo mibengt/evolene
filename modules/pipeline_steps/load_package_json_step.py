@@ -4,7 +4,7 @@ import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.file_util import FileUtil
-from modules.util.data import Data
+from modules.util import pipeline_data
 
 class LoadPackageJsonStep(AbstractPipelineStep):
 
@@ -20,7 +20,7 @@ class LoadPackageJsonStep(AbstractPipelineStep):
     def run_step(self, data):
         package_content = FileUtil.read_as_string('/package.json')
         if package_content:
-            data[Data.PACKAGE_JSON] = json.loads(package_content)
+            data[pipeline_data.PACKAGE_JSON] = json.loads(package_content)
         else:
             self.handle_step_error('Could not load package.json for the project. '
                                    'Is the file missing or renamed?')

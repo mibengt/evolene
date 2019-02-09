@@ -4,7 +4,7 @@ import logging
 import requests
 from requests import HTTPError, ConnectTimeout, RequestException
 from modules.util.environment import Environment
-from modules.util.data import Data
+from modules.util import pipeline_data
 
 class Slack(object):
 

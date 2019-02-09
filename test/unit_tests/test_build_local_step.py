@@ -5,7 +5,7 @@ from mock import patch
 from modules.pipeline_steps.build_local_step import BuildLocalStep
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.docker import Docker
-from modules.util.data import Data
+from modules.util import pipeline_data
 
 class BuildLocalStepTests(unittest.TestCase):
 
@@ -47,7 +47,7 @@ class BuildLocalStepTests(unittest.TestCase):
     @patch.object(Docker, 'build')
     def test_run_build(self, mock_docker_build):
         bls = BuildLocalStep()
-        data = {Data.IMAGE_VERSION: '1.2.32_abcd', Data.IMAGE_NAME: 'kth-azure-app'}
+        data = {pipeline_data.IMAGE_VERSION: '1.2.32_abcd', pipeline_data.IMAGE_NAME: 'kth-azure-app'}
         bls.run_build(data)
         mock_docker_build.assert_called_once_with(['se.kth.imageName=kth-azure-app',
                                                    'se.kth.imageVersion=1.2.32_abcd'])

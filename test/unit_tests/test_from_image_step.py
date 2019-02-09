@@ -4,7 +4,7 @@ import os
 import unittest
 from modules.util.environment import Environment
 from modules.pipeline_steps.from_image_step import FromImageStep
-from modules.util.data import Data
+from modules.util import pipeline_data
 
 class DockerFileTests(unittest.TestCase):
 
@@ -60,16 +60,16 @@ class DockerFileTests(unittest.TestCase):
 
     def test_inform_if_change_image(self):
         data = {
-            Data.IMAGE_NAME: "my-app",
-            Data.IMAGE_VERSION: "1.2.3_abcdef"
+            pipeline_data.IMAGE_NAME: "my-app",
+            pipeline_data.IMAGE_VERSION: "1.2.3_abcdef"
         }
         self.assertIsNotNone(FromImageStep().get_change_image_message("kth-nodejs-api", data))
         self.assertIsNotNone(FromImageStep().get_change_image_message("kth-nodejs-web", data))
 
     def test_inform_if_change_image_is_empty(self):
         data = {
-            Data.IMAGE_NAME: "my-app",
-            Data.IMAGE_VERSION: "1.2.3_abcdef"
+            pipeline_data.IMAGE_NAME: "my-app",
+            pipeline_data.IMAGE_VERSION: "1.2.3_abcdef"
         }
         self.assertIsNone(FromImageStep().get_change_image_message(
             "should-not-return-a-message", data

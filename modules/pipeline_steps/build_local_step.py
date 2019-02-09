@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 import re
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
-from modules.util.data import Data
+from modules.util import pipeline_data
 from modules.util.docker import Docker
 from modules.util.exceptions import PipelineException
 
@@ -13,16 +13,16 @@ class BuildLocalStep(AbstractPipelineStep):
         return [Environment.PROJECT_ROOT]
 
     def get_required_data_keys(self):
-        return [Data.IMAGE_VERSION, Data.IMAGE_NAME]
+        return [pipeline_data.IMAGE_VERSION, pipeline_data.IMAGE_NAME]
 
     def run_step(self, data):
         image_id = self.run_build(data)
         image_grep_output = self.verify_built_image(image_id)
         size = self.get_image_size(image_grep_output)
-        data[Data.IMAGE_SIZE] = size
+        data[pipeline_data.IMAGE_SIZE] = size
         if size == '0' or size == 'N/A':
             raise PipelineException('Built image has no size')
-        data[Data.LOCAL_IMAGE_ID] = image_id
+        data[pipeline_data.LOCAL_IMAGE_ID] = image_id
         self.log.info('Built image with id "%s" and size "%s"', image_id, size)
         return data
 
@@ -46,7 +46,7 @@ class BuildLocalStep(AbstractPipelineStep):
         return 'N/A'
 
     def run_build(self, data):
-        lbl_image_name = 'se.kth.imageName={}'.format(data[Data.IMAGE_NAME])
-        lbl_image_version = 'se.kth.imageVersion={}'.format(data[Data.IMAGE_VERSION])
+        lbl_image_name = f'se.kth.imageName={data[pipeline_data.IMAGE_NAME]}'
+        lbl_image_version = f'se.kth.imageVersion={data[pipeline_data.IMAGE_VERSION]}'
         image_id = Docker.build([lbl_image_name, lbl_image_version])
         return self.format_image_id(image_id)

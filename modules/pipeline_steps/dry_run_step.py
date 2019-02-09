@@ -2,7 +2,7 @@ __author__ = 'tinglev'
 
 import time
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.data import Data
+from modules.util import pipeline_data
 from modules.util.docker import Docker
 
 class DryRunStep(AbstractPipelineStep):
@@ -16,13 +16,13 @@ class DryRunStep(AbstractPipelineStep):
         return []
 
     def get_required_data_keys(self):
-        return [Data.LOCAL_IMAGE_ID]
+        return [pipeline_data.LOCAL_IMAGE_ID]
 
     def get_container_status(self, container_id): #pragma: no cover
         return Docker.get_container_status(container_id)
 
     def start_container(self, data): #pragma: no cover
-        return Docker.run(data[Data.LOCAL_IMAGE_ID])
+        return Docker.run(data[pipeline_data.LOCAL_IMAGE_ID])
 
     def wait_for_container_created(self, container_id):
         container_status = self.get_container_status(container_id)
@@ -53,5 +53,5 @@ class DryRunStep(AbstractPipelineStep):
                 self.handle_step_error('Failed to test start the newly built container on Jenkins.')
         finally:
             self.stop_container(container_id)
-        self.log.info('Dry run of image with id "%s" successful', data[Data.LOCAL_IMAGE_ID])
+        self.log.info('Dry run of image with id "%s" successful', data[pipeline_data.LOCAL_IMAGE_ID])
         return data

@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 from modules.util.process import Process
 from modules.util.environment import Environment
 from modules.util.exceptions import PipelineException
-from modules.util.data import Data
+from modules.util import pipeline_data
 
 
 class Docker(object):
@@ -69,6 +69,6 @@ class Docker(object):
         cmd = ('LOCAL_IMAGE_ID={} docker-compose --file {} up '
                '--abort-on-container-exit '
                '--always-recreate-deps').format(
-                   data[Data.LOCAL_IMAGE_ID],
+                   data[pipeline_data.LOCAL_IMAGE_ID],
                    compose_test_file)
         return Process.run_with_output(cmd)

@@ -1,7 +1,7 @@
 __author__ = 'tinglev@kth.se'
 
 import os
-from modules.util.data import Data
+from modules.util import pipeline_data
 from modules.util.process import Process
 from modules.util.environment import Environment
 
@@ -12,7 +12,7 @@ def get_nvm_source():
 
 def get_nvm_exec_base(data):
     nvm_source = get_nvm_source()
-    conf_version = data[Data.NPM_CONF_NODE_VERSION]
+    conf_version = data[pipeline_data.NPM_CONF_NODE_VERSION]
     return (
         f'{nvm_source} && '
         f'nvm exec --silent {conf_version}'

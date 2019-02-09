@@ -4,7 +4,7 @@ import unittest
 import os
 from modules.pipeline_steps.build_environment_to_file_step import BuildEnvironmentToFileStep
 from modules.util.environment import Environment
-from modules.util.data import Data
+from modules.util import pipeline_data
 
 
 class BuildEnvironmentToFileStepTest(unittest.TestCase):
@@ -30,8 +30,8 @@ class BuildEnvironmentToFileStepTest(unittest.TestCase):
         os.environ[Environment.GIT_BRANCH] = "master"
         os.environ[Environment.GIT_COMMIT] = "12345a"
         data = {
-            Data.IMAGE_NAME: "test-app",
-            Data.IMAGE_VERSION: "test-app:1.1.3_12345a"
+            pipeline_data.IMAGE_NAME: "test-app",
+            pipeline_data.IMAGE_VERSION: "test-app:1.1.3_12345a"
         }
         step = BuildEnvironmentToFileStep()
         output = step.get_build_environment(data)

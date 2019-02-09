@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 import re
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
-from modules.util.data import Data
+from modules.util import pipeline_data
 from modules.util.file_util import FileUtil
 
 class ReadConfFileStep(AbstractPipelineStep):
@@ -20,7 +20,7 @@ class ReadConfFileStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        data[Data.CONFIGURATION_FILE] = FileUtil.get_absolue_path(self.conf_file)
+        data[pipeline_data.CONFIGURATION_FILE] = FileUtil.get_absolue_path(self.conf_file)
         conf_lines = self.trim(FileUtil.get_lines(self.conf_file))
         if self.has_missing_conf_vars(conf_lines):
             self.handle_step_error('Missing the following configuration variables in `{}`: {}'

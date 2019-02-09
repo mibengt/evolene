@@ -1,7 +1,7 @@
 __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.data import Data
+from modules.util import pipeline_data
 
 class NpmAuthorPolicy(AbstractPipelineStep):
 
@@ -12,15 +12,15 @@ class NpmAuthorPolicy(AbstractPipelineStep):
         return []
 
     def get_required_data_keys(self):
-        return [Data.PACKAGE_JSON]
+        return [pipeline_data.PACKAGE_JSON]
 
     def run_step(self, data):
-        if not 'author' in data[Data.PACKAGE_JSON]:
+        if not 'author' in data[pipeline_data.PACKAGE_JSON]:
             self.handle_step_error(
                 '"author" must be set in package.json'
             )
-        if (not 'name' in data[Data.PACKAGE_JSON]['author'] or
-                not 'email' in data[Data.PACKAGE_JSON]['author']):
+        if (not 'name' in data[pipeline_data.PACKAGE_JSON]['author'] or
+                not 'email' in data[pipeline_data.PACKAGE_JSON]['author']):
             self.handle_step_error(
                 '"name" and "email" must be set for "author" in package.json'
             )

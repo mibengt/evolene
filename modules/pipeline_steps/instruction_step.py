@@ -6,7 +6,7 @@ from modules.pipeline_steps.docker_file_step import DockerFileStep
 from modules.util.environment import Environment
 from modules.util.slack import Slack
 from modules.util.file_util import FileUtil
-from modules.util.data import Data
+from modules.util import pipeline_data
 from modules.util.image_version_util import ImageVersionUtil
 
 
@@ -16,7 +16,7 @@ class InstructionStep(AbstractPipelineStep):
         return [Environment.PROJECT_ROOT]
 
     def get_required_data_keys(self): # pragma: no cover
-        return [Data.IMAGE_NAME, Data.IMAGE_VERSION]
+        return [pipeline_data.IMAGE_NAME, pipeline_data.IMAGE_VERSION]
 
     def run_step(self, data):
         for instruction in FileUtil.get_lines(DockerFileStep.FILE_DOCKERFILE):

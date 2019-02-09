@@ -5,7 +5,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.docker import Docker
 from modules.util.process import Process
 from modules.util.environment import Environment
-from modules.util.data import Data
+from modules.util import pipeline_data
 from modules.util.file_util import FileUtil
 from modules.util.exceptions import PipelineException
 from modules.util.slack import Slack
@@ -24,7 +24,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
         return [Environment.PROJECT_ROOT]
 
     def get_required_data_keys(self):  # pragma: no cover
-        return [Data.IMAGE_NAME, Data.IMAGE_VERSION]
+        return [pipeline_data.IMAGE_NAME, pipeline_data.IMAGE_VERSION]
 
     def run_step(self, data):
         image_name = RepoSupervisorStep.REPO_SUPERVISOR_IMAGE_NAME
@@ -66,8 +66,8 @@ class RepoSupervisorStep(AbstractPipelineStep):
         msg = ('*{}:{}* Possible password or token in the following file(s).'
                ' Fix or add file or relative path to `/.scanignore` (Build will continue). ```{}```'
                .format(
-                   data[Data.IMAGE_NAME],
-                   data[Data.IMAGE_VERSION],
+                   data[pipeline_data.IMAGE_NAME],
+                   data[pipeline_data.IMAGE_VERSION],
                    self.format_filnames(filenames)))
         Slack.on_warning(msg)
 

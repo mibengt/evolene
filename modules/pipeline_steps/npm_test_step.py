@@ -2,9 +2,8 @@ __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
-from modules.util.data import Data
 from modules.util.exceptions import PipelineException
-from modules.util import nvm
+from modules.util import nvm, pipeline_data
 
 class NpmTestStep(AbstractPipelineStep):
 
@@ -15,7 +14,7 @@ class NpmTestStep(AbstractPipelineStep):
         return [Environment.PROJECT_ROOT]
 
     def get_required_data_keys(self):
-        return [Data.NPM_CONF_NODE_VERSION]
+        return [pipeline_data.NPM_CONF_NODE_VERSION]
 
     def run_step(self, data):
         try:

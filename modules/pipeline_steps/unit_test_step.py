@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util.docker import Docker
-from modules.util.data import Data
+from modules.util import pipeline_data
 from modules.util.exceptions import PipelineException
 from modules.util.file_util import FileUtil
 from modules.util.image_version_util import ImageVersionUtil
