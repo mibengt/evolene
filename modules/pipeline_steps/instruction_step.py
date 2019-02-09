@@ -5,7 +5,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.pipeline_steps.docker_file_step import DockerFileStep
 from modules.util.environment import Environment
 from modules.util.slack import Slack
-from modules.util.file_util import FileUtil
+from modules.util import file_util
 from modules.util import pipeline_data
 from modules.util.image_version_util import ImageVersionUtil
 
@@ -19,7 +19,7 @@ class InstructionStep(AbstractPipelineStep):
         return [pipeline_data.IMAGE_NAME, pipeline_data.IMAGE_VERSION]
 
     def run_step(self, data):
-        for instruction in FileUtil.get_lines(DockerFileStep.FILE_DOCKERFILE):
+        for instruction in file_util.get_lines(DockerFileStep.FILE_DOCKERFILE):
             if self.is_instruction_entrypoint(instruction):
                 message = self.get_change_message(instruction, data)
                 self.log.warning(message)

@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
-from modules.util.file_util import FileUtil
+from modules.util import file_util
 from modules.util import pipeline_data
 
 class LoadPackageJsonStep(AbstractPipelineStep):
@@ -18,7 +18,7 @@ class LoadPackageJsonStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        package_content = FileUtil.read_as_string('/package.json')
+        package_content = file_util.read_as_string('/package.json')
         if package_content:
             data[pipeline_data.PACKAGE_JSON] = json.loads(package_content)
         else:

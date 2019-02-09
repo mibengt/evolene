@@ -5,7 +5,7 @@ import os
 from modules.util.environment import Environment
 from modules.util import pipeline_data
 from modules.pipeline_steps.read_conf_step import ReadConfFileStep
-from modules.util.file_util import FileUtil
+from modules.util import file_util
 
 class DockerConfStepTests(unittest.TestCase):
 
@@ -78,7 +78,7 @@ class DockerConfStepTests(unittest.TestCase):
     def test_get_docker_conf_lines(self):
         os.environ[Environment.PROJECT_ROOT] = self.get_test_data_project_root()
         ReadConfFileStep('docker.conf', [Environment.IMAGE_NAME, pipeline_data.IMAGE_VERSION])
-        result = FileUtil.get_lines("/docker.conf")
+        result = file_util.get_lines("/docker.conf")
         self.assertEqual(len(result), 13)
         self.assertEqual(result[12], 'ADDITIONAL_ENV="Some value"')
 

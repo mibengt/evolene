@@ -5,7 +5,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.pipeline_steps.docker_file_step import DockerFileStep
 from modules.util.environment import Environment
 from modules.util.slack import Slack
-from modules.util.file_util import FileUtil
+from modules.util import file_util
 from modules.util.image_version_util import ImageVersionUtil
 
 
@@ -116,7 +116,7 @@ class FromImageStep(AbstractPipelineStep):
         return False
 
     def get_from_line(self):
-        rows = FileUtil.get_lines(DockerFileStep.FILE_DOCKERFILE)
+        rows = file_util.get_lines(DockerFileStep.FILE_DOCKERFILE)
         for row in rows:
             if "FROM" in row:
                 return row

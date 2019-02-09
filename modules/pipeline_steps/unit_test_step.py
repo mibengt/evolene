@@ -5,7 +5,7 @@ from modules.util.environment import Environment
 from modules.util.docker import Docker
 from modules.util import pipeline_data
 from modules.util.exceptions import PipelineException
-from modules.util.file_util import FileUtil
+from modules.util import file_util
 from modules.util.image_version_util import ImageVersionUtil
 
 
@@ -21,7 +21,7 @@ class UnitTestStep(AbstractPipelineStep):
 
     def run_step(self, data):
 
-        if not FileUtil.is_file(UnitTestStep.UNIT_TEST_COMPOSE_FILENAME):
+        if not file_util.is_file(UnitTestStep.UNIT_TEST_COMPOSE_FILENAME):
             self.log.info('No file named "%s" found. No unit tests will be run.',
                           UnitTestStep.UNIT_TEST_COMPOSE_FILENAME)
             return data
@@ -32,7 +32,7 @@ class UnitTestStep(AbstractPipelineStep):
 
     def run_unit_tests(self, data):
         try:
-            Docker.run_unit_test_compose(FileUtil.get_absolue_path(
+            Docker.run_unit_test_compose(file_util.get_absolue_path(
                 UnitTestStep.UNIT_TEST_COMPOSE_FILENAME), data)
         except Exception as ex:
             raise PipelineException(

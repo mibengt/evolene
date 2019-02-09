@@ -6,7 +6,7 @@ from modules.util.docker import Docker
 from modules.util.process import Process
 from modules.util.environment import Environment
 from modules.util import pipeline_data
-from modules.util.file_util import FileUtil
+from modules.util import file_util
 from modules.util.exceptions import PipelineException
 from modules.util.slack import Slack
 
@@ -78,7 +78,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
         return result
 
     def get_ignore_patterns(self):
-        result = FileUtil.get_lines(RepoSupervisorStep.SCANIGNORE_FILE)
+        result = file_util.get_lines(RepoSupervisorStep.SCANIGNORE_FILE)
         result.extend(RepoSupervisorStep.DEFAULT_PATTERNS)
 
         return result

@@ -7,15 +7,15 @@ import re
 from modules.pipelines.docker_deploy_pipeline import DockerDeployPipeline
 from modules.pipelines.npm_pipeline import NpmPipeline
 from modules.util.environment import Environment
-from modules.util.file_util import FileUtil
+from modules.util import file_util
 from modules.util.process import Process
 import modules.util.log as log
 
 def select_and_run_pipeline():
     logger = logging.getLogger(__name__)
-    docker_conf = FileUtil.get_absolue_path('/docker.conf')
+    docker_conf = file_util.get_absolue_path('/docker.conf')
     has_docker_conf = os.path.isfile(docker_conf)
-    npm_conf = FileUtil.get_absolue_path('/npm.conf')
+    npm_conf = file_util.get_absolue_path('/npm.conf')
     has_npm_conf = os.path.isfile(npm_conf)
     if has_docker_conf:
         pipeline = DockerDeployPipeline()

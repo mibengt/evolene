@@ -6,7 +6,7 @@ from modules.util.environment import Environment
 from modules.util.docker import Docker
 from modules.util import pipeline_data
 from modules.util.exceptions import PipelineException
-from modules.util.file_util import FileUtil
+from modules.util import file_util
 from modules.util.image_version_util import ImageVersionUtil
 
 class IntegrationTestStep(AbstractPipelineStep):
@@ -20,7 +20,7 @@ class IntegrationTestStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        if not FileUtil.is_file(IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME):
+        if not file_util.is_file(IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME):
             self.log.info('No file named "%s" found. No integration tests will be run.', IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME)
             return data
 
@@ -32,7 +32,7 @@ class IntegrationTestStep(AbstractPipelineStep):
         try:
 
             self.log.info("Running integration tests in '{}'".format(IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME))
-            Docker.run_integration_tests(FileUtil.get_absolue_path(IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME), data)
+            Docker.run_integration_tests(file_util.get_absolue_path(IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME), data)
 
         except Exception as ex:
             raise PipelineException(str(ex), self.get_slack_message(ex, data))

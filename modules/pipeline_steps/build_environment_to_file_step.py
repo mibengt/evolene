@@ -5,7 +5,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util import pipeline_data
 from modules.util.image_version_util import ImageVersionUtil
-from modules.util.file_util import FileUtil
+from modules.util import file_util
 
 
 class BuildEnvironmentToFileStep(AbstractPipelineStep):
@@ -25,7 +25,7 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
 
     def write(self, data):
         try:
-            FileUtil.overwite(self.get_ouput_file(), self.get_output(data))
+            file_util.overwite(self.get_ouput_file(), self.get_output(data))
 
         except IOError as ioe:
             self.handle_step_error("*{}* Unable to write build information to file '{}'".format(

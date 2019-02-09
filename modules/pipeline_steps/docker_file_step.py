@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util import pipeline_data
-from modules.util.file_util import FileUtil
+from modules.util import file_util
 
 
 class DockerFileStep(AbstractPipelineStep):
@@ -17,10 +17,10 @@ class DockerFileStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
-        if not FileUtil.is_file(DockerFileStep.FILE_DOCKERFILE):
+        if not file_util.is_file(DockerFileStep.FILE_DOCKERFILE):
             self.handle_step_error('Could not find Dockerfile at "{}"'.format(
                 DockerFileStep.FILE_DOCKERFILE))
 
-        data[pipeline_data.DOCKERFILE_FILE] = FileUtil.get_absolue_path(DockerFileStep.FILE_DOCKERFILE)
+        data[pipeline_data.DOCKERFILE_FILE] = file_util.get_absolue_path(DockerFileStep.FILE_DOCKERFILE)
 
         return data
