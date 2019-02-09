@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 import time
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import pipeline_data
-from modules.util.docker import Docker
+from modules.util import docker
 
 class DryRunStep(AbstractPipelineStep):
 
@@ -19,10 +19,10 @@ class DryRunStep(AbstractPipelineStep):
         return [pipeline_data.LOCAL_IMAGE_ID]
 
     def get_container_status(self, container_id): #pragma: no cover
-        return Docker.get_container_status(container_id)
+        return docker.get_container_status(container_id)
 
     def start_container(self, data): #pragma: no cover
-        return Docker.run(data[pipeline_data.LOCAL_IMAGE_ID])
+        return docker.run(data[pipeline_data.LOCAL_IMAGE_ID])
 
     def wait_for_container_created(self, container_id):
         container_status = self.get_container_status(container_id)
@@ -43,7 +43,7 @@ class DryRunStep(AbstractPipelineStep):
         return container_status == 'created'
 
     def stop_container(self, container_id): #pragma: no cover
-        Docker.stop_and_remove_container(container_id)
+        docker.stop_and_remove_container(container_id)
 
     def run_step(self, data):
         container_id = self.start_container(data)

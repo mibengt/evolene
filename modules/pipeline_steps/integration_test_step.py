@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 import os
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
-from modules.util.docker import Docker
+from modules.util import docker
 from modules.util import pipeline_data
 from modules.util.exceptions import PipelineException
 from modules.util import file_util
@@ -32,7 +32,7 @@ class IntegrationTestStep(AbstractPipelineStep):
         try:
 
             self.log.info("Running integration tests in '{}'".format(IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME))
-            Docker.run_integration_tests(file_util.get_absolue_path(IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME), data)
+            docker.run_integration_tests(file_util.get_absolue_path(IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME), data)
 
         except Exception as ex:
             raise PipelineException(str(ex), self.get_slack_message(ex, data))

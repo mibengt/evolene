@@ -2,7 +2,7 @@ __author__ = 'tinglev@kth.se'
 
 import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.docker import Docker
+from modules.util import docker
 from modules.util.process import Process
 from modules.util.environment import Environment
 from modules.util import pipeline_data
@@ -39,7 +39,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
     def _pull_image_if_missing(self, image_name):
         image_grep_output = None
         try:
-            image_grep_output = Docker.grep_image_id(image_name)
+            image_grep_output = docker.grep_image_id(image_name)
 
             if not image_grep_output or image_name not in image_grep_output:
                 self.pull_image(image_name)
@@ -50,7 +50,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
     def pull_image(self, image_name):
         self.log.debug(
             'Couldnt find local image "%s". Pulling from docker.io.', image_name)
-        Docker.pull(image_name)
+        docker.pull(image_name)
 
     def _process_supervisor_result(self, cmd_output, data):
         results = json.loads(cmd_output)

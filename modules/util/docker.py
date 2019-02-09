@@ -5,70 +5,53 @@ from modules.util.environment import Environment
 from modules.util.exceptions import PipelineException
 from modules.util import pipeline_data
 
+def build(labels=None):
+    build_cmd = 'docker build --quiet'
+    root = Environment.get_project_root()
+    if labels:
+        for label in labels:
+            build_cmd = f'{build_cmd} --label {label}'
+    return Process.run_with_output(f'{build_cmd} {root}')
 
-class Docker(object):
+def grep_image_id(image_id):
+    try:
+        return Process.run_with_output(f'docker images | grep {image_id}')
+    except PipelineException:
+        # An exception here means that the grep failed and that the image is missing
+        return None
 
-    @staticmethod
-    def build(labels=None):
-        build_cmd = 'docker build --quiet'
-        if labels:
-            for label in labels:
-                build_cmd = '{} --label {}'.format(build_cmd, label)
-        return Process.run_with_output('{} {}'
-                                       .format(build_cmd,
-                                               Environment.get_project_root()))
+def get_container_status(container_id):
+    return Process.run_with_output(f'docker inspect --format=\'{{{{.State.Status}}}}\' '
+                                   f'{container_id}')
 
-    @staticmethod
-    def grep_image_id(image_id):
-        try:
-            return Process.run_with_output('docker images | grep {}'
-                                           .format(image_id))
-        except PipelineException:
-            # An exception here means that the grep failed and that the image is missing
-            return None
+def run(image_id):
+    return Process.run_with_output(f'docker run -d {image_id}').rstrip()
 
-    @staticmethod
-    def get_container_status(container_id):
-        return Process.run_with_output('docker inspect --format=\'{{{{.State.Status}}}}\' {}'
-                                       .format(container_id)).rstrip()
+def stop_and_remove_container(container_id):
+    return Process.run_with_output(f'docker rm -f {container_id}')
 
-    @staticmethod
-    def run(image_id):
-        return Process.run_with_output('docker run -d {}'.format(image_id)).rstrip()
+def tag_image(image_id, tag):
+    return Process.run_with_output(f'docker tag {image_id} {tag}')
 
-    @staticmethod
-    def stop_and_remove_container(container_id):
-        return Process.run_with_output('docker rm -f {}'.format(container_id))
+def push(registry_image_name):
+    return Process.run_with_output(f'docker push {registry_image_name}')
 
-    @staticmethod
-    def tag_image(image_id, tag):
-        return Process.run_with_output('docker tag {} {}'.format(image_id, tag))
+def inspect_image(image_id):
+    return Process.run_with_output(f'docker image inspect {image_id}')
 
-    @staticmethod
-    def push(registry_image_name):
-        return Process.run_with_output('docker push {}'.format(registry_image_name))
+def pull(image_name):
+    return Process.run_with_output(f'docker pull {image_name}')
 
-    @staticmethod
-    def inspect_image(image_id):
-        return Process.run_with_output('docker image inspect {}'.format(image_id))
+def run_unit_test_compose(compose_test_file, data):
+    return run_test(compose_test_file, data)
 
-    @staticmethod
-    def pull(image_name):
-        return Process.run_with_output('docker pull {}'.format(image_name))
+def run_integration_tests(compose_test_file, data):
+    return run_test(compose_test_file, data)
 
-    @staticmethod
-    def run_unit_test_compose(compose_test_file, data):
-        return Docker.run_test(compose_test_file, data)
-
-    @staticmethod
-    def run_integration_tests(compose_test_file, data):
-        return Docker.run_test(compose_test_file, data)
-
-    @staticmethod
-    def run_test(compose_test_file, data):
-        cmd = ('LOCAL_IMAGE_ID={} docker-compose --file {} up '
-               '--abort-on-container-exit '
-               '--always-recreate-deps').format(
-                   data[pipeline_data.LOCAL_IMAGE_ID],
-                   compose_test_file)
-        return Process.run_with_output(cmd)
+def run_test(compose_test_file, data):
+    image_id = data[pipeline_data.LOCAL_IMAGE_ID]
+    cmd = (f'LOCAL_IMAGE_ID={image_id} '
+           f'docker-compose --file {compose_test_file} up '
+           f'--abort-on-container-exit '
+           f'--always-recreate-deps')
+    return Process.run_with_output(cmd)

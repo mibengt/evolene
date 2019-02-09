@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import pipeline_data
 from modules.util.environment import Environment
-from modules.util.docker import Docker
+from modules.util import docker
 from modules.util.image_version_util import ImageVersionUtil
 
 class TagImageStep(AbstractPipelineStep):
@@ -22,5 +22,5 @@ class TagImageStep(AbstractPipelineStep):
         return data
 
     def tag(self, tag, data): #pragma: no cover
-        Docker.tag_image(data[pipeline_data.LOCAL_IMAGE_ID], tag)
+        docker.tag_image(data[pipeline_data.LOCAL_IMAGE_ID], tag)
         self.log.info('Tagged image "%s" with "%s"', data[pipeline_data.LOCAL_IMAGE_ID], tag)

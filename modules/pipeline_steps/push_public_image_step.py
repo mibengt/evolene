@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util import pipeline_data
-from modules.util.docker import Docker
+from modules.util import docker
 from modules.util.image_version_util import ImageVersionUtil
 from modules.util.slack import Slack
 
@@ -23,12 +23,12 @@ class PushPublicImageStep(AbstractPipelineStep):
 
     def push_image(self, data):
         registry_image_name = ImageVersionUtil.prepend_registry(ImageVersionUtil.get_image(data))
-        Docker.push(registry_image_name)
+        docker.push(registry_image_name)
         Slack.on_successful_public_push(ImageVersionUtil.get_image(data), data[pipeline_data.IMAGE_NAME], data[pipeline_data.IMAGE_SIZE])
         self.log.info('Pushed image "%s".', registry_image_name)
 
     def push_image_only_semver(self, data):
         registry_image_name = ImageVersionUtil.prepend_registry(ImageVersionUtil.get_image_only_semver(data))
-        Docker.push(registry_image_name)
+        docker.push(registry_image_name)
         Slack.on_successful_public_push(ImageVersionUtil.get_image_only_semver(data), data[pipeline_data.IMAGE_NAME], data[pipeline_data.IMAGE_SIZE])
         self.log.info('Pushed image "%s".', registry_image_name)

@@ -2,7 +2,7 @@ __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
-from modules.util.docker import Docker
+from modules.util import docker
 from modules.util import pipeline_data
 from modules.util.exceptions import PipelineException
 from modules.util import file_util
@@ -32,7 +32,7 @@ class UnitTestStep(AbstractPipelineStep):
 
     def run_unit_tests(self, data):
         try:
-            Docker.run_unit_test_compose(file_util.get_absolue_path(
+            docker.run_unit_test_compose(file_util.get_absolue_path(
                 UnitTestStep.UNIT_TEST_COMPOSE_FILENAME), data)
         except Exception as ex:
             raise PipelineException(

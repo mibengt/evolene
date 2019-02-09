@@ -4,7 +4,7 @@ import unittest
 from mock import patch
 from modules.pipeline_steps.build_local_step import BuildLocalStep
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.docker import Docker
+from modules.util import docker
 from modules.util import pipeline_data
 
 class BuildLocalStepTests(unittest.TestCase):
@@ -29,7 +29,7 @@ class BuildLocalStepTests(unittest.TestCase):
         result = bls.get_image_size(grep_output)
         self.assertEqual(result, 'N/A')
 
-    @patch.object(Docker, 'grep_image_id')
+    @patch.object(docker, 'grep_image_id')
     @patch.object(AbstractPipelineStep, 'handle_step_error')
     def test_verify_built_image(self, mock_handle_error, mock_grep):
         bls = BuildLocalStep()
@@ -44,7 +44,7 @@ class BuildLocalStepTests(unittest.TestCase):
         result = bls.verify_built_image('does_not_exist')
         mock_handle_error.assert_called_once()
 
-    @patch.object(Docker, 'build')
+    @patch.object(docker, 'build')
     def test_run_build(self, mock_docker_build):
         bls = BuildLocalStep()
         data = {pipeline_data.IMAGE_VERSION: '1.2.32_abcd', pipeline_data.IMAGE_NAME: 'kth-azure-app'}

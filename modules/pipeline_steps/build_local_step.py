@@ -4,7 +4,7 @@ import re
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util import pipeline_data
-from modules.util.docker import Docker
+from modules.util import docker
 from modules.util.exceptions import PipelineException
 
 class BuildLocalStep(AbstractPipelineStep):
@@ -32,7 +32,7 @@ class BuildLocalStep(AbstractPipelineStep):
         return image_id[:12]
 
     def verify_built_image(self, image_id):
-        image_grep_output = Docker.grep_image_id(image_id)
+        image_grep_output = docker.grep_image_id(image_id)
         if not image_grep_output or image_id not in image_grep_output:
             self.handle_step_error('Could not find locally built image')
         self.log.debug('Grep for image id returned "%s"', image_grep_output.rstrip())
@@ -48,5 +48,5 @@ class BuildLocalStep(AbstractPipelineStep):
     def run_build(self, data):
         lbl_image_name = f'se.kth.imageName={data[pipeline_data.IMAGE_NAME]}'
         lbl_image_version = f'se.kth.imageVersion={data[pipeline_data.IMAGE_VERSION]}'
-        image_id = Docker.build([lbl_image_name, lbl_image_version])
+        image_id = docker.build([lbl_image_name, lbl_image_version])
         return self.format_image_id(image_id)
