@@ -6,7 +6,7 @@ from modules.pipeline_steps.docker_file_step import DockerFileStep
 from modules.util.environment import Environment
 from modules.util.slack import Slack
 from modules.util import file_util
-from modules.util.image_version_util import ImageVersionUtil
+from modules.util import image_version_util
 
 
 class FromImageStep(AbstractPipelineStep):
@@ -62,7 +62,7 @@ class FromImageStep(AbstractPipelineStep):
         if self.validate(from_line, data):
             self.log.debug("'FROM:' statement '{}' in Dockerfile is valid.".format(from_line))
         else:
-            message = "*{}*: Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(ImageVersionUtil.get_image(data), from_line)
+            message = "*{}*: Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(image_version_util.get_image(data), from_line)
             self.log.warn(message)
             Slack.on_warning(message)
         
@@ -81,13 +81,13 @@ class FromImageStep(AbstractPipelineStep):
             return ("*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. "
                     "Image _kth-nodejs-web_ is depricated. "
                     "Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(
-                        ImageVersionUtil.get_image(data)))
+                        image_version_util.get_image(data)))
 
         if str(image_name) == "kth-nodejs-api":
             return ("*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. "
                     "Image _kth-nodejs-api_ is depricated. "
                     "Info: https://gita.sys.kth.se/Infosys/kth-nodejs".format(
-                        ImageVersionUtil.get_image(data)))
+                        image_version_util.get_image(data)))
 
         return None
 

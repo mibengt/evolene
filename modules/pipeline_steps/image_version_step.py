@@ -2,7 +2,7 @@ __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
-from modules.util.image_version_util import ImageVersionUtil
+from modules.util import image_version_util
 from modules.util import pipeline_data
 
 class ImageVersionStep(AbstractPipelineStep):
@@ -25,7 +25,7 @@ class ImageVersionStep(AbstractPipelineStep):
         return Environment.get_build_number()
 
     def get_sem_ver(self, image_version, patch_version):
-        if not ImageVersionUtil.is_major_minor_only(image_version):
+        if not image_version_util.is_major_minor_only(image_version):
             self.handle_step_error('IMAGE_VERSION in docker.conf is `{}`, must be "Major.Minor"'.format(image_version))
         return "{}.{}".format(image_version, patch_version)
 

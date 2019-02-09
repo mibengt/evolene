@@ -4,7 +4,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import pipeline_data
 from modules.util.environment import Environment
 from modules.util import docker
-from modules.util.image_version_util import ImageVersionUtil
+from modules.util import image_version_util
 
 class TagImageStep(AbstractPipelineStep):
 
@@ -16,8 +16,8 @@ class TagImageStep(AbstractPipelineStep):
 
     def run_step(self, data): #pragma: no cover
 
-        self.tag(ImageVersionUtil.prepend_registry(ImageVersionUtil.get_image(data)), data)
-        self.tag(ImageVersionUtil.prepend_registry(ImageVersionUtil.get_image_only_semver(data)), data)
+        self.tag(image_version_util.prepend_registry(image_version_util.get_image(data)), data)
+        self.tag(image_version_util.prepend_registry(image_version_util.get_image_only_semver(data)), data)
 
         return data
 

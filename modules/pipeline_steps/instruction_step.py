@@ -7,7 +7,7 @@ from modules.util.environment import Environment
 from modules.util.slack import Slack
 from modules.util import file_util
 from modules.util import pipeline_data
-from modules.util.image_version_util import ImageVersionUtil
+from modules.util import image_version_util
 
 
 class InstructionStep(AbstractPipelineStep):
@@ -33,7 +33,7 @@ class InstructionStep(AbstractPipelineStep):
 
     def get_change_message(self, instruction, data):
         return "*{}*: In `/Dockerfile` change `{}` to: ```{}```".format(
-            ImageVersionUtil.get_image(data),
+            image_version_util.get_image(data),
             instruction,
             self.get_change_to_instruction(instruction))
 

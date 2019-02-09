@@ -4,7 +4,7 @@ import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util import pipeline_data
-from modules.util.image_version_util import ImageVersionUtil
+from modules.util import image_version_util
 from modules.util import file_util
 
 
@@ -29,7 +29,7 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
 
         except IOError as ioe:
             self.handle_step_error("*{}* Unable to write build information to file '{}'".format(
-                ImageVersionUtil.get_image(data),
+                image_version_util.get_image(data),
                 self.get_ouput_file()))
 
     def get_output(self, data):
@@ -68,5 +68,5 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
             "jenkinsBuildDate": Environment.get_time(),
             "dockerName": data[pipeline_data.IMAGE_NAME],
             "dockerVersion": data[pipeline_data.IMAGE_VERSION],
-            "dockerImage": ImageVersionUtil.prepend_registry(ImageVersionUtil.get_image(data))
+            "dockerImage": image_version_util.prepend_registry(image_version_util.get_image(data))
         }

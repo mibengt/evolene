@@ -4,7 +4,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util import pipeline_data
 from modules.util import docker
-from modules.util.image_version_util import ImageVersionUtil
+from modules.util import image_version_util
 from modules.util.slack import Slack
 
 class PushPublicImageStep(AbstractPipelineStep):
@@ -22,13 +22,13 @@ class PushPublicImageStep(AbstractPipelineStep):
         return data
 
     def push_image(self, data):
-        registry_image_name = ImageVersionUtil.prepend_registry(ImageVersionUtil.get_image(data))
+        registry_image_name = image_version_util.prepend_registry(image_version_util.get_image(data))
         docker.push(registry_image_name)
-        Slack.on_successful_public_push(ImageVersionUtil.get_image(data), data[pipeline_data.IMAGE_NAME], data[pipeline_data.IMAGE_SIZE])
+        Slack.on_successful_public_push(image_version_util.get_image(data), data[pipeline_data.IMAGE_NAME], data[pipeline_data.IMAGE_SIZE])
         self.log.info('Pushed image "%s".', registry_image_name)
 
     def push_image_only_semver(self, data):
-        registry_image_name = ImageVersionUtil.prepend_registry(ImageVersionUtil.get_image_only_semver(data))
+        registry_image_name = image_version_util.prepend_registry(image_version_util.get_image_only_semver(data))
         docker.push(registry_image_name)
-        Slack.on_successful_public_push(ImageVersionUtil.get_image_only_semver(data), data[pipeline_data.IMAGE_NAME], data[pipeline_data.IMAGE_SIZE])
+        Slack.on_successful_public_push(image_version_util.get_image_only_semver(data), data[pipeline_data.IMAGE_NAME], data[pipeline_data.IMAGE_SIZE])
         self.log.info('Pushed image "%s".', registry_image_name)

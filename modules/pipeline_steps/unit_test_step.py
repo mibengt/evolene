@@ -6,7 +6,7 @@ from modules.util import docker
 from modules.util import pipeline_data
 from modules.util.exceptions import PipelineException
 from modules.util import file_util
-from modules.util.image_version_util import ImageVersionUtil
+from modules.util import image_version_util
 
 
 class UnitTestStep(AbstractPipelineStep):
@@ -40,6 +40,6 @@ class UnitTestStep(AbstractPipelineStep):
 
     def get_slack_message(self, exception, data):
         return '*{}* Unit test(s) failed: \n```...\n{}```\n:jenkins: {}console'.format(
-            ImageVersionUtil.get_image(data),
+            image_version_util.get_image(data),
             str(exception).replace('`', ' ')[-1000:],
             Environment.get_build_url())
