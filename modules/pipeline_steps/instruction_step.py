@@ -4,7 +4,7 @@ import logging
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.pipeline_steps.docker_file_step import DockerFileStep
 from modules.util.environment import Environment
-from modules.util.slack import Slack
+from modules.util import slack
 from modules.util import file_util
 from modules.util import pipeline_data
 from modules.util import image_version_util
@@ -23,7 +23,7 @@ class InstructionStep(AbstractPipelineStep):
             if self.is_instruction_entrypoint(instruction):
                 message = self.get_change_message(instruction, data)
                 self.log.warning(message)
-                Slack.on_warning(message)
+                slack.on_warning(message)
         return data
 
     def is_instruction_entrypoint(self, instruction):

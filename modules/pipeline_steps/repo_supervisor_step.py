@@ -8,7 +8,7 @@ from modules.util.environment import Environment
 from modules.util import pipeline_data
 from modules.util import file_util
 from modules.util.exceptions import PipelineException
-from modules.util.slack import Slack
+from modules.util import slack
 
 
 class RepoSupervisorStep(AbstractPipelineStep):
@@ -69,7 +69,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
                    data[pipeline_data.IMAGE_NAME],
                    data[pipeline_data.IMAGE_VERSION],
                    self.format_filnames(filenames)))
-        Slack.on_warning(msg)
+        slack.on_warning(msg)
 
     def format_filnames(self, filenames):
         result = ''

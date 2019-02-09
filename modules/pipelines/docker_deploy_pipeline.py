@@ -23,7 +23,7 @@ from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
 from modules.util.environment import Environment
 from modules.util import print_util
-from modules.util.slack import Slack
+from modules.util import slack
 from modules.util import pipeline_data
 
 class DockerDeployPipeline(object):
@@ -82,7 +82,7 @@ class DockerDeployPipeline(object):
             data = self.first_step.run_pipeline_step({})
         except PipelineException as p_ex:
             self.log.fatal('%s'.encode('UTF-8'), p_ex, exc_info=False)
-            Slack.send_to_slack('<!channel> {}'.format(p_ex.slack_message))
+            slack.send_to_slack('<!channel> {}'.format(p_ex.slack_message))
             print_util.red("Such bad, very learning.")
             sys.exit(1)
         else:

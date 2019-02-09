@@ -4,59 +4,45 @@ import logging
 import requests
 from requests import HTTPError, ConnectTimeout, RequestException
 from modules.util.environment import Environment
-from modules.util import pipeline_data
 
-class Slack(object):
+def send_to_slack(message, icon=':no_entry:'):
+    for channel in Environment.get_slack_channels():
+        body = get_payload_body(channel, message, icon)
+        call_slack_endpoint(body)
 
+def on_successful_private_push(image, size):
+    message = (f'*{image}* pushed to KTH:s private :docker: '
+               f'registry, size {size}.')
+    send_to_slack(message, icon=':jenkins:')
+
+def on_successful_public_push(image, image_name, image_size):
+    message = (
+        f'*{image}* pushed to :docker: '
+        f'https://hub.docker.com/r/kthse/{image_name}/tags/, '
+        f'size {image_size}.'
+    )
+    send_to_slack(message, icon=':jenkins:')
+
+def on_warning(message):
+    send_to_slack(message, icon=':warning:')
+
+def get_payload_body(channel, text, icon, username='Evolene'):
+    body = {
+        "channel": channel,
+        "text": text,
+        "username": username,
+        "icon_emoji": icon
+    }
+    return body
+
+def call_slack_endpoint(payload):
     log = logging.getLogger(__name__)
-
-    @staticmethod
-    def send_to_slack(message, icon=':no_entry:'):
-        for channel in Environment.get_slack_channels():
-            body = Slack.get_payload_body(channel, message, icon)
-            Slack.call_slack_endpoint(body)
-
-
-    @staticmethod
-    def on_successful_private_push(image, size):
-        message = ('*{0}* pushed to KTH:s private :docker: registry, size {1}.'
-                   .format(image, size))
-        Slack.send_to_slack(message, icon=':jenkins:')
-
-
-    @staticmethod
-    def on_successful_public_push(image, image_name, image_size):
-        message = (
-            '*{0}* pushed to :docker: https://hub.docker.com/r/kthse/{1}/tags/, size {2}.'
-            .format(image,
-                    image_name,
-                    image_size)
-        )
-        Slack.send_to_slack(message, icon=':jenkins:')
-
-
-    @staticmethod
-    def on_warning(message):
-        Slack.send_to_slack(message, icon=':warning:')
-
-    @staticmethod
-    def get_payload_body(channel, text, icon, username='Evolene'):
-        body = {
-            "channel": channel,
-            "text": text,
-            "username": username,
-            "icon_emoji": icon
-        }
-        return body
-
-    @staticmethod
-    def call_slack_endpoint(payload):
-        try:
-            web_hook = Environment.get_slack_web_hook()
-            response = requests.post(web_hook, json=payload)
-        except HTTPError as http_ex:
-            Slack.log.error('Slack endpoint threw HTTPError with response "%s"', http_ex.response)
-        except ConnectTimeout as timeout:
-            Slack.log.error('Timeout while trying to post to Slack endpoint: "%s"', timeout)
-        except RequestException as req_ex:
-            Slack.log.error('Exception when trying to post to Slack endpoint: "%s"', req_ex)
+    try:
+        web_hook = Environment.get_slack_web_hook()
+        return requests.post(web_hook, json=payload)
+    except HTTPError as http_ex:
+        log.error('Slack endpoint threw HTTPError with response "%s"', http_ex.response)
+    except ConnectTimeout as timeout:
+        log.error('Timeout while trying to post to Slack endpoint: "%s"', timeout)
+    except RequestException as req_ex:
+        log.error('Exception when trying to post to Slack endpoint: "%s"', req_ex)

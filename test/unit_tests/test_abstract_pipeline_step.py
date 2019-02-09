@@ -4,7 +4,7 @@ import os
 import unittest
 from mock import patch, call
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.slack import Slack
+from modules.util import slack
 
 class ConcretePipelineStep(AbstractPipelineStep):
 
@@ -66,7 +66,7 @@ class AbstractPipelineStepTests(unittest.TestCase):
         mock_handle.assert_called_once()
 
     @patch.object(AbstractPipelineStep, 'log_error')
-    @patch.object(Slack, 'send_to_slack')
+    @patch.object(slack, 'send_to_slack')
     def test_handle_step_error(self, mock_slack, mock_log_error):
         cps = ConcretePipelineStep()
         self.assertRaises(SystemExit, cps.handle_step_error, 'test', ex=Exception('ex'))

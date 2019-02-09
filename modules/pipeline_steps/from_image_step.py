@@ -4,7 +4,7 @@ import logging
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.pipeline_steps.docker_file_step import DockerFileStep
 from modules.util.environment import Environment
-from modules.util.slack import Slack
+from modules.util import slack
 from modules.util import file_util
 from modules.util import image_version_util
 
@@ -64,7 +64,7 @@ class FromImageStep(AbstractPipelineStep):
         else:
             message = "*{}*: Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(image_version_util.get_image(data), from_line)
             self.log.warn(message)
-            Slack.on_warning(message)
+            slack.on_warning(message)
         
         return data
 
@@ -97,7 +97,7 @@ class FromImageStep(AbstractPipelineStep):
         
         if message:
             self.log.warn(message)
-            Slack.on_warning(message)
+            slack.on_warning(message)
 
     def is_valid_tag_for_image_name(self, from_line, image_name):
         

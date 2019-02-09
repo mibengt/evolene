@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util.environment import Environment
 from modules.util import pipeline_data
-from modules.util.slack import Slack
+from modules.util import slack
 
 class CelebrateStep(AbstractPipelineStep):
 
@@ -20,7 +20,7 @@ class CelebrateStep(AbstractPipelineStep):
     def do_we_have_a_reason_to_party(self, data):
         message = self.get_party_message(data)
         if message:
-            Slack.send_to_slack(self.get_party_message(data), icon=":parrot_party:")
+            slack.send_to_slack(self.get_party_message(data), icon=":parrot_party:")
             
     def get_party_message(self, data):
         

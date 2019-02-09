@@ -4,7 +4,7 @@ from abc import ABCMeta, abstractmethod
 import os
 import sys
 import logging
-from modules.util.slack import Slack
+from modules.util import slack
 from modules.util.environment import Environment
 
 class AbstractPipelineStep:
@@ -72,7 +72,7 @@ class AbstractPipelineStep:
         workspace = Environment.get_project_root()
         if workspace:
             message = f'[`{workspace}`] {message}'
-        Slack.send_to_slack(message)
+        slack.send_to_slack(message)
 
     def run_pipeline_step(self, data):
         if not self.step_environment_ok():

@@ -8,7 +8,7 @@ from modules.util import pipeline_data
 from modules.util.exceptions import PipelineException
 from modules.util import docker
 from modules.util import image_version_util
-from modules.util.slack import Slack
+from modules.util import slack
 
 class PushImageStep(AbstractPipelineStep):
 
@@ -78,5 +78,5 @@ class PushImageStep(AbstractPipelineStep):
     def push_image(self, data):
         registry_image_name = self.get_image_to_push(data)
         docker.push(registry_image_name)
-        Slack.on_successful_private_push(image_version_util.get_image(data), data[pipeline_data.IMAGE_SIZE])
+        slack.on_successful_private_push(image_version_util.get_image(data), data[pipeline_data.IMAGE_SIZE])
         self.log.info('Pushed image %s to KTH registry.', registry_image_name)
