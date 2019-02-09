@@ -5,7 +5,7 @@ import os
 import sys
 import logging
 from modules.util import slack
-from modules.util.environment import Environment
+from modules.util import environment
 
 class AbstractPipelineStep:
     __metaclass__ = ABCMeta
@@ -69,7 +69,7 @@ class AbstractPipelineStep:
             error_func(message)
 
     def report_error_to_slack(self, message):
-        workspace = Environment.get_project_root()
+        workspace = environment.get_project_root()
         if workspace:
             message = f'[`{workspace}`] {message}'
         slack.send_to_slack(message)

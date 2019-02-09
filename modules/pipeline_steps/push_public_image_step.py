@@ -1,7 +1,7 @@
 __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util import pipeline_data
 from modules.util import docker
 from modules.util import image_version_util
@@ -10,7 +10,7 @@ from modules.util import slack
 class PushPublicImageStep(AbstractPipelineStep):
 
     def get_required_env_variables(self):
-        return [Environment.PUSH_PUBLIC]
+        return [environment.PUSH_PUBLIC]
 
     def get_required_data_keys(self):
         return [pipeline_data.IMAGE_NAME, pipeline_data.IMAGE_VERSION, pipeline_data.SEM_VER]

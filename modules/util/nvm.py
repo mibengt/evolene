@@ -3,7 +3,7 @@ __author__ = 'tinglev@kth.se'
 import os
 from modules.util import pipeline_data
 from modules.util import process
-from modules.util.environment import Environment
+from modules.util import environment
 
 NVM_DIR = f'{os.environ.get("HOME")}/.nvm/nvm.sh'
 
@@ -20,7 +20,7 @@ def get_nvm_exec_base(data):
 
 def get_npm_base(data):
     nvm_base = get_nvm_exec_base(data)
-    project_path = Environment.get_project_root()
+    project_path = environment.get_project_root()
     return (
         f'{nvm_base} npm --prefix {project_path}'
     )

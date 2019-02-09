@@ -2,14 +2,14 @@ __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import pipeline_data
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util import docker
 from modules.util import image_version_util
 
 class TagImageStep(AbstractPipelineStep):
 
     def get_required_env_variables(self): #pragma: no cover
-        return [Environment.REGISTRY_HOST]
+        return [environment.REGISTRY_HOST]
 
     def get_required_data_keys(self): #pragma: no cover
         return [pipeline_data.LOCAL_IMAGE_ID, pipeline_data.IMAGE_VERSION, pipeline_data.IMAGE_NAME]

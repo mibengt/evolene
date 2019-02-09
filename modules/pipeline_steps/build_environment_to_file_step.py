@@ -2,7 +2,7 @@ __author__ = 'tinglev'
 
 import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util import pipeline_data
 from modules.util import image_version_util
 from modules.util import file_util
@@ -11,17 +11,17 @@ from modules.util import file_util
 class BuildEnvironmentToFileStep(AbstractPipelineStep):
 
     def get_required_env_variables(self):
-        return [Environment.GIT_BRANCH, Environment.GIT_COMMIT]
+        return [environment.GIT_BRANCH, environment.GIT_COMMIT]
 
     def get_required_data_keys(self):
         return [pipeline_data.IMAGE_VERSION, pipeline_data.IMAGE_NAME]
 
     def run_step(self, data):
-        if Environment.get_build_information_output_file():
+        if environment.get_build_information_output_file():
             self.write(data)
 
     def get_ouput_file(self):
-        return Environment.get_build_information_output_file()
+        return environment.get_build_information_output_file()
 
     def write(self, data):
         try:
@@ -62,10 +62,10 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
     def get_build_environment(self, data):
 
         return {
-            "gitBranch": Environment.get_git_branch(),
-            "gitCommit": Environment.get_git_commit(),
-            "jenkinsBuild": Environment.get_build_number(),
-            "jenkinsBuildDate": Environment.get_time(),
+            "gitBranch": environment.get_git_branch(),
+            "gitCommit": environment.get_git_commit(),
+            "jenkinsBuild": environment.get_build_number(),
+            "jenkinsBuildDate": environment.get_time(),
             "dockerName": data[pipeline_data.IMAGE_NAME],
             "dockerVersion": data[pipeline_data.IMAGE_VERSION],
             "dockerImage": image_version_util.prepend_registry(image_version_util.get_image(data))

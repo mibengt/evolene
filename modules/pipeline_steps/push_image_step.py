@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 from requests import get, HTTPError, ConnectTimeout, RequestException
 from requests.auth import HTTPBasicAuth
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util import pipeline_data
 from modules.util.exceptions import PipelineException
 from modules.util import docker
@@ -13,9 +13,9 @@ from modules.util import slack
 class PushImageStep(AbstractPipelineStep):
 
     def get_required_env_variables(self): #pragma: no cover
-        return [Environment.REGISTRY_HOST,
-                Environment.REGISTRY_USER,
-                Environment.REGISTRY_PASSWORD]
+        return [environment.REGISTRY_HOST,
+                environment.REGISTRY_USER,
+                environment.REGISTRY_PASSWORD]
 
     def get_required_data_keys(self): #pragma: no cover
 
@@ -46,10 +46,10 @@ class PushImageStep(AbstractPipelineStep):
         return tags
 
     def get_auth_tuple(self): #pragma: no cover
-        return (Environment.get_registry_user(), Environment.get_registry_password())
+        return (environment.get_registry_user(), environment.get_registry_password())
 
     def create_registry_url(self, data):
-        return 'https://{}/v2/{}/tags/list'.format(Environment.get_registry_host(),
+        return 'https://{}/v2/{}/tags/list'.format(environment.get_registry_host(),
                                                    data[pipeline_data.IMAGE_NAME])
 
     def get_tags_from_response(self, response): #pragma: no cover

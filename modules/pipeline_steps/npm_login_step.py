@@ -1,7 +1,7 @@
 __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util import process
 from modules.util.exceptions import PipelineException
 from modules.util import nvm
@@ -12,8 +12,8 @@ class NpmLoginStep(AbstractPipelineStep):
         AbstractPipelineStep.__init__(self)
 
     def get_required_env_variables(self):
-        return [Environment.PROJECT_ROOT, Environment.NPM_USER,
-                Environment.NPM_PASSWORD, Environment.NPM_EMAIL]
+        return [environment.PROJECT_ROOT, environment.NPM_USER,
+                environment.NPM_PASSWORD, environment.NPM_EMAIL]
 
     def get_required_data_keys(self):
         return []
@@ -22,9 +22,9 @@ class NpmLoginStep(AbstractPipelineStep):
         # npm login doesn't support non-interactive login, so we'll do this
         # through a docker image
         cmd = (f'docker run '
-               f'-e NPM_USER="{Environment.get_npm_user()}" '
-               f'-e NPM_PASS="{Environment.get_npm_password()}" '
-               f'-e NPM_EMAIL="{Environment.get_npm_email()}" '
+               f'-e NPM_USER="{environment.get_npm_user()}" '
+               f'-e NPM_PASS="{environment.get_npm_password()}" '
+               f'-e NPM_EMAIL="{environment.get_npm_email()}" '
                f'bravissimolabs/generate-npm-authtoken '
                f'> ~/.npmrc')
         try:

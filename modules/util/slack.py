@@ -3,10 +3,10 @@ __author__ = 'tinglev'
 import logging
 import requests
 from requests import HTTPError, ConnectTimeout, RequestException
-from modules.util.environment import Environment
+from modules.util import environment
 
 def send_to_slack(message, icon=':no_entry:'):
-    for channel in Environment.get_slack_channels():
+    for channel in environment.get_slack_channels():
         body = get_payload_body(channel, message, icon)
         call_slack_endpoint(body)
 
@@ -38,7 +38,7 @@ def get_payload_body(channel, text, icon, username='Evolene'):
 def call_slack_endpoint(payload):
     log = logging.getLogger(__name__)
     try:
-        web_hook = Environment.get_slack_web_hook()
+        web_hook = environment.get_slack_web_hook()
         return requests.post(web_hook, json=payload)
     except HTTPError as http_ex:
         log.error('Slack endpoint threw HTTPError with response "%s"', http_ex.response)

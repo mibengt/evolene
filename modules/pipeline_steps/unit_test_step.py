@@ -1,7 +1,7 @@
 __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util import docker
 from modules.util import pipeline_data
 from modules.util.exceptions import PipelineException
@@ -14,7 +14,7 @@ class UnitTestStep(AbstractPipelineStep):
     UNIT_TEST_COMPOSE_FILENAME = '/docker-compose-unit-tests.yml'
 
     def get_required_env_variables(self):
-        return [Environment.PROJECT_ROOT]
+        return [environment.PROJECT_ROOT]
 
     def get_required_data_keys(self):
         return []
@@ -42,4 +42,4 @@ class UnitTestStep(AbstractPipelineStep):
         return '*{}* Unit test(s) failed: \n```...\n{}```\n:jenkins: {}console'.format(
             image_version_util.get_image(data),
             str(exception).replace('`', ' ')[-1000:],
-            Environment.get_build_url())
+            environment.get_build_url())

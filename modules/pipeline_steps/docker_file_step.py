@@ -1,7 +1,7 @@
 __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util import pipeline_data
 from modules.util import file_util
 
@@ -11,7 +11,7 @@ class DockerFileStep(AbstractPipelineStep):
     FILE_DOCKERFILE = "/Dockerfile"
 
     def get_required_env_variables(self): # pragma: no cover
-        return [Environment.PROJECT_ROOT]
+        return [environment.PROJECT_ROOT]
 
     def get_required_data_keys(self): # pragma: no cover
         return []

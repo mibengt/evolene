@@ -2,7 +2,7 @@ __author__ = 'tinglev'
 
 import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util.exceptions import PipelineException
 from modules.util import nvm, pipeline_data
 
@@ -12,7 +12,7 @@ class NpmAuditStep(AbstractPipelineStep):
         AbstractPipelineStep.__init__(self)
 
     def get_required_env_variables(self):
-        return [Environment.PROJECT_ROOT]
+        return [environment.PROJECT_ROOT]
 
     def get_required_data_keys(self):
         return []

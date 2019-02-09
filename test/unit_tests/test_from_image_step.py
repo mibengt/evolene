@@ -2,7 +2,7 @@ __author__ = 'tinglev'
 
 import os
 import unittest
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.pipeline_steps.from_image_step import FromImageStep
 from modules.util import pipeline_data
 
@@ -18,7 +18,7 @@ class DockerFileTests(unittest.TestCase):
 
     def test_docker_file_exists(self):
         current_path = os.path.dirname(os.path.abspath(__file__))
-        os.environ[Environment.PROJECT_ROOT] = os.path.join(current_path, '../data')
+        os.environ[environment.PROJECT_ROOT] = os.path.join(current_path, '../data')
         fis = FromImageStep()
         result = fis.get_from_line()
         self.assertEqual("FROM redis", result)

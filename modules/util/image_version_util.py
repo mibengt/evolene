@@ -1,7 +1,7 @@
 __author__ = 'tinglev'
 
 import re
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util.exceptions import PipelineException
 from modules.util import pipeline_data
 
@@ -30,7 +30,7 @@ def get_image_only_semver(data):
     return '{}:{}'.format(data[pipeline_data.IMAGE_NAME], data[pipeline_data.SEM_VER])
 
 def prepend_registry(image):
-    return '{}/{}'.format(Environment.get_registry_host(), image)
+    return '{}/{}'.format(environment.get_registry_host(), image)
 
 def get_image_uri(image):
     return prepend_registry(image)

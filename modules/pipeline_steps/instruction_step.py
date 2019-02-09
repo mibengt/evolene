@@ -3,7 +3,7 @@ __author__ = 'tinglev'
 import logging
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.pipeline_steps.docker_file_step import DockerFileStep
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util import slack
 from modules.util import file_util
 from modules.util import pipeline_data
@@ -13,7 +13,7 @@ from modules.util import image_version_util
 class InstructionStep(AbstractPipelineStep):
 
     def get_required_env_variables(self): # pragma: no cover
-        return [Environment.PROJECT_ROOT]
+        return [environment.PROJECT_ROOT]
 
     def get_required_data_keys(self): # pragma: no cover
         return [pipeline_data.IMAGE_NAME, pipeline_data.IMAGE_VERSION]

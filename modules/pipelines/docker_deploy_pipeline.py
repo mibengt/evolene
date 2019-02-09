@@ -21,7 +21,7 @@ from modules.pipeline_steps.instruction_step import InstructionStep
 from modules.pipeline_steps.celebrate_step import CelebrateStep
 from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util import print_util
 from modules.util import slack
 from modules.util import pipeline_data
@@ -35,7 +35,7 @@ class DockerDeployPipeline(object):
         self.first_step = SetupStep()
         # Check the content of docker.conf
         next_step = self.first_step.set_next_step(
-            ReadConfFileStep('docker.conf', [Environment.IMAGE_NAME, pipeline_data.IMAGE_VERSION])
+            ReadConfFileStep('docker.conf', [environment.IMAGE_NAME, pipeline_data.IMAGE_VERSION])
         )
         # Build new image version major.minor.path_githash
         next_step = next_step.set_next_step(ImageVersionStep())
@@ -54,7 +54,7 @@ class DockerDeployPipeline(object):
         # It never to late to party
         next_step = next_step.set_next_step(CelebrateStep())
         # Test run the image
-        if Environment.use_dry_run():
+        if environment.use_dry_run():
             next_step = next_step.set_next_step(DryRunStep())
         # Run unit tests
         next_step = next_step.set_next_step(UnitTestStep())
@@ -65,7 +65,7 @@ class DockerDeployPipeline(object):
         # Tag the buildt image with image version.
         next_step = next_step.set_next_step(TagImageStep())
         # Puch the tagged image to a repository.
-        if Environment.get_push_public():
+        if environment.get_push_public():
             next_step = next_step.set_next_step(PushPublicImageStep())
         else:
             next_step = next_step.set_next_step(PushImageStep())

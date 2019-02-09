@@ -6,7 +6,7 @@ import logging
 import re
 from modules.pipelines.docker_deploy_pipeline import DockerDeployPipeline
 from modules.pipelines.npm_pipeline import NpmPipeline
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util import file_util
 from modules.util import process
 import modules.util.log as log
@@ -30,7 +30,7 @@ def select_and_run_pipeline():
 
 def main():
     log.init_logging()
-    evo_dir = Environment.get_evolene_directory()
+    evo_dir = environment.get_evolene_directory()
     if not evo_dir:
         logging.getLogger(__name__).fatal('Missing EVOLENE_DIRECTORY environment')
         sys.exit(1)

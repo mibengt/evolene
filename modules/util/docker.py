@@ -1,13 +1,13 @@
 __author__ = 'tinglev'
 
 from modules.util import process
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util.exceptions import PipelineException
 from modules.util import pipeline_data
 
 def build(labels=None):
     build_cmd = 'docker build --quiet'
-    root = Environment.get_project_root()
+    root = environment.get_project_root()
     if labels:
         for label in labels:
             build_cmd = f'{build_cmd} --label {label}'

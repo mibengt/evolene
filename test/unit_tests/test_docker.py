@@ -2,7 +2,7 @@ __author__ = 'tinglev'
 
 import os
 import unittest
-from modules.util.environment import Environment
+from modules.util import environment
 from modules.util import docker
 from modules.util import process
 from modules.util.exceptions import PipelineException
@@ -37,7 +37,7 @@ class DockerTests(unittest.TestCase):
 
     def _test_build(self):
         current_path = os.path.dirname(os.path.abspath(__file__))
-        os.environ[Environment.PROJECT_ROOT] = os.path.join(current_path, '../data')
+        os.environ[environment.PROJECT_ROOT] = os.path.join(current_path, '../data')
         test_lbl_1 = 'test.label.1=one'
         test_lbl_2 = 'test.label.2=two'
         result = docker.build([test_lbl_1, test_lbl_2])
