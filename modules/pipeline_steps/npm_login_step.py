@@ -18,6 +18,12 @@ class NpmLoginStep(AbstractPipelineStep):
     def get_required_data_keys(self):
         return []
 
+    def get_output_file(self):
+        return '~/.npmrc'
+
+    def get_docker_image(self):
+        return 'bravissimolabs/generate-npm-authtoken'
+
     def run_step(self, data):
         # npm login doesn't support non-interactive login, so we'll do this
         # through a docker image
@@ -25,8 +31,8 @@ class NpmLoginStep(AbstractPipelineStep):
                f'-e NPM_USER="{environment.get_npm_user()}" '
                f'-e NPM_PASS="{environment.get_npm_password()}" '
                f'-e NPM_EMAIL="{environment.get_npm_email()}" '
-               f'bravissimolabs/generate-npm-authtoken '
-               f'> ~/.npmrc')
+               f'{self.get_docker_image()} '
+               f'> {self.get_output_file()}')
         try:
             result = process.run_with_output(cmd)
         except PipelineException as docker_ex:

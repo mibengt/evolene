@@ -31,7 +31,9 @@ class NpmAuditStep(AbstractPipelineStep):
         return data
 
     def approve_audit(self, data, audit_json):
-        allow_criticals = data[pipeline_data.NPM_CONF_ALLOW_CRITICALS]
+        allow_criticals = False
+        if pipeline_data.NPM_CONF_ALLOW_CRITICALS in data:
+            allow_criticals = True
         criticals = audit_json['metadata']['vulnerabilities']['critical']
         if criticals > 0:
             self.log.debug('%s critical audit vulnerabilities found', criticals)

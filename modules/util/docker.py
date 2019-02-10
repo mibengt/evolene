@@ -22,7 +22,7 @@ def grep_image_id(image_id):
 
 def get_container_status(container_id):
     return process.run_with_output(f'docker inspect --format=\'{{{{.State.Status}}}}\' '
-                                   f'{container_id}')
+                                   f'{container_id}').replace('\n', '')
 
 def run(image_id):
     return process.run_with_output(f'docker run -d {image_id}').rstrip()
