@@ -39,12 +39,12 @@ class NpmAuditStep(AbstractPipelineStep):
             self.log.debug('%s critical audit vulnerabilities found', criticals)
             if not allow_criticals:
                 self.handle_step_error(
-                    'Package contains %s critical vulnerability, aborting',
+                    'Package contains %s critical vulnerabilities, aborting',
                     criticals
                 )
             else:
                 self.log.warning(
-                    'Criticals exists, but ALLOW_CRITICALS set; continuing'
+                    'Criticals exists, but ALLOW_CRITICALS is set; continuing'
                 )
         self.log.debug('No critical vulernabilities found')
 

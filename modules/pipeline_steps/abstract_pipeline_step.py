@@ -79,7 +79,7 @@ class AbstractPipelineStep:
             return data
         if not self.step_data_is_ok(data):
             return data
-        self.log.debug('Running "%s"', self.get_step_name())
+        self.log.info('Running "%s"', self.get_step_name())
         self.run_step(data)
         if self.next_step:
             self.next_step.run_pipeline_step(data)
