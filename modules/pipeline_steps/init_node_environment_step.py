@@ -18,12 +18,12 @@ class InitNodeEnvironmentStep(AbstractPipelineStep):
 
     def run_step(self, data):
         conf_version = data[pipeline_data.NPM_CONF_NODE_VERSION]
-        self.log.debug('Configured node version is: "%s"', conf_version)
+        self.log.debug('Requested node version is: "%s"', conf_version)
         try:
             self.get_nvm_installed_version(conf_version)
         except PipelineException as nvm_ex:
             if 'N/A' in str(nvm_ex):
-                self.log.debug('Configured node version not installed; installing')
+                self.log.info('Requested node version not installed; installing')
                 self.install_version(conf_version)
             else:
                 self.handle_step_error(

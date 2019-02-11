@@ -43,6 +43,8 @@ class NpmAuditStep(AbstractPipelineStep):
                     criticals
                 )
             else:
-                self.log.debug('ALLOW_CRITICALS set, continuing')
+                self.log.warning(
+                    'Criticals exists, but ALLOW_CRITICALS set; continuing'
+                )
         self.log.debug('No critical vulernabilities found')
  

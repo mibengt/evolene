@@ -22,7 +22,7 @@ class InstallNvmStep(AbstractPipelineStep):
         if os.path.isfile(nvm.NVM_DIR):
             self.log.debug('nvm is already installed, continuing')
         else:
-            self.log.debug('nvm is not installed, installing now')
+            self.log.info('nvm is not installed, installing now')
             cmd = (f'curl -o- https://raw.githubusercontent.com/creationix/nvm/'
                    f'{self.nvm_version}/install.sh | bash')
             try:

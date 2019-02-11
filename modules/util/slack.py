@@ -10,6 +10,10 @@ def send_to_slack(message, icon=':no_entry:'):
         body = get_payload_body(channel, message, icon)
         call_slack_endpoint(body)
 
+def on_npm_publish(application, version):
+    message = (f'*{application} version {version} was successfully published to npm')
+    send_to_slack(message, icon=':npm:')
+
 def on_successful_private_push(image, size):
     message = (f'*{image}* pushed to KTH:s private :docker: '
                f'registry, size {size}.')

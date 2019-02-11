@@ -8,9 +8,6 @@ from modules.util import slack
 
 class ConcretePipelineStep(AbstractPipelineStep):
 
-#    def __init__(self):
-#        super(ConcretePipelineStep, self).__init__()
-
     def run_step(self, data):
         if not 'counter' in data:
             data['counter'] = 0
@@ -30,7 +27,7 @@ class AbstractPipelineStepTests(unittest.TestCase):
         self.assertEqual(cps.get_step_name(), 'ConcretePipelineStep')
 
     @patch.object(AbstractPipelineStep, 'handle_step_error')
-    def test_step_data_is_ok(self, mock_handle):
+    def test_step_data_is_ok(self, _):
         cps = ConcretePipelineStep()
         data = None
         self.assertFalse(cps.step_data_is_ok(data))
@@ -67,7 +64,7 @@ class AbstractPipelineStepTests(unittest.TestCase):
 
     @patch.object(AbstractPipelineStep, 'log_error')
     @patch.object(slack, 'send_to_slack')
-    def test_handle_step_error(self, mock_slack, mock_log_error):
+    def test_handle_step_error(self, _, mock_log_error):
         cps = ConcretePipelineStep()
         self.assertRaises(SystemExit, cps.handle_step_error, 'test', ex=Exception('ex'))
         cps.handle_step_error('test', fatal=False)
