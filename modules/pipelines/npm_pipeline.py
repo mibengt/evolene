@@ -20,10 +20,7 @@ from modules.pipeline_steps.install_nvm_step import InstallNvmStep
 from modules.pipeline_steps.npm_author_policy import NpmAuthorPolicy
 from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
-from modules.util import print_util
-from modules.util import slack
-from modules.util import pipeline_data
-from modules.util import pipeline
+from modules.util import print_util, slack, pipeline_data, pipeline
 
 class NpmPipeline(object):
 

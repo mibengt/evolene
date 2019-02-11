@@ -18,14 +18,14 @@ class PushImageStep(AbstractPipelineStep):
                 environment.REGISTRY_PASSWORD]
 
     def get_required_data_keys(self): #pragma: no cover
-
         return [pipeline_data.IMAGE_VERSION, pipeline_data.IMAGE_NAME]
 
     def run_step(self, data):
-        self.push_image(data)
-        self.verify_push(data)
+        if not environment.get_push_public():
+            self.push_image(data)
+            self.verify_push(data)
         return data
-    
+
     def verify_push(self, data):
         tags = self.get_tags_from_registry(data)
         self.verify_image_version_in_tags(tags, data)

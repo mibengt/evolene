@@ -21,56 +21,49 @@ from modules.pipeline_steps.instruction_step import InstructionStep
 from modules.pipeline_steps.celebrate_step import CelebrateStep
 from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
-from modules.util import environment
-from modules.util import print_util
-from modules.util import slack
-from modules.util import pipeline_data
+from modules.util import environment, print_util, slack, pipeline, pipeline_data
 
 class DockerDeployPipeline(object):
 
     def __init__(self):
         self.log = logging.getLogger(__name__)
 
-        # Configure pipeline
-        self.first_step = SetupStep()
-        # Check the content of docker.conf
-        next_step = self.first_step.set_next_step(
-            ReadConfFileStep('docker.conf', [environment.IMAGE_NAME, pipeline_data.IMAGE_VERSION])
-        )
-        # Build new image version major.minor.path_githash
-        next_step = next_step.set_next_step(ImageVersionStep())
-        # Check Dockerfile exists
-        next_step = next_step.set_next_step(DockerFileStep())
-        # Check Dockerfiles FROM statement
-        next_step = next_step.set_next_step(FromImageStep())
-        # Check that ENTRYPOINT is not used
-        next_step = next_step.set_next_step(InstructionStep())
-        # Write information about the current build to a json-file.
-        next_step = next_step.set_next_step(BuildEnvironmentToFileStep())
-        # Scan the repo for passwords, tokens or other suspicious looking strings  
-        next_step = next_step.set_next_step(RepoSupervisorStep())
-        # Build the image to local registry
-        next_step = next_step.set_next_step(BuildLocalStep())
-        # It never to late to party
-        next_step = next_step.set_next_step(CelebrateStep())
-        # Test run the image
-        if environment.use_dry_run():
-            next_step = next_step.set_next_step(DryRunStep())
-        # Run unit tests
-        next_step = next_step.set_next_step(UnitTestStep())
-        # Run integration tests
-        next_step = next_step.set_next_step(IntegrationTestStep())
-        # Do something (leftover?)
-        next_step = next_step.set_next_step(TestImageStep())
-        # Tag the buildt image with image version.
-        next_step = next_step.set_next_step(TagImageStep())
-        # Puch the tagged image to a repository.
-        if environment.get_push_public():
-            next_step = next_step.set_next_step(PushPublicImageStep())
-        else:
-            next_step = next_step.set_next_step(PushImageStep())
-        
-        next_step = next_step.set_next_step(DoneStep())
+        self.pipeline_steps = pipeline.create_pipeline_from_array([
+            # Configure pipeline
+            SetupStep(),
+            # Check the content of docker.conf
+            ReadConfFileStep('docker.conf', [environment.IMAGE_NAME, pipeline_data.IMAGE_VERSION]),
+            # Create new image version major.minor.path_githash
+            ImageVersionStep(),
+            # Check Dockerfile exists
+            DockerFileStep(),
+            # Check Dockerfiles FROM statement
+            FromImageStep(),
+            # Check that ENTRYPOINT is not used
+            InstructionStep(),
+            # Write information about the current build to a json-file.
+            BuildEnvironmentToFileStep(),
+            # Scan the repo for passwords, tokens or other suspicious looking strings  
+            RepoSupervisorStep(),
+            # Build the image to local registry
+            BuildLocalStep(),
+            # It never to late to party
+            CelebrateStep(),
+            # Test run the image
+            DryRunStep(),
+            # Run unit tests
+            UnitTestStep(),
+            # Run integration tests
+            IntegrationTestStep(),
+            # Do something (leftover?)
+            TestImageStep(),
+            # Tag the built image with image version
+            TagImageStep(),
+            # Push the tagged image to a repository
+            PushPublicImageStep(),
+            PushImageStep(),
+            DoneStep()
+        ])
 
     def run_pipeline(self):
         self.verify_environment()
@@ -79,7 +72,7 @@ class DockerDeployPipeline(object):
     def run_steps(self):
         try:
             self.log.info('Running Docker build pipeline')
-            data = self.first_step.run_pipeline_step({})
+            data = self.pipeline_steps[0].run_pipeline_step({})
         except PipelineException as p_ex:
             self.log.fatal('%s'.encode('UTF-8'), p_ex, exc_info=False)
             slack.send_to_slack('<!channel> {}'.format(p_ex.slack_message))
@@ -91,7 +84,7 @@ class DockerDeployPipeline(object):
     def verify_environment(self):
         try:
             self.log.info('Running environment verification')
-            step = self.first_step
+            step = self.pipeline_steps[0]
             while step:
                 step.step_environment_ok()
                 step = step.next_step
