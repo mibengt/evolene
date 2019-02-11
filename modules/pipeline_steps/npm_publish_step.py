@@ -13,7 +13,7 @@ class NpmPublishStep(AbstractPipelineStep):
 
     def get_required_data_keys(self):
         return [pipeline_data.NPM_VERSION_CHANGED, pipeline_data.NPM_PACKAGE_VERSION,
-                pipeline_data.NPM_LATEST_VERSION], pipeline_data.NPM_PACKAGE_NAME
+                pipeline_data.NPM_LATEST_VERSION, pipeline_data.NPM_PACKAGE_NAME]
 
     def run_step(self, data):
         if data[pipeline_data.NPM_VERSION_CHANGED]:
