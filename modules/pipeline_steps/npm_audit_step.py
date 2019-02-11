@@ -34,7 +34,7 @@ class NpmAuditStep(AbstractPipelineStep):
         allow_criticals = False
         if pipeline_data.NPM_CONF_ALLOW_CRITICALS in data:
             allow_criticals = True
-        criticals = audit_json['metadata']['vulnerabilities']['critical']
+        criticals = self.get_criticals_from_audit(audit_json)
         if criticals > 0:
             self.log.debug('%s critical audit vulnerabilities found', criticals)
             if not allow_criticals:
@@ -47,4 +47,10 @@ class NpmAuditStep(AbstractPipelineStep):
                     'Criticals exists, but ALLOW_CRITICALS set; continuing'
                 )
         self.log.debug('No critical vulernabilities found')
+
+    def get_criticals_from_audit(self, audit_json):
+        try:
+            return audit_json['metadata']['vulnerabilities']['critical']
+        except KeyError as key_err:
+            self.handle_step_error('Error when parsing npm audit output', key_err)      
  

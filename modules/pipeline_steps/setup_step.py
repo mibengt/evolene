@@ -8,7 +8,7 @@ from modules.util import print_util
 class SetupStep(AbstractPipelineStep):
 
     def get_required_env_variables(self):
-        return [environment.SLACK_CHANNELS, environment.SLACK_WEB_HOOK]
+        return []
 
     def get_required_data_keys(self):
         return []
