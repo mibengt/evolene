@@ -24,15 +24,18 @@ class NpmAuditStep(AbstractPipelineStep):
         except PipelineException as npm_ex:
             # npm audit returns a non-zero exit code on vulnerabilities
             try:
+                # If the exception message is parsable as json
+                # it's probably the output from the audit. We'll
+                # check that it's ok later on
                 audit_json = json.loads(str(npm_ex))
-                # We managed to parse the response as json
-                # so this is not an actual exception
             except ValueError:
+                # The error wasn't json - so this is probably a true
+                # process error
                 self.handle_step_error(
                     'npm audit failed',
                     npm_ex
                 )
-        self.approve_audit(data, audit_json)
+        data = self.approve_audit(data, audit_json)
         self.log.debug('Audit result was "%s"', json.dumps(audit_json))
         return data
 
@@ -52,7 +55,9 @@ class NpmAuditStep(AbstractPipelineStep):
                 self.log.warning(
                     'Criticals exists, but ALLOW_CRITICALS is set; continuing'
                 )
+                data[pipeline_data.IGNORED_CRITICALS] = criticals
         self.log.debug('No critical vulernabilities found')
+        return data
 
     def get_criticals_from_audit(self, audit_json):
         try:

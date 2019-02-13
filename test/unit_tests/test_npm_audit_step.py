@@ -18,11 +18,13 @@ class NpmAuditStepTests(unittest.TestCase):
         )
         data = {pipeline_data.NPM_CONF_ALLOW_CRITICALS: 1}
         step = NpmAuditStep()
-        step.approve_audit(data, audit_json)
+        data = step.approve_audit(data, audit_json)
         sys.exit.assert_not_called()
         sys.exit.reset_mock()
+        self.assertFalse(pipeline_data.IGNORED_CRITICALS in data)
         audit_json['metadata']['vulnerabilities']['critical'] = 1
-        step.approve_audit(data, audit_json)
+        data = step.approve_audit(data, audit_json)
+        self.assertEqual(data[pipeline_data.IGNORED_CRITICALS], 1)
         sys.exit.assert_not_called()
         sys.exit.reset_mock()
         step.approve_audit({}, audit_json)

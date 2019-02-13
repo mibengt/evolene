@@ -3,15 +3,18 @@ __author__ = 'tinglev'
 import logging
 import requests
 from requests import HTTPError, ConnectTimeout, RequestException
-from modules.util import environment
+from modules.util import environment, pipeline_data
 
 def send_to_slack(message, icon=':no_entry:'):
     for channel in environment.get_slack_channels():
         body = get_payload_body(channel, message, icon)
         call_slack_endpoint(body)
 
-def on_npm_publish(application, version):
+def on_npm_publish(application, version, data):
     message = (f'*{application}* version *{version}* was successfully published to npm')
+    if pipeline_data.IGNORED_CRITICALS in data:
+        criticals = data[pipeline_data.IGNORED_CRITICALS]
+        message = f'{message} - WARNING! This build had {criticals} ignored criticals!'
     send_to_slack(message, icon=':npm:')
 
 def on_successful_private_push(image, size):
