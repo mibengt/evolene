@@ -18,6 +18,7 @@ from modules.pipeline_steps.npm_audit_step import NpmAuditStep
 from modules.pipeline_steps.npm_publish_step import NpmPublishStep
 from modules.pipeline_steps.install_nvm_step import InstallNvmStep
 from modules.pipeline_steps.npm_author_policy import NpmAuthorPolicy
+from modules.pipeline_steps.npm_install_step import NpmInstallStep
 from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
 from modules.util import print_util, slack, pipeline_data, pipeline
@@ -52,6 +53,8 @@ class NpmPipeline(object):
             NpmLoginStep(),
             # Create our package.lock file
             NpmPackageLockStep(),
+            # Run npm install
+            NpmInstallStep(),
             # Run npm test
             NpmTestStep(),
             # Run npm build
