@@ -25,8 +25,8 @@ def select_and_run_pipeline():
         pipeline = NpmPipeline()
         pipeline.run_pipeline()
         return
-    else:
-        logger.error('No suitable configuration file found for project')
+    logger.error('No suitable configuration file found for project')
+    sys.exit(1)
 
 def main():
     log.init_logging()
