@@ -58,7 +58,7 @@ class AbstractPipelineStep:
         if fatal:
             error_func = self.log.fatal
         self.log_error(error_func, message, ex)
-        self.report_error_to_slack(message)
+        self.report_error_to_slack(message, ex)
         if fatal:
             sys.exit(1)
 
@@ -68,10 +68,13 @@ class AbstractPipelineStep:
         else:
             error_func(message)
 
-    def report_error_to_slack(self, message):
+    def report_error_to_slack(self, message, ex):
         workspace = environment.get_project_root()
         if workspace:
-            message = f'[`{workspace}`] {message}'
+            if ex:
+                message = f'[`{workspace}`] {message}: {str(ex)}'
+            else:
+                message = f'[`{workspace}`] {message}'
         slack.send_to_slack(message)
 
     def run_pipeline_step(self, data):
