@@ -21,11 +21,16 @@ class NpmAuditStep(AbstractPipelineStep):
         try:
             result = nvm.exec_npm_command(data, 'audit --json')
         except PipelineException as npm_ex:
-            self.handle_step_error(
-                'npm audit failed',
-                npm_ex
-            )
-        audit_json = json.loads(result)
+            # npm audit returns a non-zero exit code on vulnerabilities
+            try:
+                audit_json = json.loads(result)
+                # We managed to parse the response as json
+                # so this is not an actual exception
+            except ValueError:
+                self.handle_step_error(
+                    'npm audit failed',
+                    npm_ex
+                )
         self.approve_audit(data, audit_json)
         self.log.debug('Audit result was "%s"', json.dumps(audit_json))
         return data
