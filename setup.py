@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '2.0'
+VERSION = '2.1'
 PROJECT_NAME = 'evolene'
 
 setup(name=PROJECT_NAME,
