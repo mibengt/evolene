@@ -10,7 +10,7 @@ from modules.util import slack
 class PushPublicImageStep(AbstractPipelineStep):
 
     def get_required_env_variables(self):
-        return [environment.PUSH_PUBLIC]
+        return []
 
     def get_required_data_keys(self):
         return [pipeline_data.IMAGE_NAME, pipeline_data.IMAGE_VERSION, pipeline_data.SEM_VER]
