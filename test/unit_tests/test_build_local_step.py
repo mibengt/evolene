@@ -29,6 +29,13 @@ class BuildLocalStepTests(unittest.TestCase):
         result = bls.get_image_size(grep_output)
         self.assertEqual(result, 'N/A')
 
+    def test_gb_image_size(self):
+        bls = BuildLocalStep()
+        grep_output = ('kthregistryv2.sys.kth.se/kth-azure-app   <none>              '
+                       '0752187c9cce        13 days ago         1.03GB')
+        result = bls.get_image_size(grep_output)
+        self.assertEqual(result, '1.03GB')
+
     @patch.object(docker, 'grep_image_id')
     @patch.object(AbstractPipelineStep, 'handle_step_error')
     def test_verify_built_image(self, mock_handle_error, mock_grep):
