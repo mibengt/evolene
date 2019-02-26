@@ -24,7 +24,7 @@ class FromImageStep(AbstractPipelineStep):
         # "kth-os": [ "3.8.0" ] -> True
         # "kth-os": [ "3.8.0_abcdef" ] -> True
         #
-        "kth-os": [ "3.8" ],
+        "kth-os": [ "3.8", "3.9" ],
         "kth-nodejs": [ "8.11", "9.11", "10.14"],
         "kth-nodejs-web": [ "2.4" ],
         "kth-nodejs-api": [ "2.4" ],
