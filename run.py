@@ -25,7 +25,9 @@ def select_and_run_pipeline():
         pipeline = NpmPipeline()
         pipeline.run_pipeline()
         return
-    logger.error('No suitable configuration file found for project')
+    logger.error(
+        'No suitable configuration file (docker.conf or npm.conf) found for project'
+    )
     sys.exit(1)
 
 def main():
