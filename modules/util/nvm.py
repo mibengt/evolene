@@ -31,10 +31,10 @@ def run_npm_script(data, script_name):
         f'{npm_base} run-script {script_name}'
     ).replace('\n', '').strip()
 
-def exec_npm_command(data, command):
+def exec_npm_command(data, command, flags=''):
     npm_base = get_npm_base(data)
     return process.run_with_output(
-        f'{npm_base} {command}'
+        f'{npm_base} {command} {flags}'
     ).replace('\n', '').strip()
 
 def exec_nvm_command(command):

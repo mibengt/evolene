@@ -1,7 +1,7 @@
 __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util import pipeline_data, slack, nvm
+from modules.util import pipeline_data, slack, nvm, environment
 
 class NpmPublishStep(AbstractPipelineStep):
 
@@ -23,7 +23,8 @@ class NpmPublishStep(AbstractPipelineStep):
                 data[pipeline_data.NPM_PACKAGE_VERSION],
                 data[pipeline_data.NPM_LATEST_VERSION]
             )
-            result = nvm.exec_npm_command(data, 'publish')
+            flags = environment.get_project_root()
+            result = nvm.exec_npm_command(data, 'publish', flags)
             self.log.debug('Result from npm publish was: "%s"', result)
             slack.on_npm_publish(data[pipeline_data.NPM_PACKAGE_NAME],
                                  data[pipeline_data.NPM_PACKAGE_VERSION],
