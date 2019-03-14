@@ -336,6 +336,22 @@ Also gives you a way of specifing what version of Evolene that is used.
 EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6'
 ```
 
+### Send build arguments to the docker build
+
+Sometimes you need to send information to the docker build stage, for example to set a specific maven settings.xml
+file. You can do this by setting the environment variable DOCKER_BUILD_ARG and configuring your Dockerfile
+with *ARG DOCKER_BUILD_ARG*. See example below.
+
+
+```bash
+DOCKER_BUILD_ARGS='<?xml version="1.0" encoding="UTF-8"?> <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd"> <servers> <server> <id>dev-azure-com-kth-integration-integration</id> <configuration><httpHeaders> <property> <name>Authorization</name> <value>Basic password=</value> </property> </httpHeaders> </configuration> </server></servers></settings>'
+```
+
+```dockerfile
+ARG DOCKER_BUILD_ARG
+RUN echo DOCKER_BUILD_ARG >/usr/share/maven/conf/settings.xml
+```
+
 ## :clipboard: Setup Evolene on Jenkins
 
 
