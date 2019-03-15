@@ -344,7 +344,7 @@ with *ARG DOCKER_BUILD_ARG*. See example below.
 
 
 ```bash
-DOCKER_BUILD_ARGS='<?xml version="1.0" encoding="UTF-8"?> <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd"> <servers> <server> <id>dev-azure-com-kth-integration-integration</id> <configuration><httpHeaders> <property> <name>Authorization</name> <value>Basic password=</value> </property> </httpHeaders> </configuration> </server></servers></settings>'
+DOCKER_BUILD_ARG='<?xml version="1.0" encoding="UTF-8"?> <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd"> <servers> <server> <id>dev-azure-com-kth-integration-integration</id> <configuration><httpHeaders> <property> <name>Authorization</name> <value>Basic password=</value> </property> </httpHeaders> </configuration> </server></servers></settings>'
 ```
 
 ```dockerfile
