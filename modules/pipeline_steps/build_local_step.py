@@ -50,5 +50,6 @@ class BuildLocalStep(AbstractPipelineStep):
     def run_build(self, data):
         lbl_image_name = f'se.kth.imageName={data[pipeline_data.IMAGE_NAME]}'
         lbl_image_version = f'se.kth.imageVersion={data[pipeline_data.IMAGE_VERSION]}'
-        image_id = docker.build([lbl_image_name, lbl_image_version])
+        build_arg = data[pipeline_data.BUILD_ARG] if pipeline_data.BUILD_ARG in data else None
+        image_id = docker.build(build_arg=build_arg, labels=[lbl_image_name, lbl_image_version])
         return self.format_image_id(image_id)
