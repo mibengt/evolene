@@ -5,15 +5,14 @@ from modules.util import environment
 from modules.util.exceptions import PipelineException
 from modules.util import pipeline_data
 
-def build(labels=None):
+def build(labels=None, build_arg=None):
     build_cmd = 'docker build --quiet'
     root = environment.get_project_root()
     if labels:
         for label in labels:
             build_cmd = f'{build_cmd} --label {label}'
-    docker_build_arg = environment.get_docker_build_arg()
-    if docker_build_arg:
-        build_cmd = f"{build_cmd} --build-arg DOCKER_BUILD_ARG='{docker_build_arg}'"
+    if build_arg:
+        build_cmd = f"{build_cmd} --build-arg {build_arg}"
     return process.run_with_output(f'{build_cmd} {root}')
 
 def grep_image_id(image_id):
