@@ -11,7 +11,6 @@ def build(labels=None, build_arg=None):
     if labels:
         for label in labels:
             build_cmd = f'{build_cmd} --label {label}'
-    docker_build_arg = environment.get_docker_build_arg()
     if build_arg:
         build_cmd = f"{build_cmd} --build-arg {build_arg}"
     return process.run_with_output(f'{build_cmd} {root}')

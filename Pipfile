@@ -17,4 +17,4 @@ coloredlogs = "==10.0"
 setuptools = "==34.3.2"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"

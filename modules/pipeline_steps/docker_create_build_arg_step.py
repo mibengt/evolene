@@ -15,6 +15,7 @@ class DockerCreateBuildArgStep(AbstractPipelineStep):
         return []
 
     def run_step(self, data):
+        data[pipeline_data.BUILD_ARG] = None
         docker_build_arg = environment.get_docker_build_arg()
         if docker_build_arg:
             data[pipeline_data.BUILD_ARG] = f"BUILD_ARG='{docker_build_arg}'"
