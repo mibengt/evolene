@@ -26,8 +26,6 @@ class FromImageStep(AbstractPipelineStep):
         #
         "kth-os": [ "3.8", "3.9" ],
         "kth-nodejs": [ "8.11", "9.11", "10.14"],
-        "kth-nodejs-web": [ "2.4" ],
-        "kth-nodejs-api": [ "2.4" ],
         "kth-play1": [ "1.5" ],
         "kth-play2": [ "2.2" ],
         "kth-python": [ "3.6" ],
@@ -44,6 +42,8 @@ class FromImageStep(AbstractPipelineStep):
         #
         "kth-java": [ ],
         "oracle": [ ],
+        "kth-nodejs-web": [ ],
+        "kth-nodejs-api": [ ]
     }
 
     def __init__(self, image_rules=None):
@@ -75,7 +75,8 @@ class FromImageStep(AbstractPipelineStep):
                 return self.is_valid_tag_for_image_name(from_line, image_name)
         return True
 
-    def get_change_image_message(self, image_name, data):
+    @staticmethod
+    def get_change_image_message(image_name, data):
 
         if str(image_name) == "kth-nodejs-web":
             return ("*{}*: Please change to `FROM kthse/kth-nodejs:sem_ver`. "
@@ -115,8 +116,10 @@ class FromImageStep(AbstractPipelineStep):
                 return True
         return False
 
-    def get_from_line(self):
+    @staticmethod
+    def get_from_line():
         rows = file_util.get_lines(DockerFileStep.FILE_DOCKERFILE)
         for row in rows:
             if "FROM" in row:
                 return row
+        return None
