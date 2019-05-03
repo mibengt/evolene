@@ -1,0 +1,21 @@
+{
+    "result": [
+        {
+            "filepath": "./test/fixtures/integration/dir.with.secrets/foo/bar.js",
+            "secrets": [
+                "zJd-55qmsY6LD53CRTqnCr_g-",
+                "gm5yb-hJWRoS7ZJTi_YUj_tbU",
+                "GxC56B6x67anequGYNPsW_-TL",
+                "MLTk-BuGS8s6Tx9iK5zaL8a_W",
+                "2g877BA_TsE-WoPoWrjHah9ta"
+            ]
+        },
+        {
+            "filepath": "./test/fixtures/integration/dir.with.secrets/foo/foo.json",
+            "secrets": [
+                "d7kyociU24P9hJ_sYVkqzo-kE",
+                "q28Wt3nAmLt_3NGpqi2qz-jQ7"
+            ]
+        }
+    ]
+}
