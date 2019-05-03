@@ -53,15 +53,13 @@ class RepoSupervisorStep(AbstractPipelineStep):
         docker.pull(image_name)
 
     def _process_supervisor_result(self, cmd_output, data):
-        print(cmd_output)
         results = json.loads(cmd_output)
-        if results:
-            filenames = [f_name.replace(RepoSupervisorStep.REPO_MOUNTED_DIR, '').encode('utf-8')
-                        for (f_name, _)
-                        in results['result'].items()
-                        if not self.ignore(f_name)]
-            if filenames:
-                self._log_warning_and_send_to_slack(filenames, data)
+        filenames = [f_name.replace(RepoSupervisorStep.REPO_MOUNTED_DIR, '').encode('utf-8')
+                     for (f_name, _)
+                     in results['result'].items()
+                     if not self.ignore(f_name)]
+        if filenames:
+            self._log_warning_and_send_to_slack(filenames, data)
 
     def _log_warning_and_send_to_slack(self, filenames, data):
         self.log.info('Found suspicious string in files "%s"', filenames)
