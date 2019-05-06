@@ -41,7 +41,7 @@ class DockerDeployPipeline(object):
             # Check Dockerfiles FROM statement
             FromImageStep(),
             # Check that ENTRYPOINT is not used
-            InstructionStep(),
+            # InstructionStep()
             # Write information about the current build to a json-file.
             BuildEnvironmentToFileStep(),
             # Scan the repo for passwords, tokens or other suspicious looking strings  
