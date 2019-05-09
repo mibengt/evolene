@@ -30,10 +30,17 @@ class IntegrationTestStep(AbstractPipelineStep):
 
     def run_integration_tests(self, data):
         try:
-
-            self.log.info("Running integration tests in '{}'".format(IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME))
-            docker.run_integration_tests(file_util.get_absolue_path(IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME), data)
-
+            self.log.info(
+                "Running integration tests in '%s'",
+                IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME
+            )
+            output = docker.run_integration_tests(
+                file_util.get_absolue_path(
+                    IntegrationTestStep.INTEGRATION_TEST_COMPOSE_FILENAME
+                )
+                , data
+            )
+            self.log.debug('Output from integration tests was: %s', output)
         except Exception as ex:
             raise PipelineException(str(ex), self.get_slack_message(ex, data))
 

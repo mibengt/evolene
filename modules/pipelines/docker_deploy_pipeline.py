@@ -19,6 +19,7 @@ from modules.pipeline_steps.integration_test_step import IntegrationTestStep
 from modules.pipeline_steps.from_image_step import FromImageStep
 from modules.pipeline_steps.instruction_step import InstructionStep
 from modules.pipeline_steps.celebrate_step import CelebrateStep
+from modules.pipeline_steps.docker_create_build_arg_step import DockerCreateBuildArgStep
 from modules.pipeline_steps.done_step import DoneStep
 from modules.util.exceptions import PipelineException
 from modules.util import environment, print_util, slack, pipeline, pipeline_data
@@ -40,11 +41,13 @@ class DockerDeployPipeline(object):
             # Check Dockerfiles FROM statement
             FromImageStep(),
             # Check that ENTRYPOINT is not used
-            InstructionStep(),
+            # InstructionStep()
             # Write information about the current build to a json-file.
             BuildEnvironmentToFileStep(),
             # Scan the repo for passwords, tokens or other suspicious looking strings  
             RepoSupervisorStep(),
+            # Create docker --build-arg
+            DockerCreateBuildArgStep(),
             # Build the image to local registry
             BuildLocalStep(),
             # It never to late to party

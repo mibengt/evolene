@@ -32,8 +32,12 @@ class UnitTestStep(AbstractPipelineStep):
 
     def run_unit_tests(self, data):
         try:
-            docker.run_unit_test_compose(file_util.get_absolue_path(
-                UnitTestStep.UNIT_TEST_COMPOSE_FILENAME), data)
+            output = docker.run_unit_test_compose(
+                file_util.get_absolue_path(
+                    UnitTestStep.UNIT_TEST_COMPOSE_FILENAME)
+                    , data
+                )
+            self.log.debug('Output from unit tests was: %s', output)
         except Exception as ex:
             raise PipelineException(
                 str(ex), self.get_slack_message(ex, data))

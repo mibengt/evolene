@@ -54,12 +54,13 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
     def _process_supervisor_result(self, cmd_output, data):
         results = json.loads(cmd_output)
-        filenames = [f_name.replace(RepoSupervisorStep.REPO_MOUNTED_DIR, '').encode('utf-8')
-                     for (f_name, _)
-                     in results['result'].items()
-                     if not self.ignore(f_name)]
+        filenames = [result['filepath'].replace(RepoSupervisorStep.REPO_MOUNTED_DIR, '').encode('utf-8')
+                     for result
+                     in results['result']
+                     if not self.ignore(result['filepath'])]
         if filenames:
             self._log_warning_and_send_to_slack(filenames, data)
+        return filenames
 
     def _log_warning_and_send_to_slack(self, filenames, data):
         self.log.info('Found suspicious string in files "%s"', filenames)
