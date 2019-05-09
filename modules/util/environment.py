@@ -117,4 +117,3 @@ def get_time():
 
 def get_docker_build_arg():
     return os.environ.get(DOCKER_BUILD_ARG)
-

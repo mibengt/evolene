@@ -1,18 +1,25 @@
-# Evolene
+# Evolene :whale:
 
-**:whale: Build process as code** Evolene runs a sequence of steps that build, test and in the end does a `docker push` on a  SemVer tagged Docker image like `tamarack:2.3.40_f2486d7`. All steps including unit and integration
+Automated builds of Docker images and npm packages
+
+# What it is
+
+Evolene runs a sequence of steps that build, test and in the end does a `docker push` on a  SemVer tagged Docker image like `tamarack:2.3.40_f2486d7`. All steps including unit and integration
 tests are run inside Docker containers, eliminating most Jenkins plugins.
 
-Evolene uses Convention Over Configuration. That means that Evolene is configure by following standard naming convensions rather then per project configuration.
+It also supports npm package building and publishing.
 
-![Example](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
+Evolene uses Convention Over Configuration. That means that Evolene is configured by following standard naming convensions rather then per project configuration.
 
-## :exclamation: Usage Requirements
+[Example of one-liner shell command in Jenkins](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
 
-For your app to build using Evolene you need to have two files in your projects root directory.
-A `Dockerfile`, and a Evolene meta-data file called `docker.conf`.
+# Requirements
 
-The example bellow will on the *40th* build on Jenkins create `tamarack:2.3.40_f2486d7`. Where `f2486d7` is the Git Commit of that exact code built.
+For your app to be built using Evolene you need to have two files in your project root directory:
+
+* `Dockerfile` - The build configuration file for the docker image
+
+* `docker.conf` - A build metadata file used by evolene for versioning and naming. The example below will on the *40th* build on Jenkins create `tamarack:2.3.40_f2486d7`. Where `f2486d7` is the git commit hash that triggered the build.
 
 ```bash
 #
@@ -38,33 +45,39 @@ IMAGE_VERSION=2.3
 
 ```
 
-In Jenkins add a job that pulls your Git repository and runs this command inside *Execute shell*: `SLACK_CHANNELS='#my-dev-channel' $EVOLENE_DIRECTORY/run.sh` or if you have no Slack `$EVOLENE_DIRECTORY/run.sh`
+Now just add a "execute shell"-command to your jenkins job that looks like this:
+`SLACK_CHANNELS=#my-channel $EVOLENE_DIRECTORY/run.sh`
+
+or if you have no Slack
+
+`$EVOLENE_DIRECTORY/run.sh`
 
 *That is it!* Evolene will tell you will all other things in your Slack channels or in the Jenkins console log, when you build your app.
 
 :boom: :tada: Happy Coding!
 
-## :+1: Evolene Features
+# Features
 
 * No configuration, unless you want it
 * You need no Jenkins knowledge (almost), works on Jenkins, exactly as on your dev machine
-* Testing and full integration testing
-* SemVer for the win
+* Supports unit and integration testing
+* Semver for the win
 * Handles all the Docker stuff
 * Slack integrations of course
 * Scan for passwords in your code
 * ... and more
 
-## :hammer: Build SemVer Docker Image 
+# Configuration
 
-### Overide the Name
+## Image name
+
 Override the IMAGE_NAME in docker.conf for the image to build.
 
 ```bash
 IMAGE_NAME='other-name'  $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Project Root
+## Project Root
 
 Build your project from an other directory.
 If set the  $WORKSPACE set by Jenkins will be ignored.
@@ -73,7 +86,8 @@ If set the  $WORKSPACE set by Jenkins will be ignored.
 PROJECT_ROOT='/other/jenkis/workspace/other-repo/'  $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Override Git Commit
+## Override Git Commit
+
 Reuse a commit hash of the push that triggered the build.
 If set the  $GIT_COMMIT set by Jenkins will be ignored.
 
@@ -81,7 +95,8 @@ If set the  $GIT_COMMIT set by Jenkins will be ignored.
 GIT_COMMIT='abcdefhijkl1234456'  $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Specify SemVer Patch Version
+## Specify Semver Patch Version
+
 The patch version in the SemVer tag is the Jenkins $BUILD_NUMBER.
 If set the $BUILD_NUMBER set by Jenkins will be ignored, and patch version
 will always be tag tamarack:2.3.`40`.
@@ -92,17 +107,18 @@ Patch version can also be set in `docker.conf` with PATCH_VERSION=40
 BUILD_NUMBER='40'  $EVOLENE_DIRECTORY/run.sh
 ```
 
+## Build information to file
 
-## :page_facing_up: Build information to file
-
-If you whould like to get build information writen to a file. Set `BUILD_INFORMATION_OUTPUT_FILE` to a relative path
+If you would like to get build information writen to a file. Set `BUILD_INFORMATION_OUTPUT_FILE` to a relative path
 in your repo. Depending on the file extension a different file type will be created. (overwritten if it already exists).
 
 ```bash
 BUILD_INFORMATION_OUTPUT_FILE='/config/version.js' $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Module
+### Different file types
+
+#### Javascript module
 
 ```bash
 BUILD_INFORMATION_OUTPUT_FILE='/info.js'
@@ -120,7 +136,7 @@ module.exports = {
 }
 ```
 
-### Typescript
+#### Typescript
 
 ```bash
 BUILD_INFORMATION_OUTPUT_FILE='/info.ts'
@@ -138,7 +154,7 @@ exports const buildInfo {
 }
 ```
 
-### JSON
+#### JSON
 
 ```bash
 BUILD_INFORMATION_OUTPUT_FILE='/config/info.json'
@@ -156,7 +172,7 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json'
 }
 ```
 
-### Conf-file
+#### Conf-file
 
 ```bash
 BUILD_INFORMATION_OUTPUT_FILE='/info.conf'
@@ -172,17 +188,16 @@ gitCommit=f2486d79abf3af26225aa1dbde0fddfcd702c7e6,
 gitBranch=origin/master
 ```
 
-## :bell: Testing
+# Testing
 
-### Unit Testing
+## Unit Testing
 
-Add a file in the root of your project called  `docker-compose-unit-tests.yml`. This
-file is then run 
+Add a file in the root of your project called  `docker-compose-unit-tests.yml`.
 
-Before unit tests are run, the image is built and it´s id is availeble to
+Before unit tests are run, the image is built and its id is available to
 the Docker Compose file via `$LOCAL_IMAGE_ID`.
 
-One way is then to mount your test directly into the docker images and run your tests on
+One way is then to mount your tests directly into the docker images and run your tests on
 that very image.
 
 On your local machine you can run the same test using `ID=$(docker build -q .) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-unit-tests.yml up --abort-on-container-exit --always-recreate-deps`.
@@ -199,8 +214,7 @@ services:
     command: npm test
 ```
 
-
-### Integration Testing
+## Integration Testing
 
 Add a file in the root of your project called  `docker-compose-integration-tests.yml`.
 Before integration tests are run, the image is built and it´s id is availeble to
@@ -238,9 +252,27 @@ services:
       - web
 ```
 
-## :mega: Slack Integration
+# NPM packages
 
-### Slack web hook
+Besides from working with docker images, evolene also supports building and publishing npm packages.
+
+## How to trigger
+
+Instead of creating a `docker.conf` in your project root, create a `npm.conf` file. This file needs to contain
+
+```bash
+NODE_VERSION=[version of nodejs the project uses]
+```
+
+## Environment variables
+
+* NPM_USER - The user to use for npm publish
+* NPM_PASSWORD - The password to use for npm publish
+* NPM_EMAIL - The email to use for npm publish
+
+# Slack Integration
+
+## Slack web hook
 
 The Slack webhook endpoint where the `SLACK_CHANNELS` can be found.
 
@@ -248,7 +280,7 @@ The Slack webhook endpoint where the `SLACK_CHANNELS` can be found.
 SLACK_WEB_HOOK='https://hooks.slack.com/services/1234asdfasd/' $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Slack channels to post build information to
+## Slack channels to post build information to
 
 Comma separated list of channels to post messages to. Messages are build inforation,
 failures an push information.
@@ -257,13 +289,13 @@ failures an push information.
 SLACK_CHANNELS='#pipeline-logs,#devops' $EVOLENE_DIRECTORY/run.sh
 ```
 
-## :cop: Security scaning
+# Security scaning
 
 By default files in your repo will be scanned for strings that looks like passwords or tokens. We use [RepoSupervisor](https://github.com/auth0/repo-supervisor/) for this.
 
 When your project is built a warning will be sent to SLACK_CHANNELS with the files that contain suspisious files. If a file gives you a false possitive, you can create a file in the root of your repository and name it `.scanignore`. In the .scanignore file you can add catalogs or files that the security scan should ignore.
 
-### .scanignore formatting
+## .scanignore formatting
 
 ```bash
 # Catalogs starting with, or specific files.
@@ -271,9 +303,9 @@ When your project is built a warning will be sent to SLACK_CHANNELS with the fil
 /imported-data/personnumer.txt
 ```
 
-## :whale: Docker Registries
+# Docker Registries
 
-### Private Docker Registry
+## Private Docker Registry
 
 Unless `PUSH_PUBLIC` is set to `true`, this registry will be used.
 The host without protocol.
@@ -283,13 +315,14 @@ REGISTRY_HOST='private-docker-registry.mycompany.com' $EVOLENE_DIRECTORY/run.sh
 ```
 
 ### Private Docker Registry User
+
 The private `REGISTRY_HOST`:s  BASIC_AUTH user who has the rights to read and push to the private registry.
 
 ```bash
 REGISTRY_USER='myuser' $EVOLENE_DIRECTORY/run.sh
 ```
 
-### Private Docker Registry User
+### Private Docker Registry Password
 
 The private `REGISTRY_HOST`:s  BASIC_AUTH users password.
 
@@ -297,13 +330,13 @@ The private `REGISTRY_HOST`:s  BASIC_AUTH users password.
 REGISTRY_PASSWORD='qwerty123' $EVOLENE_DIRECTORY/run.sh
 ```
 
-#### Public repository
+## Public repository
 
 Set to `true` When you whant to push your image to `hub.docker.com/r/kthse`. This will push two tags,
 the ususual SemVer with commit `tamarack:2.3.40_f2486d7`, but also and also a short tag with only SemVer `tamarack:2.3.40`. This is done to enable reuse of tags.
 
 ```bash
-PUSH_PUBLIC='True' # True or False
+PUSH_PUBLIC='True' # Set or unset
 ```
 
 ## Other envs
@@ -314,7 +347,7 @@ Normally Evolene does a `docker run IMAGE_ID` to see that the image is build cor
 Some images does not support this (os-images) and therefor exits causing the pipeline to exit. 
 
 ```bash
-SKIP_DRY_RUN='True' # True or False
+SKIP_DRY_RUN='True' # Set or unset
 ```
 
 ### Feature flag for building
@@ -323,7 +356,7 @@ Sometimes we add new features that are sort of in beta. If you would like to try
 exprimental.
 
 ```bash
-EXPERIMENTAL='True' # True or False
+EXPERIMENTAL='True' # Set or unset
 ```
 
 ### Current Evolene running
@@ -333,14 +366,14 @@ Used in Jenkin builds for shorter path when envoking the Evolene itself `$EVOLEN
 Also gives you a way of specifing what version of Evolene that is used.
 
 ```bash
-EVOLENE_DIRECTORY='`/var/lib/jenkins/workspace/evolene/dist/evolene-1.6'
+EVOLENE_DIRECTORY='/var/lib/jenkins/workspace/evolene/dist/evolene-1.6'
 ```
 
 ### Send build arguments to the docker build
 
 Sometimes you need to send information to the docker build stage, for example to set a specific maven settings.xml
-file. You can do this by setting the environment variable DOCKER_BUILD_ARG and configuring your Dockerfile
-with *ARG DOCKER_BUILD_ARG*. See example below.
+file. You can do this by setting the environment variable `DOCKER_BUILD_ARG` and configuring your Dockerfile
+with `ARG DOCKER_BUILD_ARG`. See example below.
 
 
 ```bash
@@ -352,10 +385,10 @@ ARG DOCKER_BUILD_ARG
 RUN echo DOCKER_BUILD_ARG >/usr/share/maven/conf/settings.xml
 ```
 
-## :clipboard: Setup Evolene on Jenkins
+# Setup Evolene on Jenkins
 
 
-### 1. Add default envs for builds on the Jenkins server
+## 1. Add default envs for builds on the Jenkins server
 
 We recommend that the following envs are available to each Jenkins job. The can be overridden by
 env arguments per build as shown above.
@@ -367,9 +400,13 @@ REGISTRY_HOST='private-docker-registry.mycompany.com'
 REGISTRY_PASSWORD='very-secret-pwd'
 REGISTRY_USER='jenkins-ci'
 ```
-### 2. Set up a build task that builds Evolene
-1. Add a new you that pulls the Evolene source 
-2. Add a *Execute shell* step.
+
+## 2. Set up a build task that builds Evolene
+
+1. Add a new job that pulls the Evolene source
+
+2. Add a *Execute shell* step
+
 ```bash
 /create_dist.sh
 LATEST_DIST=$(ls -tp dist | grep -v / | head -1)
@@ -379,22 +416,23 @@ mkdir dist/latest
 tar xvf dist/$LATEST_DIST -C dist/latest --strip 1
 chmod -R 700 dist/latest
 ```
+
 3. Run the Jenkins job. This will create a executable Evolene dist in `/var/lib/jenkins/workspace/evolene/dist/evolene-1.6`.
 
+## 3. Test your setup
 
-### 3. Test your setup
 Test your setup by adding a Docker application that follows Evolene [Usage Requirements](https://gita.sys.kth.se/Infosys/evolene/blob/master/README.md#exclamation-user-requirements) and run a *Execute shell*.
 `$EVOLENE_DIRECTORY/run.sh`
 
-## :computer: Setup Evolene for development
+# Setup Evolene for development
 
-### Run locally
+## Run locally
 
 ```bash
 python run.py docker run-pipeline
 ```
 
-### Create a distribution
+## Create a distribution
 
 Note! The version of the dist is defined in `setup.py`
 
@@ -402,7 +440,7 @@ Note! The version of the dist is defined in `setup.py`
 ./create_dist.sh`
 ```
 
-### Run unit tests
+## Run unit tests
 
 ```bash
 ./run_tests.sh
