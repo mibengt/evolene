@@ -11,7 +11,7 @@ It also supports npm package building and publishing.
 
 Evolene uses Convention Over Configuration. That means that Evolene is configured by following standard naming convensions rather then per project configuration.
 
-[Example of one-liner shell command in Jenkins](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
+![Example of one-liner shell command in Jenkins](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
 
 # Requirements
 
