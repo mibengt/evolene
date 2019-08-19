@@ -11,7 +11,7 @@ def send_to_slack(message, icon=':no_entry:'):
         call_slack_endpoint(body)
 
 def on_npm_publish(application, version, data):
-    message = (f'*{application}* version *{version}* was successfully published to npm')
+    message = (f'*{application}* version *{version}* was successfully published to https://www.npmjs.com/package/{application}')
     if pipeline_data.IGNORED_CRITICALS in data:
         criticals = data[pipeline_data.IGNORED_CRITICALS]
         message = f'{message} - WARNING! This build had {criticals} ignored criticals!'
