@@ -264,6 +264,10 @@ Instead of creating a `docker.conf` in your project root, create a `npm.conf` fi
 NODE_VERSION=[version of nodejs the project uses]
 ```
 
+and your `package.json` has to have a `build` task defined, build can be empty.
+
+
+
 ## Environment variables
 
 * NPM_USER - The user to use for npm publish
