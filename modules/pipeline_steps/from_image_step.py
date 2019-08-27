@@ -120,6 +120,6 @@ class FromImageStep(AbstractPipelineStep):
     def get_from_line():
         rows = file_util.get_lines(DockerFileStep.FILE_DOCKERFILE)
         for row in rows:
-            if "FROM" in row:
+            if "FROM " in row.upper():
                 return row
         return None
