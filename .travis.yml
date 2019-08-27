@@ -3,4 +3,4 @@ python:
   - "3.7"
   
 script:
-  - SKIP_INSTALL=True ./run_tests.sh
+  - ./run_tests.sh
