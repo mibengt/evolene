@@ -72,9 +72,9 @@ class AbstractPipelineStep:
         workspace = environment.get_project_root()
         if workspace:
             if ex:
-                message = f'[`{workspace}`] {message}: {str(ex)}'
+                message = f'*{workspace}* {message}: {str(ex)}'
             else:
-                message = f'[`{workspace}`] {message}'
+                message = f'*`{workspace}`* {message}'
         slack.send_to_slack(message)
 
     def run_pipeline_step(self, data):

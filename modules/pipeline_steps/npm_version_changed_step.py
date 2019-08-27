@@ -30,7 +30,5 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         try:
             return nvm.exec_npm_command(data, f'show {package_name} version')
         except PipelineException as npm_ex:
-            self.handle_step_error(
-                'Exception when getting published npm version for package',
-                npm_ex
-            )
+            self.log.debug("Could not find any previous versions. %s", npm_ex)
+            return None

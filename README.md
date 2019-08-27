@@ -1,4 +1,4 @@
-# Evolene :whale:
+# Evolene :whale: ![alt text](https://api.travis-ci.org/KTH/evolene.svg?branch=master)
 
 Automated builds of Docker images and npm packages
 
@@ -11,7 +11,7 @@ It also supports npm package building and publishing.
 
 Evolene uses Convention Over Configuration. That means that Evolene is configured by following standard naming convensions rather then per project configuration.
 
-![Example of one-liner shell command in Jenkins](https://gita.sys.kth.se/Infosys/evolene/blob/master/images/jenkins.png)
+![Example of one-liner shell command in Jenkins](https://github.com/KTH/evolene/blob/master/images/jenkins.png)
 
 # Requirements
 
@@ -264,6 +264,10 @@ Instead of creating a `docker.conf` in your project root, create a `npm.conf` fi
 NODE_VERSION=[version of nodejs the project uses]
 ```
 
+and your `package.json` has to have a `build` task defined, build can be empty.
+
+
+
 ## Environment variables
 
 * NPM_USER - The user to use for npm publish
@@ -445,3 +449,5 @@ Note! The version of the dist is defined in `setup.py`
 ```bash
 ./run_tests.sh
 ```
+
+

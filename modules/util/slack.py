@@ -11,11 +11,15 @@ def send_to_slack(message, icon=':no_entry:'):
         call_slack_endpoint(body)
 
 def on_npm_publish(application, version, data):
-    message = (f'*{application}* version *{version}* was successfully published to npm')
+    message = (f'*{application}* version *{version}* was successfully published to https://www.npmjs.com/package/{application}')
     if pipeline_data.IGNORED_CRITICALS in data:
         criticals = data[pipeline_data.IGNORED_CRITICALS]
         message = f'{message} - WARNING! This build had {criticals} ignored criticals!'
     send_to_slack(message, icon=':npm:')
+
+def on_npm_no_publish(application, version):
+    message = (f'*{application} {version}* in `package.json` already exists on :npm: https://www.npmjs.com/package/{application}')
+    send_to_slack(message, icon=':warning:')
 
 def on_successful_private_push(image, size):
     message = (f'*{image}* pushed to KTH:s private :docker: '
