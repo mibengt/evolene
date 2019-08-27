@@ -1,4 +1,4 @@
-# Evolene :whale:
+# Evolene :whale: ![alt text](https://api.travis-ci.org/KTH/evolene.svg?branch=master)
 
 Automated builds of Docker images and npm packages
 
