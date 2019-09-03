@@ -258,7 +258,7 @@ Besides from working with docker images, evolene also supports building and publ
 
 ## How to trigger
 
-1. *Add a `/npm.conf` file* in the root of your repo. This file needs to contain the *node version* to build the packet with.
+1. **Add a `/npm.conf` file** in the root of your repo. This file needs to contain the *node version* to build the packet with.
 
 ```bash
 
@@ -270,22 +270,22 @@ NODE_VERSION=10.14.2
 # Comment this out otherwise
 # ALLOW_CRITICALS=0
 ```
-2. Add a *script build*  in your `package.json` that runs test (can be empty).
+2. Add a **script build**  in your `package.json` that runs test (can be empty).
 ```json
 "scripts": {
     "test": "./run_tests.sh",
     "build": "npm test"
   },
 ```
-3. *Add a Jenkins job* that builds your package.
+3. **Add a Jenkins job** that builds your package.
 
 4. 🎉 Done!
 
-5. *Publish automaticly* Every time you push Evolene will run `npm run-script build`. After that Evolene will check ot see if the `version` in `package.json` have been updated. If it does not previously exists in the npm registry, a new version with
+5. **Publishing to npm is now automatic** Every time you push Evolene will run `npm run-script build`. After that Evolene will check ot see if the `version` in `package.json` have been updated. If it does not previously exists in the npm registry, a new version with
 this version number is published to [npm](https://registry.npmjs.org/).
 Reminder: If you forget to update the version Evolene will run `npm run-script build`, but without publishing to the registy.
 
-## Environment variables
+## Environment variables for setting up npm
 
 * NPM_USER - The user to use for npm publish
 * NPM_PASSWORD - The password to use for npm publish
