@@ -252,21 +252,33 @@ services:
       - web
 ```
 
-# NPM packages
+# Publish NPM packages
 
 Besides from working with docker images, evolene also supports building and publishing npm packages.
 
 ## How to trigger
 
-Instead of creating a `docker.conf` in your project root, create a `npm.conf` file. This file needs to contain
+1. *Add a `npm.conf` file*. This file needs to contain the *node version* to build the packet with.
 
 ```bash
-NODE_VERSION=[version of nodejs the project uses]
+
+# What version of node should be used?
+# This is installed via nvm (https://github.com/creationix/nvm) on jenkins if missing
+NODE_VERSION=10.14.2
+
+# Do we allow npm audit to find criticals and let the build finish?
+# Comment this out otherwise
+# ALLOW_CRITICALS=0
 ```
+2. Add a *script build*  in your `package.json` that runs test (can be empty).
 
-and your `package.json` has to have a `build` task defined, build can be empty.
+3. Add a Jenkins job that should build your package.
 
+4. Done
 
+5. *Publish automaticly* Every time you push Evolene will run `npm run-script build`. After that Evolene will check ot see if the `version` in `package.json` have been updated. If it does not previously exists in the npm registry, a new version with
+this version number is published to [npm](https://registry.npmjs.org/).
+Reminder: If you forget to update the version Evolene will run `npm run-script build`, but without publishing to the registy.
 
 ## Environment variables
 
