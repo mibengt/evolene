@@ -28,7 +28,7 @@ AZURE_REGISTRY_PASSWORD = 'AZURE_REGISTRY_PASSWORD'
 NPM_USER = 'NPM_USER'
 NPM_PASSWORD = 'NPM_PASSWORD'
 NPM_EMAIL = 'NPM_EMAIL'
-DOCKER_BUILD_ARG = 'DOCKER_BUILD_ARG'
+DOCKER_BUILD_ARGS = 'DOCKER_BUILD_ARGS'
 
 def get_npm_email():
     return os.environ.get(NPM_EMAIL)
@@ -115,5 +115,8 @@ def is_true(env_key):
 def get_time():
     return datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
-def get_docker_build_arg():
-    return os.environ.get(DOCKER_BUILD_ARG)
+def get_docker_build_args():
+    args = os.environ.get(DOCKER_BUILD_ARGS)
+    if args:
+        return [args.rstrip() for args in args.split(',')]
+    return []

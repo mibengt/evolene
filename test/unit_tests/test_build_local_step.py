@@ -56,9 +56,9 @@ class BuildLocalStepTests(unittest.TestCase):
         bls = BuildLocalStep()
         data = {pipeline_data.IMAGE_VERSION: '1.2.32_abcd',
                 pipeline_data.IMAGE_NAME: 'kth-azure-app',
-                pipeline_data.BUILD_ARG: None}
+                pipeline_data.BUILD_ARGS: None}
         bls.run_build(data)
-        mock_docker_build.assert_called_once_with(build_arg=None, labels=['se.kth.imageName=kth-azure-app',
+        mock_docker_build.assert_called_once_with(build_args=None, labels=['se.kth.imageName=kth-azure-app',
                                                   'se.kth.imageVersion=1.2.32_abcd'])
 
     @patch.object(docker, 'build')
@@ -66,8 +66,8 @@ class BuildLocalStepTests(unittest.TestCase):
         bls = BuildLocalStep()
         data = {pipeline_data.IMAGE_VERSION: '1.2.32_abcd',
                 pipeline_data.IMAGE_NAME: 'kth-azure-app',
-                pipeline_data.BUILD_ARG: 'test.build.arg'}
+                pipeline_data.BUILD_ARGS: ['BLA=test.build.arg', 'BLA2=test2']}
         bls.run_build(data)
-        mock_docker_build.assert_called_once_with(build_arg='test.build.arg',
+        mock_docker_build.assert_called_once_with(build_args=['BLA=test.build.arg', 'BLA2=test2'],
                                                   labels=['se.kth.imageName=kth-azure-app',
                                                           'se.kth.imageVersion=1.2.32_abcd'])

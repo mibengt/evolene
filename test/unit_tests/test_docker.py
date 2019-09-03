@@ -40,7 +40,8 @@ class DockerTests(unittest.TestCase):
         os.environ[environment.PROJECT_ROOT] = os.path.join(current_path, '../data')
         test_lbl_1 = 'test.label.1=one'
         test_lbl_2 = 'test.label.2=two'
-        result = docker.build(labels=[test_lbl_1, test_lbl_2])
+        build_args = ['ARG1=test1', 'ARG2=test2']
+        result = docker.build(build_args=build_args, labels=[test_lbl_1, test_lbl_2])
         DockerTests.IMAGE_ID = result.replace('sha256:', '')[:12]
         self.assertIn('sha256:', result)
 
