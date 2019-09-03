@@ -285,6 +285,9 @@ NODE_VERSION=10.14.2
 this version number is published to [npm](https://registry.npmjs.org/).
 Reminder: If you forget to update the version Evolene will run `npm run-script build`, but without publishing to the registy.
 
+
+![Published package are shown in Slack](https://github.com/KTH/evolene/blob/master/images/npm.png)
+
 ## Environment variables for setting up npm
 
 * NPM_USER - The user to use for npm publish
