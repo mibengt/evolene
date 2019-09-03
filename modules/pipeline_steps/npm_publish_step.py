@@ -24,7 +24,7 @@ class NpmPublishStep(AbstractPipelineStep):
                 data[pipeline_data.NPM_LATEST_VERSION]
             )
             flags = environment.get_project_root()
-            result = nvm.exec_npm_command(data, 'publish', flags)
+            result = nvm.exec_npm_command(data, 'publish --access public', flags)
             self.log.debug('Result from npm publish was: "%s"', result)
             slack.on_npm_publish(data[pipeline_data.NPM_PACKAGE_NAME],
                                  data[pipeline_data.NPM_PACKAGE_VERSION],
