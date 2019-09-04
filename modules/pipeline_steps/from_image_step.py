@@ -62,7 +62,7 @@ class FromImageStep(AbstractPipelineStep):
         if self.validate(from_line, data):
             self.log.debug("'FROM:' statement '{}' in Dockerfile is valid.".format(from_line))
         else:
-            message = "*{}*: Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade!".format(image_version_util.get_image(data), from_line)
+            message = "*{}*: Dockerfile uses an unsupported and possibly unsecure `{}` image, please upgrade! See https://hub.docker.com/r/kthse/ for :docker: images.".format(image_version_util.get_image(data), from_line)
             self.log.warn(message)
             slack.on_warning(message)
         
