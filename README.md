@@ -405,7 +405,8 @@ DOCKER_BUILD_ARGS='MAVEN_SETTINGS=<?xml version="1.0" encoding="UTF-8"?> <settin
 ```
 
 ```dockerfile
-ARG DOCKER_BUILD_ARGS
+ARG MAVEN_SETTINGS
+ARG ANOTHER_SETTING
 RUN echo MAVEN_SETTINGS >/usr/share/maven/conf/settings.xml
 ```
 
