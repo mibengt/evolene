@@ -64,13 +64,16 @@ class PushImageStep(AbstractPipelineStep):
 
     def call_api_endpoint(self, url, user, password): #pragma: no cover
         try:
-            return get(url, auth=HTTPBasicAuth(user, password))
+            response = get(url, auth=HTTPBasicAuth(user, password))
+            if response.status_code == 200:
+                return response
+            if response.status_code == 404:
+                raise PipelineException('Could not find any images in registry for {}'.format(url))
+                        
         except HTTPError as http_err:
-            raise PipelineException('HTTPError when calling registry API: {}'
-                                    .format(http_err.response))
+            raise PipelineException('HTTPError when calling registry API: {}'.format(http_err.response))
         except (ConnectTimeout, RequestException) as req_err:
-            raise PipelineException('Timeout or request exception when calling registry API: {}'
-                                    .format(req_err))
+            raise PipelineException('Timeout or request exception when calling registry API: {}'.format(req_err))
     
     def get_image_to_push(self, data):
         return image_version_util.prepend_registry(image_version_util.get_image(data))
