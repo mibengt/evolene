@@ -19,7 +19,9 @@ def read_as_string(relative_file_path):
     return None
 
 def get_absolue_path(relative_file_path):
-    return '{}{}'.format(get_project_root(), relative_file_path)
+    path = '{}{}'.format(get_project_root(), relative_file_path)
+    print('Path: {}'.format(path))
+    return path
 
 def get_project_root():
     return environment.get_project_root().rstrip('/')
