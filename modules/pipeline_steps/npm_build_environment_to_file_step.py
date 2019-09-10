@@ -23,7 +23,7 @@ class NpmBuildEnvironmentToFileStep(AbstractPipelineStep):
         return data
 
     def get_ouput_file(self):
-        return 'build-information.js'
+        return '/build-information.js'
 
     def write(self):
         try:
