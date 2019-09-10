@@ -295,7 +295,7 @@ module.exports = {
   "jenkinsBuild": "40",
   "gitCommit": "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
   "gitBranch": "origin/master"
-  "gitUrl": "ssh://github.com/KTH/evolene"
+  "gitUrl": "git@github.com:KTH/my-npm-package.git"
 }
 ```
 ## Environment variables for setting up npm
