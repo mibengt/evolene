@@ -285,9 +285,19 @@ NODE_VERSION=10.14.2
 this version number is published to [npm](https://registry.npmjs.org/).
 Reminder: If you forget to update the version Evolene will run `npm run-script build`, but without publishing to the registy.
 
-
 ![Published package are shown in Slack](https://github.com/KTH/evolene/blob/master/images/npm.png)
 
+Inside every npm-package there is a js-module file `build-information.js` that contains:
+
+```javascript
+module.exports = {
+  "jenkinsBuildDate": "2018-10-31 12:49:14",
+  "jenkinsBuild": "40",
+  "gitCommit": "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
+  "gitBranch": "origin/master"
+  "gitUrl": "ssh://github.com/KTH/evolene"
+}
+```
 ## Environment variables for setting up npm
 
 * NPM_USER - The user to use for npm publish
