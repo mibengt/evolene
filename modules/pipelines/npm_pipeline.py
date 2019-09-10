@@ -10,6 +10,7 @@ from modules.pipeline_steps.npm_login_step import NpmLoginStep
 from modules.pipeline_steps.load_package_json_step import LoadPackageJsonStep
 from modules.pipeline_steps.npm_version_step import NpmVersionStep
 from modules.pipeline_steps.npm_package_name_step import NpmPackageNameStep
+from modules.pipeline_steps.npm_build_environment_to_file_step import NpmBuildEnvironmentToFileStep
 from modules.pipeline_steps.npm_version_changed_step import NpmVersionChangedStep
 from modules.pipeline_steps.start_nvm_step import StartNvmStep
 from modules.pipeline_steps.init_node_environment_step import InitNodeEnvironmentStep
@@ -47,6 +48,8 @@ class NpmPipeline(object):
             NpmVersionStep(),
             # Read the npm package name from package.json
             NpmPackageNameStep(),
+            # Write information about the build to a file in the package.
+            NpmBuildEnvironmentToFileStep(),
             # Check if the latest published version differs from this one
             NpmVersionChangedStep(),
             # Login to npm
