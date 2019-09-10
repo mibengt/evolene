@@ -6,7 +6,7 @@ from modules.util.exceptions import PipelineException
 from modules.util import pipeline_data
 
 def build(labels=None, build_args=None):
-    build_cmd = 'docker build --quiet'
+    build_cmd = 'docker build --quiet --pul'
     root = environment.get_project_root()
     if labels:
         for label in labels:
