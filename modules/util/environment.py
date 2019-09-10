@@ -9,6 +9,7 @@ PROJECT_ROOT = 'WORKSPACE'
 GIT_COMMIT = 'GIT_COMMIT'
 GIT_BRANCH = 'GIT_BRANCH'
 GIT_COMMITTER_NAME = 'GIT_COMMITTER_NAME'
+GIT_URL = 'GIT_URL'
 BUILD_NUMBER = 'BUILD_NUMBER'
 BUILD_URL = 'BUILD_URL'
 BUILD_INFORMATION_OUTPUT_FILE = 'BUILD_INFORMATION_OUTPUT_FILE'
@@ -62,6 +63,8 @@ def get_image_name():
 def get_git_commit():
     return os.environ.get(GIT_COMMIT)
 
+def get_git_url():
+    return os.environ.get(GIT_URL)
 def get_git_branch():
     return os.environ.get(GIT_BRANCH)
 

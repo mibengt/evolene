@@ -43,6 +43,8 @@ class NpmBuildEnvironmentToFileStep(AbstractPipelineStep):
         return {
             "gitBranch": environment.get_git_branch(),
             "gitCommit": environment.get_git_commit(),
+            "gitUrl": environment.get_git_url(),
             "buildNumber": environment.get_build_number(),
-            "buildDate": environment.get_time()
+            "buildDate": environment.get_time(),
+
         }
