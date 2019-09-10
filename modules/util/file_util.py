@@ -19,9 +19,7 @@ def read_as_string(relative_file_path):
     return None
 
 def get_absolue_path(relative_file_path):
-    path = '{}{}'.format(get_project_root(), relative_file_path)
-    print('Path: {}'.format(path))
-    return path
+    return '{}{}'.format(get_project_root(), relative_file_path)
 
 def get_project_root():
     return environment.get_project_root().rstrip('/')
@@ -34,5 +32,7 @@ def is_directory(relative_file_path):
     return os.path.isdir(path)
 
 def overwite(relative_file_path, content):
+    print('Path write: {}'.format(get_absolue_path(relative_file_path)))
+
     with open(get_absolue_path(relative_file_path), 'w+') as output_file:
         output_file.write(content)
