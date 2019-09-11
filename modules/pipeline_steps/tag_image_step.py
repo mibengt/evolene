@@ -15,7 +15,8 @@ class TagImageStep(AbstractPipelineStep):
         return [pipeline_data.LOCAL_IMAGE_ID, pipeline_data.IMAGE_VERSION, pipeline_data.IMAGE_NAME]
 
     def run_step(self, data): #pragma: no cover
-
+        if not data[pipeline_data.IMAGE_TAGS]:
+            data[pipeline_data.IMAGE_TAGS] = []
         self.tag(image_version_util.prepend_registry(
             image_version_util.get_image(data)),
             data
@@ -32,4 +33,5 @@ class TagImageStep(AbstractPipelineStep):
 
     def tag(self, tag, data): #pragma: no cover
         docker.tag_image(data[pipeline_data.LOCAL_IMAGE_ID], tag)
+        data[pipeline_data.IMAGE_TAGS].append(tag)
         self.log.info('Tagged image "%s" with "%s"', data[pipeline_data.LOCAL_IMAGE_ID], tag)

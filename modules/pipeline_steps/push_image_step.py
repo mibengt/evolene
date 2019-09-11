@@ -77,12 +77,9 @@ class PushImageStep(AbstractPipelineStep):
             raise PipelineException('HTTPError when calling registry API: {}'.format(http_err.response))
         except (ConnectTimeout, RequestException) as req_err:
             raise PipelineException('Timeout or request exception when calling registry API: {}'.format(req_err))
-    
-    def get_image_to_push(self, data):
-        return image_version_util.prepend_registry(image_version_util.get_image(data))
 
     def push_image(self, data):
-        registry_image_name = self.get_image_to_push(data)
-        docker.push(registry_image_name)
+        for tag in data[pipeline_data.IMAGE_TAGS]:
+            docker.push(tag)
+            self.log.info('Pushed image %s to KTH registry.', tag)
         slack.on_successful_private_push(image_version_util.get_image(data), data[pipeline_data.IMAGE_SIZE])
-        self.log.info('Pushed image %s to KTH registry.', registry_image_name)
