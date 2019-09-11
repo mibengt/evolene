@@ -420,6 +420,10 @@ ARG ANOTHER_SETTING
 RUN echo MAVEN_SETTINGS >/usr/share/maven/conf/settings.xml
 ```
 
+# Handling pull request merge testing
+
+Use the env variable `PULL_REQUEST_TEST` to skip pushing/publishing in both npm and docker pipeline. Used when using a pull request plugin that merges and tests a pull request with master, and discards the result.
+
 # Setup Evolene on Jenkins
 
 

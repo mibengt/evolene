@@ -16,6 +16,9 @@ class NpmPublishStep(AbstractPipelineStep):
                 pipeline_data.NPM_LATEST_VERSION, pipeline_data.NPM_PACKAGE_NAME]
 
     def run_step(self, data):
+        # Skip publish on pull request testing
+        if environment.get_pull_request_test():
+            return data
         if data[pipeline_data.NPM_VERSION_CHANGED]:
             self.log.info(
                 'Package will be published. Local version is %s and '
