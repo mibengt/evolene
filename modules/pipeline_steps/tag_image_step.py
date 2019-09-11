@@ -24,7 +24,10 @@ class TagImageStep(AbstractPipelineStep):
             image_version_util.get_image_only_semver(data)),
             data
         )
-        self.tag('latest', data)
+        self.tag(image_version_util.prepend_registry(
+            image_version_util.get_latest_tag(data)),
+            data
+        )
         return data
 
     def tag(self, tag, data): #pragma: no cover
