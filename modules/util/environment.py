@@ -30,6 +30,7 @@ NPM_USER = 'NPM_USER'
 NPM_PASSWORD = 'NPM_PASSWORD'
 NPM_EMAIL = 'NPM_EMAIL'
 DOCKER_BUILD_ARGS = 'DOCKER_BUILD_ARGS'
+PULL_REQUEST_TEST = 'PULL_REQUEST_TEST'
 
 def get_npm_email():
     return os.environ.get(NPM_EMAIL)
@@ -123,3 +124,6 @@ def get_docker_build_args():
     if args:
         return [args.rstrip() for args in args.split(',')]
     return []
+
+def get_pull_request_test():
+    return os.environ.get(PULL_REQUEST_TEST)

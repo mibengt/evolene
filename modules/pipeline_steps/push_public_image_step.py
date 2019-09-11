@@ -16,6 +16,9 @@ class PushPublicImageStep(AbstractPipelineStep):
         return [pipeline_data.IMAGE_NAME, pipeline_data.IMAGE_VERSION, pipeline_data.SEM_VER]
 
     def run_step(self, data):
+        # Skip pushing on pull request testing
+        if environment.get_pull_request_test():
+            return data
         if environment.get_push_public():
             self.push_image(data)
             self.push_image_only_semver(data)
