@@ -15,7 +15,7 @@ class TagImageStep(AbstractPipelineStep):
         return [pipeline_data.LOCAL_IMAGE_ID, pipeline_data.IMAGE_VERSION, pipeline_data.IMAGE_NAME]
 
     def run_step(self, data): #pragma: no cover
-        if not data[pipeline_data.IMAGE_TAGS]:
+        if pipeline_data.IMAGE_TAGS not in data:
             data[pipeline_data.IMAGE_TAGS] = []
         self.tag(image_version_util.prepend_registry(
             image_version_util.get_image(data)),
