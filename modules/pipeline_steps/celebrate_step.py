@@ -28,4 +28,4 @@ class CelebrateStep(AbstractPipelineStep):
             return ("<!here> :parrot_party: :parrot_party: :parrot_party: {} build number {}! "
                     "You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI"
                     .format(data[pipeline_data.IMAGE_NAME], build_nr))
-        return data
+        return None

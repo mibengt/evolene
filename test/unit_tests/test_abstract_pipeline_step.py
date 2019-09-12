@@ -46,7 +46,7 @@ class AbstractPipelineStepTests(unittest.TestCase):
     @patch.object(AbstractPipelineStep, 'handle_step_error')
     def test_step_environment_ok(self, mock_handle):
         cps = ConcretePipelineStep()
-        mock_warn = patch.object(cps.log, 'warn').start()
+        mock_warn = patch.object(cps.log, 'warning').start()
         self.assertFalse(cps.step_environment_ok())
         os.environ['TEST_ENV'] = ""
         os.environ['TEST_ENV_2'] = ""

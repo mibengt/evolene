@@ -49,8 +49,9 @@ class FromImageStep(AbstractPipelineStep):
     def __init__(self, image_rules=None):
         super(FromImageStep, self).__init__()
         self.log = logging.getLogger(self.get_step_name())
+        self.image_rules = FromImageStep.get_image_rules()
         if image_rules:
-            self.image_rules = FromImageStep.get_image_rules()
+            self.image_rules = image_rules
 
     def get_required_env_variables(self): # pragma: no cover
         return [environment.PROJECT_ROOT]
