@@ -1,6 +1,7 @@
 __author__ = 'tinglev'
 
 from abc import ABCMeta, abstractmethod
+from modules.util.exceptions import PipelineException
 import os
 import sys
 import logging
@@ -83,7 +84,15 @@ class AbstractPipelineStep:
         if not self.step_data_is_ok(data):
             return data
         self.log.info('Running "%s"', self.get_step_name())
-        self.run_step(data)
+        try:
+            self.run_step(data)
+        except PipelineException as p_ex:
+            p_ex.set_data(data)
+            raise
+        except Exception as ex:
+            p_ex = PipelineException(str(ex), str(ex))
+            p_ex.set_data(data)
+            raise p_ex
         if self.next_step:
             self.next_step.run_pipeline_step(data)
         return data

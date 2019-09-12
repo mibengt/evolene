@@ -1,5 +1,6 @@
 __author__ = 'tinglev'
 
+from modules.util.exceptions import PipelineException
 import os
 import unittest
 from mock import patch, call
@@ -93,4 +94,4 @@ class AbstractPipelineStepTests(unittest.TestCase):
         cps2.set_next_step(cps3)
         result = cps1.run_pipeline_step({})
         self.assertEqual(result['counter'], 3)
-        self.assertRaises(TypeError, cps1.run_pipeline_step, {'counter': 'error'})
+        self.assertRaises(PipelineException, cps1.run_pipeline_step, {'counter': 'error'})
