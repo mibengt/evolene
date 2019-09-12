@@ -21,25 +21,11 @@ class CelebrateStep(AbstractPipelineStep):
         message = self.get_party_message(data)
         if message:
             slack.send_to_slack(self.get_party_message(data), icon=":parrot_party:")
-            
+
     def get_party_message(self, data):
-        
-        if int(environment.get_build_number()) == 100:
-            return "<!here> :clap: Get :clap: your  :clap: self  :clap:  a  :clap: coffee  :clap: break. This was the 100th build of {}!\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[pipeline_data.IMAGE_NAME])
-
-        if int(environment.get_build_number()) == 200:
-            return "<!here> :parrot_party: :parrot_party: :parrot_party: {} build number 200! You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[pipeline_data.IMAGE_NAME])
-
-        if int(environment.get_build_number()) == 300:
-            return "<!here> :parrot_party: :parrot_party: :parrot_party: {} build number 300! You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[pipeline_data.IMAGE_NAME])
-
-        if int(environment.get_build_number()) == 400:
-            return "<!here> :parrot_party: :parrot_party: :parrot_party: {} build number 400! You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[pipeline_data.IMAGE_NAME])
-
-        if int(environment.get_build_number()) == 500:
-            return "<!here> :parrot_party: :parrot_party: :parrot_party: {} build number 500! You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[pipeline_data.IMAGE_NAME])
-
-        if int(environment.get_build_number()) == 1000:
-            return "<!here> :drum_with_drumsticks: 1 000 builds of {} and counting! \nhttps://www.youtube.com/watch?v=eCzhNPSXpfI".format(data[pipeline_data.IMAGE_NAME])
-
-        return None
+        build_nr = int(str(environment.get_build_number()))
+        if build_nr % 100 == 0:
+            return ("<!here> :parrot_party: :parrot_party: :parrot_party: {} build number {}! "
+                    "You are worth some :champagne:\nhttps://www.youtube.com/watch?v=eCzhNPSXpfI"
+                    .format(data[pipeline_data.IMAGE_NAME], build_nr))
+        return data

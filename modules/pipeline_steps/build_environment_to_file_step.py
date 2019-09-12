@@ -27,7 +27,7 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
         try:
             file_util.overwite(self.get_ouput_file(), self.get_output(data))
 
-        except IOError as ioe:
+        except IOError:
             self.handle_step_error("*{}* Unable to write build information to file '{}'".format(
                 image_version_util.get_image(data),
                 self.get_ouput_file()))

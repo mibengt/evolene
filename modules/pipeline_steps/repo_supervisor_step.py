@@ -10,7 +10,6 @@ from modules.util import file_util
 from modules.util.exceptions import PipelineException
 from modules.util import slack
 
-
 class RepoSupervisorStep(AbstractPipelineStep):
 
     SCANIGNORE_FILE = '/.scanignore'
@@ -54,7 +53,9 @@ class RepoSupervisorStep(AbstractPipelineStep):
 
     def _process_supervisor_result(self, cmd_output, data):
         results = json.loads(cmd_output)
-        filenames = [result['filepath'].replace(RepoSupervisorStep.REPO_MOUNTED_DIR, '').encode('utf-8')
+        filenames = [result['filepath']
+                     .replace(RepoSupervisorStep.REPO_MOUNTED_DIR, '')
+                     .encode('utf-8')
                      for result
                      in results['result']
                      if not self.ignore(result['filepath'])]
@@ -105,6 +106,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
         except PipelineException as pipeline_ex:
             # Special handling while waiting for https://github.com/auth0/repo-supervisor/pull/5
             if 'Not detected any secrets in files' not in str(pipeline_ex):
-                self.log.warn(
-                    'Ignoring error in repo supervisor step: "%s"', str(pipeline_ex))
+                self.log.warning(
+                    'Ignoring error in repo supervisor step: "%s"', str(pipeline_ex)
+                )
             return None

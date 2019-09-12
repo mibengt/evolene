@@ -1,9 +1,9 @@
 __author__ = 'tinglev'
 
-from modules.util.exceptions import PipelineException
 import os
 import unittest
 from mock import patch, call
+from modules.util.exceptions import PipelineException
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import slack
 

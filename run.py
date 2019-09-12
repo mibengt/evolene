@@ -3,12 +3,10 @@ __author__ = 'tinglev@kth.se'
 import os
 import sys
 import logging
-import re
 from modules.pipelines.docker_deploy_pipeline import DockerDeployPipeline
 from modules.pipelines.npm_pipeline import NpmPipeline
 from modules.util import environment
 from modules.util import file_util
-from modules.util import process
 import modules.util.log as log
 
 def select_and_run_pipeline():

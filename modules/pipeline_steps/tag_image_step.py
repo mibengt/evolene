@@ -17,16 +17,22 @@ class TagImageStep(AbstractPipelineStep):
     def run_step(self, data): #pragma: no cover
         if pipeline_data.IMAGE_TAGS not in data:
             data[pipeline_data.IMAGE_TAGS] = []
-        self.tag(image_version_util.prepend_registry(
-            image_version_util.get_image(data)),
+        self.tag(
+            image_version_util.prepend_registry(
+                image_version_util.get_image(data)
+            ),
             data
         )
-        self.tag(image_version_util.prepend_registry(
-            image_version_util.get_image_only_semver(data)),
+        self.tag(
+            image_version_util.prepend_registry(
+                image_version_util.get_image_only_semver(data)
+            ),
             data
         )
-        self.tag(image_version_util.prepend_registry(
-            image_version_util.get_latest_tag(data)),
+        self.tag(
+            image_version_util.prepend_registry(
+                image_version_util.get_latest_tag(data)
+            ),
             data
         )
         return data

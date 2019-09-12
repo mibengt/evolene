@@ -17,7 +17,6 @@ from modules.pipeline_steps.repo_supervisor_step import RepoSupervisorStep
 from modules.pipeline_steps.unit_test_step import UnitTestStep
 from modules.pipeline_steps.integration_test_step import IntegrationTestStep
 from modules.pipeline_steps.from_image_step import FromImageStep
-from modules.pipeline_steps.instruction_step import InstructionStep
 from modules.pipeline_steps.celebrate_step import CelebrateStep
 from modules.pipeline_steps.docker_create_build_arg_step import DockerCreateBuildArgStep
 from modules.pipeline_steps.done_step import DoneStep
@@ -44,7 +43,7 @@ class DockerDeployPipeline(object):
             # InstructionStep()
             # Write information about the current build to a json-file.
             BuildEnvironmentToFileStep(),
-            # Scan the repo for passwords, tokens or other suspicious looking strings  
+            # Scan the repo for passwords, tokens or other suspicious looking strings
             RepoSupervisorStep(),
             # Create docker --build-arg
             DockerCreateBuildArgStep(),

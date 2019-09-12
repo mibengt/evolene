@@ -44,7 +44,7 @@ class BuildLocalStep(AbstractPipelineStep):
         size = re.search(r'[0-9\.]+(MB|GB)', image_grep_output)
         if size:
             return size.group(0).strip()
-        
+
         return 'N/A'
 
     def run_build(self, data):

@@ -1,9 +1,7 @@
 __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util import environment
 from modules.util import print_util
-
 
 class SetupStep(AbstractPipelineStep):
 

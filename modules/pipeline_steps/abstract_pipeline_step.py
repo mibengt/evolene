@@ -1,10 +1,10 @@
 __author__ = 'tinglev'
 
-from abc import ABCMeta, abstractmethod
-from modules.util.exceptions import PipelineException
 import os
 import sys
 import logging
+from abc import ABCMeta, abstractmethod
+from modules.util.exceptions import PipelineException
 from modules.util import slack
 from modules.util import environment
 
@@ -14,24 +14,23 @@ class AbstractPipelineStep:
 
     def __init__(self):
         self.log = logging.getLogger(self.get_step_name())
-    
+
     @abstractmethod
     def run_step(self, data): #pragma: no cover
         """ Should return data """
-        pass
 
     @abstractmethod
     def get_required_env_variables(self): #pragma: no cover
         """ Should return a string array with the names of the environment
             variables required by the current step """
-        pass
+        return []
 
     @abstractmethod
     def get_required_data_keys(self): #pragma: no cover
         """ Should return a string array with the names of the keys
             that has to exist and have values in the data-object that
             is passed between build steps """
-        pass
+        return []
 
     def get_step_name(self):
         return self.__class__.__name__
@@ -51,7 +50,7 @@ class AbstractPipelineStep:
                 self.handle_step_error(err)
                 return False
             if not os.environ.get(env):
-                self.log.warn('Environment variable "%s" exists but is empty', env)
+                self.log.warning('Environment variable "%s" exists but is empty', env)
         return True
 
     def handle_step_error(self, message, ex=None, fatal=True):

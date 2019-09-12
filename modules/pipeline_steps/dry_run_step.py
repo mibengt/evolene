@@ -24,7 +24,8 @@ class DryRunStep(AbstractPipelineStep):
                 container_status = self.wait_for_container_created(container_id)
                 if not self.is_running(container_status):
                     self.handle_step_error(
-                        '<!channel> Failed to test run the newly built container on Jenkins. To disable test set Evolene env `SKIP_DRY_RUN="True"`'
+                        '<!channel> Failed to test run the newly built container on Jenkins. '
+                        'To disable test set Evolene env `SKIP_DRY_RUN="True"`'
                     )
             finally:
                 self.stop_container(container_id)

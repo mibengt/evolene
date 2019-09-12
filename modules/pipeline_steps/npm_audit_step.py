@@ -63,5 +63,5 @@ class NpmAuditStep(AbstractPipelineStep):
         try:
             return audit_json['metadata']['vulnerabilities']['critical']
         except KeyError as key_err:
-            self.handle_step_error('Error when parsing npm audit output', key_err)      
+            self.handle_step_error('Error when parsing npm audit output', key_err)
  
