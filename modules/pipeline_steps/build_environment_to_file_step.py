@@ -64,6 +64,7 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
         return {
             "gitBranch": environment.get_git_branch(),
             "gitCommit": environment.get_git_commit(),
+            "gitUrl": environment.get_git_url(),
             "jenkinsBuild": environment.get_build_number(),
             "jenkinsBuildDate": environment.get_time(),
             "dockerName": data[pipeline_data.IMAGE_NAME],
