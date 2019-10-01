@@ -285,9 +285,19 @@ NODE_VERSION=10.14.2
 this version number is published to [npm](https://registry.npmjs.org/).
 Reminder: If you forget to update the version Evolene will run `npm run-script build`, but without publishing to the registy.
 
-
 ![Published package are shown in Slack](https://github.com/KTH/evolene/blob/master/images/npm.png)
 
+Inside every npm-package there is a js-module file `build-information.js` that contains:
+
+```javascript
+module.exports = {
+  "jenkinsBuildDate": "2018-10-31 12:49:14",
+  "jenkinsBuild": "40",
+  "gitCommit": "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
+  "gitBranch": "origin/master"
+  "gitUrl": "git@github.com:KTH/my-npm-package.git"
+}
+```
 ## Environment variables for setting up npm
 
 * NPM_USER - The user to use for npm publish
@@ -409,6 +419,10 @@ ARG MAVEN_SETTINGS
 ARG ANOTHER_SETTING
 RUN echo MAVEN_SETTINGS >/usr/share/maven/conf/settings.xml
 ```
+
+# Handling pull request merge testing
+
+Use the env variable `PULL_REQUEST_TEST` to skip pushing/publishing in both npm and docker pipeline. Used when using a pull request plugin that merges and tests a pull request with master, and discards the result.
 
 # Setup Evolene on Jenkins
 

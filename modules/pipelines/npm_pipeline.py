@@ -79,9 +79,9 @@ class NpmPipeline(object):
             self.log.info('Running npm pipeline')
             data = self.pipeline_steps[0].run_pipeline_step({})
         except PipelineException as p_ex:
-            workspace = environment.get_project_root()
+            workspace = f'`{environment.get_project_root()}`'
             self.log.fatal('%s'.encode('UTF-8'), p_ex, exc_info=False)
-            slack.send_to_slack(f'<!channel> {workspace} \n {p_ex.slack_message}')
+            slack.send_to_slack(f'<!channel> {workspace}: \n {p_ex.slack_message}')
             print_util.red("Such bad, very learning")
             sys.exit(1)
         else:

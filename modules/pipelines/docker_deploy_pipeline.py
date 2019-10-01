@@ -17,7 +17,6 @@ from modules.pipeline_steps.repo_supervisor_step import RepoSupervisorStep
 from modules.pipeline_steps.unit_test_step import UnitTestStep
 from modules.pipeline_steps.integration_test_step import IntegrationTestStep
 from modules.pipeline_steps.from_image_step import FromImageStep
-from modules.pipeline_steps.instruction_step import InstructionStep
 from modules.pipeline_steps.celebrate_step import CelebrateStep
 from modules.pipeline_steps.docker_create_build_arg_step import DockerCreateBuildArgStep
 from modules.pipeline_steps.done_step import DoneStep
@@ -44,7 +43,7 @@ class DockerDeployPipeline(object):
             # InstructionStep()
             # Write information about the current build to a json-file.
             BuildEnvironmentToFileStep(),
-            # Scan the repo for passwords, tokens or other suspicious looking strings  
+            # Scan the repo for passwords, tokens or other suspicious looking strings
             RepoSupervisorStep(),
             # Create docker --build-arg
             DockerCreateBuildArgStep(),
@@ -77,8 +76,9 @@ class DockerDeployPipeline(object):
             self.log.info('Running Docker build pipeline')
             data = self.pipeline_steps[0].run_pipeline_step({})
         except PipelineException as p_ex:
+            workspace = f'`{environment.get_project_root()}`'
             self.log.fatal('%s'.encode('UTF-8'), p_ex, exc_info=False)
-            slack.send_to_slack('<!channel> {}'.format(p_ex.slack_message))
+            slack.send_to_slack(f'<!channel> {workspace}: \n {p_ex.slack_message}')
             print_util.red("Such bad, very learning.")
             sys.exit(1)
         else:

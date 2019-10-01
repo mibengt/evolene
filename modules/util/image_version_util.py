@@ -29,6 +29,9 @@ def get_image_only_semver(data):
         raise PipelineException("Missing the SemVer for the image.")
     return '{}:{}'.format(data[pipeline_data.IMAGE_NAME], data[pipeline_data.SEM_VER])
 
+def get_latest_tag(data):
+    return '{}:{}'.format(data[pipeline_data.IMAGE_NAME], 'latest')
+
 def prepend_registry(image):
     return '{}/{}'.format(environment.get_registry_host(), image)
 

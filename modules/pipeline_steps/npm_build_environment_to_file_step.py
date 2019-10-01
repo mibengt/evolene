@@ -2,7 +2,6 @@ __author__ = 'tinglev'
 
 import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util import pipeline_data
 from modules.util import environment
 from modules.util import file_util
 
@@ -28,7 +27,7 @@ class NpmBuildEnvironmentToFileStep(AbstractPipelineStep):
     def write(self):
         try:
             file_util.overwite(self.get_ouput_file(), self.get_output())
-        except IOError as ioe:
+        except IOError:
             self.handle_step_error("Unable to write npm build information to file '{}'".format(
                 self.get_ouput_file()))
 

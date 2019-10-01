@@ -21,6 +21,8 @@ class DockerFileStep(AbstractPipelineStep):
             self.handle_step_error('Could not find Dockerfile at "{}"'.format(
                 DockerFileStep.FILE_DOCKERFILE))
 
-        data[pipeline_data.DOCKERFILE_FILE] = file_util.get_absolue_path(DockerFileStep.FILE_DOCKERFILE)
+        data[pipeline_data.DOCKERFILE_FILE] = file_util.get_absolue_path(
+            DockerFileStep.FILE_DOCKERFILE
+        )
 
         return data

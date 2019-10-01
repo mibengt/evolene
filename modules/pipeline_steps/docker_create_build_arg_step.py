@@ -3,7 +3,6 @@ __author__ = 'bjofra'
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import environment
 from modules.util import pipeline_data
-from modules.util import file_util
 
 
 class DockerCreateBuildArgStep(AbstractPipelineStep):

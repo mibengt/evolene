@@ -21,6 +21,9 @@ class PushImageStep(AbstractPipelineStep):
         return [pipeline_data.IMAGE_VERSION, pipeline_data.IMAGE_NAME]
 
     def run_step(self, data):
+        # Skip pushing on pull request testing
+        if environment.get_pull_request_test():
+            return data
         if not environment.get_push_public():
             self.push_image(data)
             self.verify_push(data)
@@ -69,17 +72,17 @@ class PushImageStep(AbstractPipelineStep):
                 return response
             if response.status_code == 404:
                 raise PipelineException('Could not find any images in registry for {}'.format(url))
-                        
+
         except HTTPError as http_err:
-            raise PipelineException('HTTPError when calling registry API: {}'.format(http_err.response))
+            raise PipelineException('HTTPError when calling registry API: {}'
+                                    .format(http_err.response))
         except (ConnectTimeout, RequestException) as req_err:
-            raise PipelineException('Timeout or request exception when calling registry API: {}'.format(req_err))
-    
-    def get_image_to_push(self, data):
-        return image_version_util.prepend_registry(image_version_util.get_image(data))
+            raise PipelineException('Timeout or request exception when calling registry API: {}'
+                                    .format(req_err))
 
     def push_image(self, data):
-        registry_image_name = self.get_image_to_push(data)
-        docker.push(registry_image_name)
-        slack.on_successful_private_push(image_version_util.get_image(data), data[pipeline_data.IMAGE_SIZE])
-        self.log.info('Pushed image %s to KTH registry.', registry_image_name)
+        for tag in data[pipeline_data.IMAGE_TAGS]:
+            docker.push(tag)
+            self.log.info('Pushed image %s to KTH registry.', tag)
+        slack.on_successful_private_push(image_version_util.get_image(data),
+                                         data[pipeline_data.IMAGE_SIZE])

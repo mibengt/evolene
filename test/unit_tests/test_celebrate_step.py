@@ -19,7 +19,7 @@ class CelebrateStepTests(unittest.TestCase):
         self.assertTrue("500" in step.get_party_message(data))
 
         os.environ[environment.BUILD_NUMBER] = "1000"
-        self.assertTrue("1 000" in step.get_party_message(data))
+        self.assertTrue("1000" in step.get_party_message(data))
 
         os.environ[environment.BUILD_NUMBER] = "1"
         self.assertIsNone(step.get_party_message(data))

@@ -1,6 +1,5 @@
 __author__ = 'tinglev'
 
-import logging
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.pipeline_steps.docker_file_step import DockerFileStep
 from modules.util import environment
@@ -8,7 +7,6 @@ from modules.util import slack
 from modules.util import file_util
 from modules.util import pipeline_data
 from modules.util import image_version_util
-
 
 class InstructionStep(AbstractPipelineStep):
 

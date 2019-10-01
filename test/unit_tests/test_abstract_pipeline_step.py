@@ -3,6 +3,7 @@ __author__ = 'tinglev'
 import os
 import unittest
 from mock import patch, call
+from modules.util.exceptions import PipelineException
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import slack
 
@@ -45,7 +46,7 @@ class AbstractPipelineStepTests(unittest.TestCase):
     @patch.object(AbstractPipelineStep, 'handle_step_error')
     def test_step_environment_ok(self, mock_handle):
         cps = ConcretePipelineStep()
-        mock_warn = patch.object(cps.log, 'warn').start()
+        mock_warn = patch.object(cps.log, 'warning').start()
         self.assertFalse(cps.step_environment_ok())
         os.environ['TEST_ENV'] = ""
         os.environ['TEST_ENV_2'] = ""
@@ -93,4 +94,4 @@ class AbstractPipelineStepTests(unittest.TestCase):
         cps2.set_next_step(cps3)
         result = cps1.run_pipeline_step({})
         self.assertEqual(result['counter'], 3)
-        self.assertRaises(TypeError, cps1.run_pipeline_step, {'counter': 'error'})
+        self.assertRaises(PipelineException, cps1.run_pipeline_step, {'counter': 'error'})
