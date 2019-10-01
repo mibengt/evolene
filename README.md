@@ -132,7 +132,8 @@ module.exports = {
   "dockerName": "tamarack",
   "dockerImage": "kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7",
   "gitCommit": "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
-  "gitBranch": "origin/master"
+  "gitBranch": "origin/master",
+  "gitUrl": "git@github.com:KTH/tamarack.git"
 }
 ```
 
@@ -150,7 +151,8 @@ exports const buildInfo {
   "dockerName": "tamarack",
   "dockerImage": "kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7",
   "gitCommit": "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
-  "gitBranch": "origin/master"
+  "gitBranch": "origin/master",
+  "gitUrl": "git@github.com:KTH/tamarack.git"
 }
 ```
 
@@ -169,6 +171,7 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/info.json'
   "dockerImage": "kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7",
   "gitCommit": "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
   "gitBranch": "origin/master"
+  "gitUrl": "git@github.com:KTH/tamarack.git"
 }
 ```
 
@@ -186,6 +189,7 @@ dockerName=tamarack,
 dockerImage=kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7,
 gitCommit=f2486d79abf3af26225aa1dbde0fddfcd702c7e6,
 gitBranch=origin/master
+gitUrl=git@github.com:KTH/tamarack.git
 ```
 
 # Testing
