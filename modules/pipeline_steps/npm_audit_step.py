@@ -31,8 +31,12 @@ class NpmAuditStep(AbstractPipelineStep):
             except ValueError:
                 # The error wasn't json - so this is probably a true
                 # process error
+                msg = 'npm audit failed'
+                if 'Cannot audit a project without a lockfile' in str(npm_ex):
+                    msg = ('Package.lock is missing, which is a required file '
+                           'for npm audit to work')
                 self.handle_step_error(
-                    'npm audit failed',
+                    msg,
                     npm_ex
                 )
         data = self.approve_audit(data, audit_json)
