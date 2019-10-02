@@ -34,7 +34,8 @@ class NpmAuditStep(AbstractPipelineStep):
                 msg = 'npm audit failed'
                 if 'Cannot audit a project without a lockfile' in str(npm_ex):
                     msg = ('Package.lock is missing, which is a required file '
-                           'for npm audit to work')
+                           'for npm audit to work. Maybe package-lock=false is '
+                           'set in .npmrc?')
                 self.handle_step_error(
                     msg,
                     npm_ex
