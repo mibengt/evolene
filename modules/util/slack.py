@@ -39,7 +39,7 @@ def on_successful_public_push(image, image_name, image_size):
 def on_warning(message):
     send_to_slack(message, icon=':warning:')
 
-def get_payload_body(channel, text, icon, username='Evolene'):
+def get_payload_body(channel, text, icon, username='Build error (Evolene)'):
     body = {
         "channel": channel,
         "text": text,
