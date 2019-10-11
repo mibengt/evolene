@@ -42,6 +42,8 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
             return self.to_ts_const(data)
         if str(output_file).endswith(".conf"):
             return self.to_conf(data)
+        if str(output_file).endswith(".html"):
+            return self.to_html(data)
 
     def to_ts_const(self, data):
         return "export const buildInfo = {}".format(json.dumps(self.get_build_environment(data)))
@@ -51,6 +53,14 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
 
     def to_js_module(self, data):
         return "module.exports = {}".format(json.dumps(self.get_build_environment(data)))
+
+    def to_html(self, data):
+        result = "<!DOCTYPE html><html><head><title>About</title></head><body>"
+        envs = self.get_build_environment(data)
+        for env in envs:
+            result += "{}: {}\n".format(env, envs[env])
+        result += "</body></html>"
+        return result
 
     def to_conf(self, data):
         result = ""
