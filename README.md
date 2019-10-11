@@ -4,7 +4,7 @@ Automated builds of Docker images and npm packages
 
 # What it is
 
-Evolene runs a sequence of steps that build, test and in the end does a `docker push` on a  SemVer tagged Docker image like `tamarack:2.3.40_f2486d7`. All steps including unit and integration
+Evolene runs a sequence of steps that build, test and in the end does a `docker push` on a SemVer tagged Docker image like `tamarack:2.3.40_f2486d7`. All steps including unit and integration
 tests are run inside Docker containers, eliminating most Jenkins plugins.
 
 It also supports npm package building and publishing.
@@ -17,9 +17,9 @@ Evolene uses Convention Over Configuration. That means that Evolene is configure
 
 For your app to be built using Evolene you need to have two files in your project root directory:
 
-* `Dockerfile` - The build configuration file for the docker image
+- `Dockerfile` - The build configuration file for the docker image
 
-* `docker.conf` - A build metadata file used by evolene for versioning and naming. The example below will on the *40th* build on Jenkins create `tamarack:2.3.40_f2486d7`. Where `f2486d7` is the git commit hash that triggered the build.
+- `docker.conf` - A build metadata file used by evolene for versioning and naming. The example below will on the _40th_ build on Jenkins create `tamarack:2.3.40_f2486d7`. Where `f2486d7` is the git commit hash that triggered the build.
 
 ```bash
 #
@@ -29,15 +29,15 @@ IMAGE_NAME=tamarack
 
 #
 # Evolene tags docker images using https://semver.org/ notation, major.minor.path.
-# 
+#
 # IMAGE_VERSION=major.minor
 # The Patch is normally added by Evolene at build time using $BUILD_NUMBER
 #
 
 IMAGE_VERSION=2.3
 
-# 
-# You can override using $BUILD_NUMBER as patch number for SemVer by 
+#
+# You can override using $BUILD_NUMBER as patch number for SemVer by
 # explicitly adding it aswell.
 # If this was set, the result whould be tamarack:2.3.0_f2486d7
 #
@@ -52,20 +52,20 @@ or if you have no Slack
 
 `$EVOLENE_DIRECTORY/run.sh`
 
-*That is it!* Evolene will tell you will all other things in your Slack channels or in the Jenkins console log, when you build your app.
+_That is it!_ Evolene will tell you will all other things in your Slack channels or in the Jenkins console log, when you build your app.
 
 :boom: :tada: Happy Coding!
 
 # Features
 
-* No configuration, unless you want it
-* You need no Jenkins knowledge (almost), works on Jenkins, exactly as on your dev machine
-* Supports unit and integration testing
-* Semver for the win
-* Handles all the Docker stuff
-* Slack integrations of course
-* Scan for passwords in your code
-* ... and more
+- No configuration, unless you want it
+- You need no Jenkins knowledge (almost), works on Jenkins, exactly as on your dev machine
+- Supports unit and integration testing
+- Semver for the win
+- Handles all the Docker stuff
+- Slack integrations of course
+- Scan for passwords in your code
+- ... and more
 
 # Configuration
 
@@ -80,7 +80,7 @@ IMAGE_NAME='other-name'  $EVOLENE_DIRECTORY/run.sh
 ## Project Root
 
 Build your project from an other directory.
-If set the  $WORKSPACE set by Jenkins will be ignored.
+If set the \$WORKSPACE set by Jenkins will be ignored.
 
 ```bash
 PROJECT_ROOT='/other/jenkis/workspace/other-repo/'  $EVOLENE_DIRECTORY/run.sh
@@ -89,7 +89,7 @@ PROJECT_ROOT='/other/jenkis/workspace/other-repo/'  $EVOLENE_DIRECTORY/run.sh
 ## Override Git Commit
 
 Reuse a commit hash of the push that triggered the build.
-If set the  $GIT_COMMIT set by Jenkins will be ignored.
+If set the \$GIT_COMMIT set by Jenkins will be ignored.
 
 ```bash
 GIT_COMMIT='abcdefhijkl1234456'  $EVOLENE_DIRECTORY/run.sh
@@ -118,6 +118,41 @@ BUILD_INFORMATION_OUTPUT_FILE='/config/version.js' $EVOLENE_DIRECTORY/run.sh
 
 ### Different file types
 
+#### HTML
+
+```bash
+BUILD_INFORMATION_OUTPUT_FILE='/config/version.html' $EVOLENE_DIRECTORY/run.sh
+```
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>About</title>
+  </head>
+  <body>
+    <dl>
+      <dt>gitBranch:</dt>
+      <dd>origin/master</dd>
+      <dt>gitCommit:</dt>
+      <dd>f2486d79abf3af26225aa1dbde0fddfcd702c7e6</dd>
+      <dt>gitUrl:</dt>
+      <dd>git@gita.sys.kth.se:Infosys/tamarack.git</dd>
+      <dt>jenkinsBuild:</dt>
+      <dd>40</dd>
+      <dt>jenkinsBuildDate:</dt>
+      <dd>2018-10-31 12:49:14</dd>
+      <dt>dockerName:</dt>
+      <dd>tamarack</dd>
+      <dt>dockerVersion:</dt>
+      <dd>2.3.40_f2486d7</dd>
+      <dt>dockerImage:</dt>
+      <dd>kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7</dd>
+    </dl>
+  </body>
+</html>
+```
+
 #### Javascript module
 
 ```bash
@@ -126,15 +161,15 @@ BUILD_INFORMATION_OUTPUT_FILE='/info.js'
 
 ```javascript
 module.exports = {
-  "jenkinsBuildDate": "2018-10-31 12:49:14",
-  "dockerVersion": "2.3.40_f2486d7",
-  "jenkinsBuild": "40",
-  "dockerName": "tamarack",
-  "dockerImage": "kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7",
-  "gitCommit": "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
-  "gitBranch": "origin/master",
-  "gitUrl": "git@github.com:KTH/tamarack.git"
-}
+  jenkinsBuildDate: "2018-10-31 12:49:14",
+  dockerVersion: "2.3.40_f2486d7",
+  jenkinsBuild: "40",
+  dockerName: "tamarack",
+  dockerImage: "kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7",
+  gitCommit: "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
+  gitBranch: "origin/master",
+  gitUrl: "git@github.com:KTH/tamarack.git"
+};
 ```
 
 #### Typescript
@@ -196,7 +231,7 @@ gitUrl=git@github.com:KTH/tamarack.git
 
 ## Unit Testing
 
-Add a file in the root of your project called  `docker-compose-unit-tests.yml`.
+Add a file in the root of your project called `docker-compose-unit-tests.yml`.
 
 Before unit tests are run, the image is built and its id is available to
 the Docker Compose file via `$LOCAL_IMAGE_ID`.
@@ -207,7 +242,7 @@ that very image.
 On your local machine you can run the same test using `ID=$(docker build -q .) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-unit-tests.yml up --abort-on-container-exit --always-recreate-deps`.
 
 ```yaml
-version: '3'
+version: "3"
 services:
   web:
     build: .
@@ -220,17 +255,17 @@ services:
 
 ## Integration Testing
 
-Add a file in the root of your project called  `docker-compose-integration-tests.yml`.
+Add a file in the root of your project called `docker-compose-integration-tests.yml`.
 Before integration tests are run, the image is built and it´s id is availeble to
 the Docker Compose file via `$LOCAL_IMAGE_ID`.
 
 One way is then to start up your service and from other container run queries against
-our server.  
+our server.
 
 On your local machine you can run the same test using `ID=$(docker build -q .) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-integration-tests.yml up --abort-on-container-exit --always-recreate-deps`.
 
 ```yaml
-version: '3'
+version: "3"
 
 services:
   web:
@@ -262,7 +297,7 @@ Besides from working with docker images, evolene also supports building and publ
 
 ## How to trigger
 
-1. **Add a `/npm.conf` file** in the root of your repo. This file needs to contain the *node version* to build the packet with.
+1. **Add a `/npm.conf` file** in the root of your repo. This file needs to contain the _node version_ to build the packet with.
 
 ```bash
 
@@ -274,20 +309,23 @@ NODE_VERSION=10.14.2
 # Comment this out otherwise
 # ALLOW_CRITICALS=0
 ```
-2. Add a **script build**  in your `package.json` that runs test (can be empty).
+
+2. Add a **script build** in your `package.json` that runs test (can be empty).
+
 ```json
 "scripts": {
     "test": "./run_tests.sh",
     "build": "npm test"
   },
 ```
+
 3. **Add a Jenkins job** that builds your package.
 
 4. 🎉 Done!
 
 5. **Publishing to npm is now automatic** Every time you push Evolene will run `npm run-script build`. After that Evolene will check ot see if the `version` in `package.json` have been updated. If it does not previously exists in the npm registry, a new version with
-this version number is published to [npm](https://registry.npmjs.org/).
-Reminder: If you forget to update the version Evolene will run `npm run-script build`, but without publishing to the registy.
+   this version number is published to [npm](https://registry.npmjs.org/).
+   Reminder: If you forget to update the version Evolene will run `npm run-script build`, but without publishing to the registy.
 
 ![Published package are shown in Slack](https://github.com/KTH/evolene/blob/master/images/npm.png)
 
@@ -302,11 +340,12 @@ module.exports = {
   "gitUrl": "git@github.com:KTH/my-npm-package.git"
 }
 ```
+
 ## Environment variables for setting up npm
 
-* NPM_USER - The user to use for npm publish
-* NPM_PASSWORD - The password to use for npm publish
-* NPM_EMAIL - The email to use for npm publish
+- NPM_USER - The user to use for npm publish
+- NPM_PASSWORD - The password to use for npm publish
+- NPM_EMAIL - The email to use for npm publish
 
 # Slack Integration
 
@@ -354,7 +393,7 @@ REGISTRY_HOST='private-docker-registry.mycompany.com' $EVOLENE_DIRECTORY/run.sh
 
 ### Private Docker Registry User
 
-The private `REGISTRY_HOST`:s  BASIC_AUTH user who has the rights to read and push to the private registry.
+The private `REGISTRY_HOST`:s BASIC_AUTH user who has the rights to read and push to the private registry.
 
 ```bash
 REGISTRY_USER='myuser' $EVOLENE_DIRECTORY/run.sh
@@ -362,7 +401,7 @@ REGISTRY_USER='myuser' $EVOLENE_DIRECTORY/run.sh
 
 ### Private Docker Registry Password
 
-The private `REGISTRY_HOST`:s  BASIC_AUTH users password.
+The private `REGISTRY_HOST`:s BASIC_AUTH users password.
 
 ```bash
 REGISTRY_PASSWORD='qwerty123' $EVOLENE_DIRECTORY/run.sh
@@ -382,7 +421,7 @@ PUSH_PUBLIC='True' # Set or unset
 ### Skip dry run step
 
 Normally Evolene does a `docker run IMAGE_ID` to see that the image is build correctly and can start.
-Some images does not support this (os-images) and therefor exits causing the pipeline to exit. 
+Some images does not support this (os-images) and therefor exits causing the pipeline to exit.
 
 ```bash
 SKIP_DRY_RUN='True' # Set or unset
@@ -413,7 +452,6 @@ Sometimes you need to send information to the docker build stage, for example to
 file. You can do this by setting the environment variable `DOCKER_BUILD_ARGS`
 to a comma separated string of arguments on the format `ARG=VALUE` and configuring your Dockerfile with `ARG DOCKER_BUILD_ARG`. See example below.
 
-
 ```bash
 DOCKER_BUILD_ARGS='MAVEN_SETTINGS=<?xml version="1.0" encoding="UTF-8"?> <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd"> <servers> <server> <id>dev-azure-com-kth-integration-integration</id> <configuration><httpHeaders> <property> <name>Authorization</name> <value>Basic password=</value> </property> </httpHeaders> </configuration> </server></servers></settings>,ANOTHER_SETTING=blabla'
 ```
@@ -429,7 +467,6 @@ RUN echo MAVEN_SETTINGS >/usr/share/maven/conf/settings.xml
 Use the env variable `PULL_REQUEST_TEST` to skip pushing/publishing in both npm and docker pipeline. Used when using a pull request plugin that merges and tests a pull request with master, and discards the result.
 
 # Setup Evolene on Jenkins
-
 
 ## 1. Add default envs for builds on the Jenkins server
 
@@ -448,7 +485,7 @@ REGISTRY_USER='jenkins-ci'
 
 1. Add a new job that pulls the Evolene source
 
-2. Add a *Execute shell* step
+2. Add a _Execute shell_ step
 
 ```bash
 /create_dist.sh
@@ -464,7 +501,7 @@ chmod -R 700 dist/latest
 
 ## 3. Test your setup
 
-Test your setup by adding a Docker application that follows Evolene [Usage Requirements](https://gita.sys.kth.se/Infosys/evolene/blob/master/README.md#exclamation-user-requirements) and run a *Execute shell*.
+Test your setup by adding a Docker application that follows Evolene [Usage Requirements](https://gita.sys.kth.se/Infosys/evolene/blob/master/README.md#exclamation-user-requirements) and run a _Execute shell_.
 `$EVOLENE_DIRECTORY/run.sh`
 
 # Setup Evolene for development
@@ -488,5 +525,3 @@ Note! The version of the dist is defined in `setup.py`
 ```bash
 ./run_tests.sh
 ```
-
-
