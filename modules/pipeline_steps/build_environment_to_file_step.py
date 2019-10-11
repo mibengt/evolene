@@ -55,11 +55,11 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
         return "module.exports = {}".format(json.dumps(self.get_build_environment(data)))
 
     def to_html(self, data):
-        result = "<!DOCTYPE html><html><head><title>About</title></head><body>"
+        result = "<!DOCTYPE html><html><head><title>About</title></head><body><dl>"
         envs = self.get_build_environment(data)
         for env in envs:
-            result += "{}: {}\n".format(env, envs[env])
-        result += "</body></html>"
+            result += "<dt>{}:</dt><dd>{}</dd>".format(env, envs[env])
+        result += "</dl></body></html>"
         return result
 
     def to_conf(self, data):
