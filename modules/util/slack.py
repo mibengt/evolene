@@ -5,9 +5,9 @@ import requests
 from requests import HTTPError, ConnectTimeout, RequestException
 from modules.util import environment, pipeline_data
 
-def send_to_slack(message, icon=':no_entry:'):
+def send_to_slack(message, icon=':jenkins:', username='Build Server (Evolene)'):
     for channel in environment.get_slack_channels():
-        body = get_payload_body(channel, message, icon)
+        body = get_payload_body(channel, message, icon, username)
         call_slack_endpoint(body)
 
 def on_npm_publish(application, version, data):
@@ -39,7 +39,7 @@ def on_successful_public_push(image, image_name, image_size):
 def on_warning(message):
     send_to_slack(message, icon=':warning:')
 
-def get_payload_body(channel, text, icon, username='Evolene'):
+def get_payload_body(channel, text, icon, username='Build Server (Evolene)'):
     body = {
         "channel": channel,
         "text": text,
