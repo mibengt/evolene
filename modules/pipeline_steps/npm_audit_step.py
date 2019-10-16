@@ -1,6 +1,7 @@
 __author__ = 'tinglev'
 
 import json
+from json.decoder import JSONDecodeError
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import environment
 from modules.util.exceptions import PipelineException
@@ -28,7 +29,7 @@ class NpmAuditStep(AbstractPipelineStep):
                 # it's probably the output from the audit. We'll
                 # check that it's ok later on
                 audit_json = json.loads(str(npm_ex))
-            except ValueError:
+            except (ValueError, JSONDecodeError):
                 # The error wasn't json - so this is probably a true
                 # process error
                 msg = 'npm audit failed'
