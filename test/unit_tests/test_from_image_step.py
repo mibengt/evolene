@@ -74,3 +74,9 @@ class DockerFileTests(unittest.TestCase):
         self.assertIsNone(FromImageStep().get_change_image_message(
             "should-not-return-a-message", data
             ))
+
+    def test_get_base_image_name(self):
+        self.assertEqual(FromImageStep(self.TEST_ALLOWED_IMAGES).get_base_image_name('FROM kthse/kth-nodejs:10.14.1'),'kth-nodejs')
+
+    def test_get_base_image_name_2(self):
+        self.assertEqual(FromImageStep(self.TEST_ALLOWED_IMAGES).get_base_image_name('FROM mongo/mongodb:latest'),'mongodb')

@@ -65,13 +65,20 @@ class FromImageStep(AbstractPipelineStep):
         if self.validate(from_line, data):
             self.log.debug("'FROM:' statement '%s' in Dockerfile is valid.", from_line)
         else:
-            message = ("<!here> *{}s* Dockerfile is based on an old `{}` unsecure, "
+            message = ("<!here> *{}s* Dockerfile is based on an old `{}` unsecure image, "
                        "please upgrade! See https://hub.docker.com/r/kthse/{}/tags for :docker: images."
-                       .format(image_version_util.get_image(data), from_line, data[pipeline_data.IMAGE_NAME]))
+                       .format(image_version_util.get_image(data), from_line, self.get_base_image_name(from_line)))
             self.log.warning(message)
             slack.on_warning(message)
 
         return data
+
+
+    def get_base_image_name(self, from_statement):
+        start_index = from_statement.index("/")
+        from_statement = from_statement[(start_index + 1):]
+        end_index = from_statement.index(":")
+        return from_statement[:end_index]
 
     def validate(self, from_line, data):
         for image_name in self.image_rules:
