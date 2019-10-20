@@ -7,6 +7,7 @@ from modules.util import environment
 from modules.util import slack
 from modules.util import file_util
 from modules.util import image_version_util
+from modules.util import pipeline_data
 
 
 class FromImageStep(AbstractPipelineStep):
@@ -66,7 +67,7 @@ class FromImageStep(AbstractPipelineStep):
         else:
             message = ("<!here> *{}s* Dockerfile is based on an old `{}` unsecure, "
                        "please upgrade! See https://hub.docker.com/r/kthse/{}/tags for :docker: images."
-                       .format(image_version_util.get_image(data), from_line, data[data.IMAGE_NAME]))
+                       .format(image_version_util.get_image(data), from_line, data[pipeline_data.IMAGE_NAME]))
             self.log.warning(message)
             slack.on_warning(message)
 
