@@ -25,10 +25,10 @@ class FromImageStep(AbstractPipelineStep):
             # "kth-os": [ "3.8.0_abcdef" ] -> True
             #
             "kth-os": ["3.9", "3.10"],
-            "kth-nodejs": ["8.11", "9.11", "10.14"],
+            "kth-nodejs": ["10.14", "12.0"],
             "kth-play1": ["1.5"],
             "kth-play2": ["2.2"],
-            "kth-python": ["3.6", "3.7"],
+            "kth-python": ["3.7"],
 
             #
             #  Allow all tags for an image.
@@ -64,9 +64,9 @@ class FromImageStep(AbstractPipelineStep):
         if self.validate(from_line, data):
             self.log.debug("'FROM:' statement '%s' in Dockerfile is valid.", from_line)
         else:
-            message = ("*{}*: Dockerfile uses an unsupported and possibly unsecure `{}` image, "
-                       "please upgrade! See https://hub.docker.com/r/kthse/ for :docker: images."
-                       .format(image_version_util.get_image(data), from_line))
+            message = ("<!here> *{}s* Dockerfile is based on an old `{}` unsecure, "
+                       "please upgrade! See https://hub.docker.com/r/kthse/{}/tags for :docker: images."
+                       .format(image_version_util.get_image(data), from_line, data[data.IMAGE_NAME]))
             self.log.warning(message)
             slack.on_warning(message)
 
