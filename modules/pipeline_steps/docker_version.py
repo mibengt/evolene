@@ -18,9 +18,7 @@ class DockerVersion(AbstractPipelineStep):
 
     def run_step(self, data):
         try:
-            print_util.black('********************************')
             print_util.green(process.run_with_output('docker --version'))
-            print_util.black('********************************')
             
         except PipelineException as install_ex:
             self.handle_step_error('Error while checking Docker version. ', install_ex)
