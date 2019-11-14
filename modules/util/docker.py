@@ -56,5 +56,6 @@ def run_test(compose_test_file, data):
     cmd = (f'LOCAL_IMAGE_ID={image_id} '
            f'docker-compose --file {compose_test_file} up '
            f'--abort-on-container-exit '
-           f'--always-recreate-deps')
+           f'--always-recreate-deps '
+           f'--force-recreate')
     return process.run_with_output(cmd)
