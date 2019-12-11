@@ -21,6 +21,8 @@ class DockerSlimStep(AbstractPipelineStep):
         return data
 
     def run_docker_slim(self, data):
-        image = image_version_util.get_image(data)
+        image = image_version_util.prepend_registry(
+            image_version_util.get_image(data)
+        )
         self.log.debug('Running /usr/local/bin/docker-slim build %s', image)
         process.run_with_output(f'/usr/local/bin/docker-slim build {image}')
