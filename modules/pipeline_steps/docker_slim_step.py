@@ -1,6 +1,7 @@
 __author__ = 'tinglev'
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
+from modules.pipeline_steps.tag_image_step import TagImageStep
 from modules.util import (
     pipeline_data,
     environment, image_version_util,
@@ -17,6 +18,9 @@ class DockerSlimStep(AbstractPipelineStep):
 
     def run_step(self, data):
         if environment.get_experimental():
+            # Tag the original image names
+            tag_step = TagImageStep()
+            data = tag_step.run_step(data)
             self.run_docker_slim(data)
             data[pipeline_data.IMAGE_NAME] = f'{data[pipeline_data.IMAGE_NAME]}.slim'
         return data
