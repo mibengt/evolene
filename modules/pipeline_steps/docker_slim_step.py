@@ -18,6 +18,7 @@ class DockerSlimStep(AbstractPipelineStep):
     def run_step(self, data):
         if environment.get_experimental():
             self.run_docker_slim(data)
+            data[pipeline_data.IMAGE_NAME] = f'{data[pipeline_data.IMAGE_NAME]}.slim'
         return data
 
     def run_docker_slim(self, data):
