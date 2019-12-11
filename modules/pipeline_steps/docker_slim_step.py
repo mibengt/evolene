@@ -24,5 +24,5 @@ class DockerSlimStep(AbstractPipelineStep):
         image = image_version_util.prepend_registry(
             image_version_util.get_image(data)
         )
-        self.log.debug('Running /usr/local/bin/docker-slim build %s', image)
-        process.run_with_output(f'/usr/local/bin/docker-slim build {image}')
+        self.log.debug('Running /var/lib/jenkins/docker-slim build %s', image)
+        process.run_with_output(f'/var/lib/jenkins/docker-slim build {image}')
