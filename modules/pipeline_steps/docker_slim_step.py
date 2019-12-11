@@ -22,4 +22,4 @@ class DockerSlimStep(AbstractPipelineStep):
 
     def run_docker_slim(self, data):
         image = image_version_util.get_image(data)
-        process.run_with_output(f'docker-slim build {image}')
+        process.run_with_output(f'/usr/local/bin/docker-slim build {image}')
