@@ -21,6 +21,7 @@ from modules.pipeline_steps.from_image_step import FromImageStep
 from modules.pipeline_steps.celebrate_step import CelebrateStep
 from modules.pipeline_steps.docker_create_build_arg_step import DockerCreateBuildArgStep
 from modules.pipeline_steps.done_step import DoneStep
+from modules.pipeline_steps.docker_slim_step import DockerSlimStep
 from modules.util.exceptions import PipelineException
 from modules.util import environment, print_util, slack, pipeline, pipeline_data
 
@@ -64,6 +65,8 @@ class DockerDeployPipeline(object):
             TestImageStep(),
             # Tag the built image with image version
             TagImageStep(),
+            # EXPERIMENTAL ONLY: Docker-slim
+            DockerSlimStep(),
             # Push the tagged image to a repository
             PushPublicImageStep(),
             PushImageStep(),
