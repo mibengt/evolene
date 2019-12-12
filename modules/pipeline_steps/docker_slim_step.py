@@ -24,4 +24,4 @@ class DockerSlimStep(AbstractPipelineStep):
 
     def run_docker_slim(self, data):
         image_id = data[pipeline_data.LOCAL_IMAGE_ID]
-        process.run_with_output(f'/var/lib/jenkins/docker-slim build {image_id}')
+        process.run_with_output(f'/var/lib/jenkins/docker-slim --debug build {image_id}')
