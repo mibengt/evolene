@@ -5,7 +5,7 @@ import time
 from mock import patch, call
 from modules.pipeline_steps.dry_run_step import DryRunStep
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util import pipeline_data
+from modules.util import pipeline_data, docker
 
 class DryRunStepTests(unittest.TestCase):
 
@@ -38,6 +38,7 @@ class DryRunStepTests(unittest.TestCase):
     @patch.object(DryRunStep, 'wait_for_container_created')
     @patch.object(AbstractPipelineStep, 'handle_step_error')
     def test_run_step(self, mock_handle_err, mock_wait, mock_stop, mock_start):
+        DryRunStep.DRY_RUN_COMPOSE_FILENAME = 'not-available'
         mock_wait.return_value = 'running'
         mock_start.return_value = 'test_container_id'
         drs = DryRunStep()
@@ -59,3 +60,12 @@ class DryRunStepTests(unittest.TestCase):
         mock_wait.assert_called_once()
         mock_handle_err.assert_called_once()
         mock_stop.assert_called_once()
+
+    @patch.object(docker, 'run_dry_run_compose')
+    def test_compose_dry_run(self, mock_dry_run):
+        DryRunStep.DRY_RUN_COMPOSE_FILENAME = '/docker-compose-dry-run.yml'
+        drs = DryRunStep()
+        data = {}
+        data[pipeline_data.LOCAL_IMAGE_ID] = 'image_id'
+        drs.run_step(data)
+        mock_dry_run.assert_called_once()

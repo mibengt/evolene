@@ -51,6 +51,9 @@ def run_unit_test_compose(compose_test_file, data):
 def run_integration_tests(compose_test_file, data):
     return run_test(compose_test_file, data)
 
+def run_dry_run_compose(compose_test_file, data):
+    return run_test(compose_test_file, data)
+
 def run_test(compose_test_file, data):
     image_id = data[pipeline_data.LOCAL_IMAGE_ID]
     cmd = (f'LOCAL_IMAGE_ID={image_id} '

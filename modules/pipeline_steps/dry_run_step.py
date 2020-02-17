@@ -2,9 +2,12 @@ __author__ = 'tinglev'
 
 import time
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
-from modules.util import pipeline_data, docker, environment
+from modules.util import pipeline_data, docker, environment, file_util, image_version_util
+from modules.util.exceptions import PipelineException
 
 class DryRunStep(AbstractPipelineStep):
+
+    DRY_RUN_COMPOSE_FILENAME = '/docker-compose-dry-run.yml'
 
     def __init__(self):
         super(DryRunStep, self).__init__()
@@ -19,21 +22,44 @@ class DryRunStep(AbstractPipelineStep):
 
     def run_step(self, data):
         if environment.use_dry_run():
-            container_id = self.start_container(data)
-            try:
-                container_status = self.wait_for_container_created(container_id)
-                if not self.is_running(container_status):
-                    self.handle_step_error(
-                        '<!channel> Failed to test run the newly built container on Jenkins. '
-                        'To disable test set Evolene env `SKIP_DRY_RUN="True"`'
-                    )
-            finally:
-                self.stop_container(container_id)
+            if not file_util.is_file(DryRunStep.DRY_RUN_COMPOSE_FILENAME):
+                self.simple_dry_run(data)
+            else:
+                self.compose_dry_run(data)
+        return data
+
+    def compose_dry_run(self, data):
+        try:
+            output = docker.run_dry_run_compose(
+                file_util.get_absolue_path(
+                    DryRunStep.DRY_RUN_COMPOSE_FILENAME
+                ), data
+            )
+            self.log.debug('Output from dry run was: %s', output)
+        except Exception as ex:
+            raise PipelineException(str(ex), self.get_slack_message(ex, data))
+
+    def get_slack_message(self, exception, data):
+        return '*{}* Compose dry run failed: \n```...\n{}```\n:jenkins: {}console'.format(
+            image_version_util.get_image(data),
+            str(exception).replace('`', ' ')[-1000:],
+            environment.get_build_url())
+
+    def simple_dry_run(self, data):
+        container_id = self.start_container(data)
+        try:
+            container_status = self.wait_for_container_created(container_id)
+            if not self.is_running(container_status):
+                self.handle_step_error(
+                    '<!channel> Failed to test run the newly built container on Jenkins. '
+                    'To disable test set Evolene env `SKIP_DRY_RUN="True"`'
+                )
+        finally:
+            self.stop_container(container_id)
             self.log.info(
                 'Dry run of image with id "%s" successful',
                 data[pipeline_data.LOCAL_IMAGE_ID]
             )
-        return data
 
     def get_container_status(self, container_id): #pragma: no cover
         return docker.get_container_status(container_id)
