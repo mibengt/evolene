@@ -250,7 +250,7 @@ services:
     # Mount and run tests.
     volumes:
       - ./tests:/tests
-    command: npm test
+    command: ["sh", "-c", "npm install --development && npm test"]
 ```
 
 ## Integration Testing
