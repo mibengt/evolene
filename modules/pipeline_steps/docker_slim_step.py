@@ -26,7 +26,7 @@ class DockerSlimStep(AbstractPipelineStep):
             docker.tag_image(data[pipeline_data.LOCAL_IMAGE_ID], tag)
             self.run_docker_slim(data)
             tag = image_version_util.prepend_registry(data[pipeline_data.IMAGE_NAME])
-            tag = f'{tag}.slim'
+            tag = f'{tag}.slim:latest'
             data[pipeline_data.LOCAL_IMAGE_ID] = self.get_new_image_id(tag)
             self.log.debug('Slimmed docker id is %s', data[pipeline_data.LOCAL_IMAGE_ID])
             data[pipeline_data.IMAGE_NAME] = f'{data[pipeline_data.IMAGE_NAME]}.slim'
