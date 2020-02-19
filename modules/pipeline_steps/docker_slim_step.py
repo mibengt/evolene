@@ -25,15 +25,12 @@ class DockerSlimStep(AbstractPipelineStep):
             # Tag the image, otherwise we ger a bad reference error from docker build
             docker.tag_image(data[pipeline_data.LOCAL_IMAGE_ID], tag)
             self.run_docker_slim(data)
-            data[pipeline_data.LOCAL_IMAGE_ID] =  self.get_new_image_id(tag)
+            data[pipeline_data.LOCAL_IMAGE_ID] = self.get_new_image_id(tag)
             data[pipeline_data.IMAGE_NAME] = f'{data[pipeline_data.IMAGE_NAME]}.slim'
         return data
 
     def get_new_image_id(self, tag):
-        image_id = docker.run(
-            f"docker image ls --filter reference='{tag}' -q"
-        )
-        return image_id
+        return docker.get_image_id(tag)
 
     def run_docker_slim(self, data):
         image_id = data[pipeline_data.LOCAL_IMAGE_ID]
