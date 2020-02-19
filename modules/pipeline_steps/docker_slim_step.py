@@ -20,17 +20,25 @@ class DockerSlimStep(AbstractPipelineStep):
 
     def run_step(self, data):
         if environment.get_experimental():
-            tag = image_version_util.prepend_registry(data[pipeline_data.IMAGE_NAME])
-            tag = f'{tag}:slim'
             # Tag the image, otherwise we ger a bad reference error from docker build
-            docker.tag_image(data[pipeline_data.LOCAL_IMAGE_ID], tag)
+            docker.tag_image(data[pipeline_data.LOCAL_IMAGE_ID], self.get_pre_slim_tag(data))
             self.run_docker_slim(data)
-            tag = image_version_util.prepend_registry(data[pipeline_data.IMAGE_NAME])
-            tag = f'{tag}.slim:latest'
-            data[pipeline_data.LOCAL_IMAGE_ID] = self.get_new_image_id(tag)
+            # Get the image tage created by docker slim and set this as the new
+            # image id and name
+            data[pipeline_data.LOCAL_IMAGE_ID] = self.get_new_image_id(self.get_post_slim_tag(data))
             self.log.debug('Slimmed docker id is %s', data[pipeline_data.LOCAL_IMAGE_ID])
             data[pipeline_data.IMAGE_NAME] = f'{data[pipeline_data.IMAGE_NAME]}.slim'
         return data
+
+    def get_pre_slim_tag(self, data):
+        tag = image_version_util.prepend_registry(data[pipeline_data.IMAGE_NAME])
+        tag = f'{tag}:pre_slim'
+        return tag
+
+    def get_post_slim_tag(self, data):
+        tag = image_version_util.prepend_registry(data[pipeline_data.IMAGE_NAME])
+        tag = f'{tag}.slim:latest'
+        return tag
 
     def get_new_image_id(self, tag):
         return docker.get_image_id(tag)
