@@ -5,7 +5,8 @@ from modules.util import (
     pipeline_data,
     environment,
     process,
-    image_version_util
+    image_version_util,
+    docker
 )
 
 class DockerSlimStep(AbstractPipelineStep):
@@ -18,6 +19,9 @@ class DockerSlimStep(AbstractPipelineStep):
 
     def run_step(self, data):
         if environment.get_experimental():
+            tag = image_version_util.prepend_registry(data[pipeline_data.IMAGE_NAME])
+            # Tag the image, otherwise we ger a bad reference error from docker build
+            docker.tag_image(data[pipeline_data.LOCAL_IMAGE_ID], tag)
             self.run_docker_slim(data)
             data[pipeline_data.IMAGE_NAME] = f'{data[pipeline_data.IMAGE_NAME]}.slim'
         return data
