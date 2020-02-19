@@ -23,7 +23,7 @@ class DockerSlimStep(AbstractPipelineStep):
         return data
 
     def run_docker_slim(self, data):
-        image_name = image_version_util.get_image(data)
+        image_name = image_version_util.prepend_registry(image_version_util.get_image(data))
         process.run_with_output(f'docker run --rm '
                                 f'-v /var/run/docker.sock:/var/run/docker.sock '
                                 f'dslim/docker-slim build '
