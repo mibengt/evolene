@@ -4,7 +4,8 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import (
     pipeline_data,
     environment,
-    process
+    process,
+    image_version_util
 )
 
 class DockerSlimStep(AbstractPipelineStep):
@@ -22,7 +23,7 @@ class DockerSlimStep(AbstractPipelineStep):
         return data
 
     def run_docker_slim(self, data):
-        image_name = data[pipeline_data.IMAGE_NAME]
+        image_name = image_version_util.get_image(data)
         process.run_with_output(f'docker run --rm '
                                 f'-v /var/run/docker.sock:/var/run/docker.sock '
                                 f'dslim/docker-slim build '
