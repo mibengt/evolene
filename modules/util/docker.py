@@ -32,7 +32,7 @@ def run(image_id):
 
 def get_image_id(tag):
     return process.run_with_output(
-        f'docker image ls --filter reference="{tag}"" -q'
+        f'docker image ls --filter reference="{tag}" -q'
     ).rstrip()
 
 def stop_and_remove_container(container_id):
