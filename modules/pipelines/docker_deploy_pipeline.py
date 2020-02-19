@@ -63,10 +63,10 @@ class DockerDeployPipeline(object):
             IntegrationTestStep(),
             # Do something (leftover?)
             TestImageStep(),
-            # EXPERIMENTAL ONLY: Docker-slim
-            DockerSlimStep(),
             # Tag the built image with image version
             TagImageStep(),
+            # EXPERIMENTAL ONLY: Docker-slim
+            DockerSlimStep(),
             # Push the tagged image to a repository
             PushPublicImageStep(),
             PushImageStep(),
