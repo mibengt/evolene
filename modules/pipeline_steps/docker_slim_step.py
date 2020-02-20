@@ -47,5 +47,5 @@ class DockerSlimStep(AbstractPipelineStep):
         image_id = data[pipeline_data.LOCAL_IMAGE_ID]
         process.run_with_output(f'docker run --rm '
                                 f'-v /var/run/docker.sock:/var/run/docker.sock '
-                                f'dslim/docker-slim build '
+                                f'dslim/docker-slim --in-container build '
                                 f'{image_id}')
