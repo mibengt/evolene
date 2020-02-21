@@ -45,6 +45,8 @@ class DockerSlimStep(AbstractPipelineStep):
 
     def run_docker_slim(self, data):
         env = environment.get_slim_env()
+        if env:
+            env = f'--env {env}'
         image_id = data[pipeline_data.LOCAL_IMAGE_ID]
         process.run_with_output(f'docker run --rm '
                                 f'-v /var/run/docker.sock:/var/run/docker.sock '
