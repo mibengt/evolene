@@ -1,6 +1,6 @@
 __author__ = 'tinglev'
 
-from os import pipe
+from os import environ, pipe
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import (
     pipeline_data,
@@ -19,7 +19,7 @@ class DockerSlimStep(AbstractPipelineStep):
         return [pipeline_data.LOCAL_IMAGE_ID]
 
     def run_step(self, data):
-        if environment.get_experimental():
+        if environment.get_slim():
             # Tag the image, otherwise we ger a bad reference error from docker build
             docker.tag_image(data[pipeline_data.LOCAL_IMAGE_ID], self.get_pre_slim_tag(data))
             self.run_docker_slim(data)
@@ -44,8 +44,9 @@ class DockerSlimStep(AbstractPipelineStep):
         return docker.get_image_id(tag)
 
     def run_docker_slim(self, data):
+        env = environment.get_slim_env()
         image_id = data[pipeline_data.LOCAL_IMAGE_ID]
         process.run_with_output(f'docker run --rm '
                                 f'-v /var/run/docker.sock:/var/run/docker.sock '
-                                f'dslim/docker-slim --in-container build '
+                                f'dslim/docker-slim --in-container build {env} '
                                 f'{image_id}')

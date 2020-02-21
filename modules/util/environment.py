@@ -31,6 +31,14 @@ NPM_PASSWORD = 'NPM_PASSWORD'
 NPM_EMAIL = 'NPM_EMAIL'
 DOCKER_BUILD_ARGS = 'DOCKER_BUILD_ARGS'
 PULL_REQUEST_TEST = 'PULL_REQUEST_TEST'
+SLIM = 'SLIM'
+SLIM_ENV = 'SLIM_ENV'
+
+def get_slim():
+    return os.environ.get(SLIM)
+
+def get_slim_env():
+    return os.environ.get(SLIM_ENV)
 
 def get_npm_email():
     return os.environ.get(NPM_EMAIL)
