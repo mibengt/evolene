@@ -48,7 +48,8 @@ class DockerSlimStep(AbstractPipelineStep):
         if env:
             env = f'--env {env}'
         image_id = data[pipeline_data.LOCAL_IMAGE_ID]
-        process.run_with_output(f'docker run --rm '
+        output = process.run_with_output(f'docker run --rm '
                                 f'-v /var/run/docker.sock:/var/run/docker.sock '
                                 f'dslim/docker-slim --in-container build {env} '
                                 f'{image_id}')
+        self.log.debug('Output from docker-slim was: %s', output)
