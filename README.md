@@ -329,7 +329,7 @@ NODE_VERSION=10.14.2
 
 ![Published package are shown in Slack](https://github.com/KTH/evolene/blob/master/images/npm.png)
 
-### Build information added to npm package
+### Build information added to NPM packages automatically
 Inside every npm-package there is a js-module file `/build-information.js` that contains:
 
 ```javascript
