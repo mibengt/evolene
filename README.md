@@ -342,7 +342,7 @@ module.exports = {
 }
 ```
 
-## Environment variables for setting up npm
+## Environment variables for setting up NPM publish on Jenkins
 
 - NPM_USER - The user to use for npm publish
 - NPM_PASSWORD - The password to use for npm publish
