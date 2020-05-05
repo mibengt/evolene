@@ -20,7 +20,9 @@ class NpmPublishStep(AbstractPipelineStep):
     def should_auto_update(self, data):
         major_minor_version = data[pipeline_data.PACKAGE_JSON]["majorMinorVersion"]
         if major_minor_version is not None:
+            self.log.info('Will auto update version package.json based on : %s', major_minor_version)
             return True
+        self.log.info('Will not auto update version in package.json')
         return False
 
     def get_patch_version_from_npm_latest_version(self, data):
@@ -33,6 +35,7 @@ class NpmPublishStep(AbstractPipelineStep):
         major_minor_version = data[pipeline_data.PACKAGE_JSON]["majorMinorVersion"]
         updated_patch_version = self.get_patch_version_from_npm_latest_version(data) + 1
         version = f"{major_minor_version}.{updated_patch_version}"
+        self.log.info('Auto update resulted in npm publish using %s as version', version)
         data[pipeline_data.NPM_PACKAGE_VERSION] = version
         return version
 
