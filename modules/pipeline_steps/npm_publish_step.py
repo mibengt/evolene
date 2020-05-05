@@ -17,18 +17,36 @@ class NpmPublishStep(AbstractPipelineStep):
         return [pipeline_data.NPM_VERSION_CHANGED, pipeline_data.NPM_PACKAGE_VERSION,
                 pipeline_data.NPM_LATEST_VERSION, pipeline_data.NPM_PACKAGE_NAME]
 
+    def should_auto_update(self, data):
+        '''
+        If version only is "major.minor" then Evolene should add the last patch version.
+        '''
+        version = data[pipeline_data.NPM_PACKAGE_VERSION]
+        if version.count('.') > 1:
+            return True
+        return False
 
-    def get_next_version(self, data):
+    def get_patch_version_from_npm_latest_version(self, data):
         version = data[pipeline_data.NPM_LATEST_VERSION]
         self.log.info('Last published version on MPM: %s', version)
-
         patch_version = version.find(".", version.find("."))
-        package_json = data[pipeline_data.PACKAGE_JSON]
-        package_json["version"] = patch_version
-        file_util.overwite('/package.npm.json', json.dumps(package_json))        
+        return patch_version
+
+    def get_auto_update_version(self, data):
+        base_version = data[pipeline_data.NPM_PACKAGE_VERSION]
+        updated_patch_version = self.get_patch_version_from_npm_latest_version(data) + 1
+        version = f"{base_version}.{updated_patch_version}"
+        data[pipeline_data.NPM_PACKAGE_VERSION] = version
+        return version
+
+    def write_auto_updated_package_json(self, data):
+        data[pipeline_data.PACKAGE_JSON]["version"] = self.get_auto_update_version(data)
+        file_util.overwite('/package.npm.json', json.dumps(data[pipeline_data.PACKAGE_JSON]))
+        data[pipeline_data.NPM_VERSION_CHANGED] = True 
        
     def run_step(self, data):
-        self.get_next_version(data)
+        if self.should_auto_update(data):
+            self.write_auto_updated_package_json(data)
 
         # Skip publish on pull request testing
         if environment.get_pull_request_test():
