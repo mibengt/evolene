@@ -19,9 +19,12 @@ class NpmPublishStep(AbstractPipelineStep):
 
 
     def get_next_version(self, data):
-        self.log.info('Package.json / version: %s', data[pipeline_data.NPM_PACKAGE_VERSION])
+        version = data[pipeline_data.NPM_LATEST_VERSION]
+        self.log.info('Last published version on MPM: %s', version)
+
+        patch_version = version.find(".", version.find("."))
         package_json = data[pipeline_data.PACKAGE_JSON]
-        package_json["version"] = "0.0.0"
+        package_json["version"] = patch_version
         file_util.overwite('/package.new.json', json.dumps(package_json))
        
     def run_step(self, data):
