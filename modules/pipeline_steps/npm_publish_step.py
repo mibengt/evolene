@@ -22,7 +22,7 @@ class NpmPublishStep(AbstractPipelineStep):
         If version only is "major.minor" then Evolene should add the last patch version.
         '''
         version = data[pipeline_data.NPM_PACKAGE_VERSION]
-        if version.count('.') > 1:
+        if version.count('.') == 1:
             return True
         return False
 
