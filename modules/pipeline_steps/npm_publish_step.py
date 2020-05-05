@@ -1,5 +1,6 @@
 __author__ = 'tinglev'
 
+import json
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import pipeline_data, slack, nvm, environment
 from modules.util import file_util
@@ -21,7 +22,7 @@ class NpmPublishStep(AbstractPipelineStep):
         self.log.info('Package.json / version: %s', data[pipeline_data.NPM_PACKAGE_VERSION])
         package_json = data[pipeline_data.PACKAGE_JSON]
         package_json["version"] = "0.0.0"
-        file_util.overwite('/package.new.json', package_json)
+        file_util.overwite('/package.new.json', json.dumps(package_json))
        
     def run_step(self, data):
         self.get_next_version(data)
