@@ -18,11 +18,8 @@ class NpmPublishStep(AbstractPipelineStep):
                 pipeline_data.NPM_LATEST_VERSION, pipeline_data.NPM_PACKAGE_NAME]
 
     def should_auto_update(self, data):
-        '''
-        If version only is "major.minor" then Evolene should add the last patch version.
-        '''
-        version = data[pipeline_data.NPM_PACKAGE_VERSION]
-        if version.count('.') == 1:
+        major_minor_version = data[pipeline_data.PACKAGE_JSON]["majorMinorVersion"]
+        if major_minor_version is not None:
             return True
         return False
 
