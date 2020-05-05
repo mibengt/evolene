@@ -33,9 +33,9 @@ class NpmPublishStep(AbstractPipelineStep):
         return patch_version
 
     def get_auto_update_version(self, data):
-        base_version = data[pipeline_data.NPM_PACKAGE_VERSION]
+        majorMinorVersion = data[pipeline_data.PACKAGE_JSON]["majorMinorVersion"]
         updated_patch_version = self.get_patch_version_from_npm_latest_version(data) + 1
-        version = f"{base_version}.{updated_patch_version}"
+        version = f"{majorMinorVersion}.{updated_patch_version}"
         data[pipeline_data.NPM_PACKAGE_VERSION] = version
         return version
 
