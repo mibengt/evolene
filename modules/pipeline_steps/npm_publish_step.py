@@ -18,7 +18,11 @@ class NpmPublishStep(AbstractPipelineStep):
                 pipeline_data.NPM_LATEST_VERSION, pipeline_data.NPM_PACKAGE_NAME]
 
     def should_auto_update(self, data):
-        major_minor_version = data[pipeline_data.PACKAGE_JSON]["majorMinorVersion"]
+        try:
+            major_minor_version = data[pipeline_data.PACKAGE_JSON]["majorMinorVersion"]
+        except:
+            return False
+
         if major_minor_version is not None:
             self.log.info('Will auto update version package.json based on : %s', major_minor_version)
             return True
