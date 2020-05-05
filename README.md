@@ -329,7 +329,8 @@ NODE_VERSION=10.14.2
 
 ![Published package are shown in Slack](https://github.com/KTH/evolene/blob/master/images/npm.png)
 
-Inside every npm-package there is a js-module file `build-information.js` that contains:
+### Build information added to NPM packages automatically
+Inside every npm-package there is a js-module file `/build-information.js` that contains:
 
 ```javascript
 module.exports = {
@@ -341,7 +342,7 @@ module.exports = {
 }
 ```
 
-## Environment variables for setting up npm
+## Environment variables for setting up NPM publish on Jenkins
 
 - NPM_USER - The user to use for npm publish
 - NPM_PASSWORD - The password to use for npm publish

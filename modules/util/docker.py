@@ -30,6 +30,11 @@ def get_container_status(container_id):
 def run(image_id):
     return process.run_with_output(f'docker run -d {image_id}').rstrip()
 
+def get_image_id(tag):
+    return process.run_with_output(
+        f'docker image ls --filter reference="{tag}" -q'
+    ).rstrip()
+
 def stop_and_remove_container(container_id):
     return process.run_with_output(f'docker rm -f {container_id}')
 
