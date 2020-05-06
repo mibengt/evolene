@@ -37,7 +37,6 @@ class NpmPublishStep(AbstractPipelineStep):
         # Read the last didgit = "1.2.[3]"
         patch_version_index = version.rfind(".") + 1
         patch_version = version[patch_version_index:]
-        self.log.info('Last published patch version on MPM: %s', version[patch_version])
         self.log.debug('Patch version is: %s', patch_version)
         return int(patch_version)
 
