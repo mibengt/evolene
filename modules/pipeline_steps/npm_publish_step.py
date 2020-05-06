@@ -68,6 +68,7 @@ class NpmPublishStep(AbstractPipelineStep):
 
     def update_patch_version(self, data):
         data[pipeline_data.PACKAGE_JSON]["version"] = self.get_next_version(data)
+        data[pipeline_data.PACKAGE_JSON]["se.kth.automaticPublish"] = "true"
         data[pipeline_data.NPM_VERSION_CHANGED] = True
 
     def write_updated_package_json(self, data):
