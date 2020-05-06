@@ -16,7 +16,7 @@ class ImageVersionStep(AbstractPipelineStep):
     def run_step(self, data): # pragma: no cover
         data[pipeline_data.SEM_VER] = self.get_sem_ver(data[pipeline_data.IMAGE_VERSION],
                                                        self.get_patch_version(data))
-        data[pipeline_data.COMMIT_HASH] = self.get_commit_hash_clamped()
+        data[pipeline_data.COMMIT_HASH] = environment.get_git_commit_clamped()
         data[pipeline_data.IMAGE_VERSION] = self.append_commit_hash(data[pipeline_data.SEM_VER])
         return data
 
@@ -32,7 +32,7 @@ class ImageVersionStep(AbstractPipelineStep):
         return "{}.{}".format(image_version, patch_version)
 
     def append_commit_hash(self, sem_ver):
-        return '{}_{}'.format(sem_ver, self.get_commit_hash_clamped())
+        return '{}_{}'.format(sem_ver, environment.get_git_commit_clamped())
 
     def get_commit_hash_clamped(self, length=7):
         commit_hash = environment.get_git_commit()

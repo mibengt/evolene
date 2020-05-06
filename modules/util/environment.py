@@ -72,6 +72,12 @@ def get_image_name():
 def get_git_commit():
     return os.environ.get(GIT_COMMIT)
 
+def get_git_commit_clamped(length=7):
+    commit_hash = get_git_commit()
+    if len(str(commit_hash)) > length:
+        commit_hash = commit_hash[:length]
+    return commit_hash
+
 def get_git_url():
     return os.environ.get(GIT_URL)
 def get_git_branch():

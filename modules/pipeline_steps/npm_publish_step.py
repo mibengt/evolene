@@ -49,18 +49,22 @@ class NpmPublishStep(AbstractPipelineStep):
         data[pipeline_data.NPM_PACKAGE_VERSION] = version
         return version
 
-    def write_auto_updated_package_json(self, data):
+    def patch_version_update_package_json(self, data):
         data[pipeline_data.PACKAGE_JSON]["version"] = self.get_auto_update_version(data)
-        data[pipeline_data.PACKAGE_JSON]["se.kth.gitBranch"] = environment.get_git_branch()
-        data[pipeline_data.PACKAGE_JSON]["se.kth.gitCommit"] = environment.get_git_commit()
-        data[pipeline_data.PACKAGE_JSON]["se.kth.buildDate"] = environment.get_time()
-        
-        file_util.overwite('/package.json', json.dumps(data[pipeline_data.PACKAGE_JSON]))
         data[pipeline_data.NPM_VERSION_CHANGED] = True
-       
+
+    def write_updated_package_json(self, data):
+         file_util.overwite('/package.json', json.dumps(data[pipeline_data.PACKAGE_JSON]))
+
     def run_step(self, data):
         if self.should_auto_update(data):
-            self.write_auto_updated_package_json(data)
+            self.patch_version_update_package_json(data)
+
+        data[pipeline_data.PACKAGE_JSON]["se.kth.gitBranch"] = environment.get_git_branch()
+        data[pipeline_data.PACKAGE_JSON]["se.kth.gitCommit"] = environment.get_git_commit_clamped()
+        data[pipeline_data.PACKAGE_JSON]["se.kth.buildDate"] = environment.get_time()
+
+        self.write_updated_package_json(data)
 
         # Skip publish on pull request testing
         if environment.get_pull_request_test():
@@ -69,8 +73,7 @@ class NpmPublishStep(AbstractPipelineStep):
             self.log.info(
                 'Package will be published. Local version is %s and '
                 'latest version on npm is %s',
-                data[pipeline_data.NPM_PACKAGE_VERSION],
-                data[pipeline_data.NPM_LATEST_VERSION]
+                data[pipeline_data.NPM_PACKAGE_VERSION],                data[pipeline_data.NPM_LATEST_VERSION]
             )
             flags = environment.get_project_root()
             result = nvm.exec_npm_command(data, 'publish --access public', flags)
