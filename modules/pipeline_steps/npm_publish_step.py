@@ -24,7 +24,7 @@ class NpmPublishStep(AbstractPipelineStep):
             return False
 
         if major_minor_version is not None:
-            if major_minor_version.count('.') != 2:
+            if major_minor_version.count('.') != 1:
                 raise ValueError('publishVersionBase must be onlys major.minor')
             self.log.info('Will auto increase patch version package.json based on : %s', major_minor_version)
             return True
