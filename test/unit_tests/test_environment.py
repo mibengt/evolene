@@ -7,7 +7,7 @@ from modules.util import environment
 class EnvironmentTests(unittest.TestCase):
 
     def test_get_git_commit_clamped(self):
-        
+       
         os.environ[environment.GIT_COMMIT] = '1234567'
         result = environment.get_git_commit_clamped()
         self.assertEqual(result, '1234567')

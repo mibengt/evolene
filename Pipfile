@@ -10,6 +10,7 @@ green       = ">=2.16"
 coverage    = ">=4.5"
 mock        = ">=3.0"
 pylint      = ">=2.3"
+autopep8 = "*"
 
 [packages]
 requests    = ">=2.21"
