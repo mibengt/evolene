@@ -125,10 +125,19 @@ def get_build_url():
     return os.environ.get(BUILD_URL)
 
 def is_true(env_key):
-    value = os.environ.get(env_key)
+    return is_true_value(os.environ.get(env_key))
+
+def is_true_value(value, true_values=[ "yes", "true" ]):
     if value is None:
         return False
-    return value.lower() in ['true', 'yes', 'y']
+    
+    if true_values is None:
+        return False
+        
+    if value.lower() in true_values:
+        return True
+
+    return False
 
 def get_time():
     return datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')

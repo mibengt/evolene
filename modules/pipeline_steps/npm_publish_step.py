@@ -18,16 +18,17 @@ class NpmPublishStep(AbstractPipelineStep):
         return [pipeline_data.NPM_VERSION_CHANGED, pipeline_data.NPM_PACKAGE_VERSION,
                 pipeline_data.NPM_LATEST_VERSION, pipeline_data.NPM_PACKAGE_NAME]
 
-    def should_automatic_publish(self, data):
+    def use_automatic_publish(self, data):
         try:
-            major_minor_version = data[pipeline_data.PACKAGE_JSON]["automaticPublish"]
+            automatic_publish = data[pipeline_data.PACKAGE_JSON]["automaticPublish"]
         except:
             return False
 
-        if major_minor_version is not None:
-            self.log.info('Will auto increase patch version package.json based on : %s', major_minor_version)
+        if environment.is_true_value(automatic_publish):
+            self.log.info('Will automatic puublish with increased patch version in package.json')
             return True
-        self.log.info('Will not auto increase patch version in package.json')
+        
+        self.log.info('No automatic publish, using version in package.json')
         return False
 
     def get_latest_patch_version(self, data):
@@ -74,7 +75,7 @@ class NpmPublishStep(AbstractPipelineStep):
         self.log.info('Wrote updated package.json to disc, ready for npm publish.')
 
     def run_step(self, data):
-        if self.should_automatic_publish(data):
+        if self.use_automatic_publish(data):
             self.update_patch_version(data)
 
         data[pipeline_data.PACKAGE_JSON]["se.kth.gitBranch"] = environment.get_git_branch()

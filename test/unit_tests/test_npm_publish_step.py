@@ -55,12 +55,12 @@ class NpmPublishStepTests(unittest.TestCase):
     def test_automaticPublish(self):
         data = {pipeline_data.NPM_LATEST_VERSION: '3.2.35'}
         version_step = NpmPublishStep()
-        self.assertFalse(version_step.should_automatic_publish(data))
+        self.assertFalse(version_step.use_automatic_publish(data))
 
         data = {pipeline_data.PACKAGE_JSON: {'name': 'my-package', 'version': '2.3.4' }}
         version_step = NpmPublishStep()
-        self.assertFalse(version_step.should_automatic_publish(data))
+        self.assertFalse(version_step.use_automatic_publish(data))
 
         data = {pipeline_data.PACKAGE_JSON: {'name': 'my-package', 'version': '2.3.4', 'automaticPublish': 'true'}}
         version_step = NpmPublishStep()
-        self.assertTrue(version_step.should_automatic_publish(data))
+        self.assertTrue(version_step.use_automatic_publish(data))
