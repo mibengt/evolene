@@ -19,25 +19,30 @@ class NpmPublishStep(AbstractPipelineStep):
 
     def should_auto_update(self, data):
         try:
-            major_minor_version = data[pipeline_data.PACKAGE_JSON]["majorMinorVersion"]
+            major_minor_version = data[pipeline_data.PACKAGE_JSON]["publishVersionBase"]
         except:
             return False
 
         if major_minor_version is not None:
-            self.log.info('Will auto update version package.json based on : %s', major_minor_version)
+            if major_minor_version.count('.') != 2:
+                raise ValueError('publishVersionBase must be onlys major.minor')
+            self.log.info('Will auto increase patch version package.json based on : %s', major_minor_version)
             return True
-        self.log.info('Will not auto update version in package.json')
+        self.log.info('Will not auto increase patch version in package.json')
         return False
 
     def get_latest_patch_version(self, data):
         version = data[pipeline_data.NPM_LATEST_VERSION]
         self.log.info('Last published version on MPM: %s', version)
-        patch_version = version.find(".", version.find("."))
-        self.log.info('Last published patch version on MPM: %s', patch_version)
-        return patch_version
+        # Read the last didgit = "1.2.[3]"
+        patch_version_index = version.rfind(".") + 1
+        patch_version = version[patch_version_index:]
+        self.log.info('Last published patch version on MPM: %s', version[patch_version])
+        self.log.debug('Patch version is: %s', patch_version)
+        return int(patch_version)
 
     def get_auto_update_version(self, data):
-        major_minor_version = data[pipeline_data.PACKAGE_JSON]["majorMinorVersion"]
+        major_minor_version = data[pipeline_data.PACKAGE_JSON]["publishVersionBase"]
         updated_patch_version = self.get_latest_patch_version(data) + 1
         version = f"{major_minor_version}.{updated_patch_version}"
         self.log.info('Auto update resulted in npm publish using %s as version', version)
