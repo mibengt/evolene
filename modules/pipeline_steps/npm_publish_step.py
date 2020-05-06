@@ -54,7 +54,8 @@ class NpmPublishStep(AbstractPipelineStep):
         data[pipeline_data.NPM_VERSION_CHANGED] = True
 
     def write_updated_package_json(self, data):
-         file_util.overwite('/package.json', json.dumps(data[pipeline_data.PACKAGE_JSON]))
+        file_util.overwite('/package.json', json.dumps(data[pipeline_data.PACKAGE_JSON]))
+        self.log.info('Wrote updated package.json to disc, ready for npm publish.')
 
     def run_step(self, data):
         if self.should_auto_update(data):
