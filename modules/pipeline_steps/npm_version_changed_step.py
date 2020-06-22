@@ -33,24 +33,28 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         return data
 
     def is_version_already_published(self, data):
+        result = True
+        version = self.check_npm_for_version(data)
+        if not version:
+            self.log.info("Version exist '%s'", version)
+            result = False
+        return result
+                
+
+    def check_npm_for_version(self, data):
         '''
         Check to see if a major.minor.patch version is already published to npm registry.
         '''
+        result = None
         name = data[pipeline_data.NPM_PACKAGE_NAME]
         version = data[pipeline_data.NPM_PACKAGE_VERSION]
         try:
-            version = nvm.exec_npm_command(
+            result = nvm.exec_npm_command(
                 data, f'view {name}@"{version}" version', '-json')
-            self.log.info("Version exists '%s'", version)
-
-            if version is None:
-                self.log.info("Version exists is None '%s'", version)
-                return False
         except PipelineException as npm_ex:
             self.log.info(
                 "faild to read find any version for %s %s. \n %s", name, version, npm_ex)
-        self.log.info("Version exists is True '%s'")
-        return True
+        return result
 
     def get_latest_version(self, data):
         '''
@@ -66,10 +70,11 @@ class NpmVersionChangedStep(AbstractPipelineStep):
 
         return None
 
-    def get_latest_version_for_major_minor(self, data):
+    def get_versions_for_major_minor(self, data):
         '''
-        Gets the latest version for a specific major.minor version from npm registry.
+        Gets the latest versionws for a specific major.minor version from npm registry as an array.
         '''
+        result = []
         name = data[pipeline_data.NPM_PACKAGE_NAME]
         version = self.get_major_minor(data)
         try:
@@ -79,16 +84,28 @@ class NpmVersionChangedStep(AbstractPipelineStep):
             #   "7.9.0",
             #   "7.9.6"
             # ]
-            versions = nvm.exec_npm_command(
-                data, f'view {name}@"{version}" version', '-json')
-            # The versions array from npm is sorted so that the last element is the latest version.
-            result = versions[-1]
+            result = nvm.exec_npm_command( data, f'view {name}@"{version}" version', '-json')
             self.log.info(
-                "Latest published version for %s %s is '%s'", name, version, result)
-            return result
+                "Latest published versions for %s %s is '%s'", name, version, result)
 
         except PipelineException as npm_ex:
-            self.log.info("Could not find any previous versions. %s", npm_ex)
+            self.log.info("Error reading previous versions. %s", npm_ex)
+
+        return result
+
+    def get_latest_version_for_major_minor(self, data):
+        '''
+        Gets the latest version for a specific major.minor version from npm registry.
+        '''
+        try:
+            versions = self.get_versions_for_major_minor(data)
+            result = versions[-1] # last element
+            self.log.info(
+                "Latest published version is '%s'", result)
+            return result
+
+        except IndexError as e:
+            self.log.info("Could not find any previous versions.")
 
         return None
 
