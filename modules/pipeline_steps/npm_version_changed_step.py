@@ -5,6 +5,7 @@ from modules.util import environment
 from modules.util.exceptions import PipelineException
 from modules.util import nvm, pipeline_data
 
+
 class NpmVersionChangedStep(AbstractPipelineStep):
 
     def __init__(self):
@@ -27,7 +28,8 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         data[pipeline_data.NPM_VERSION_CHANGED] = (current_version != latest)
         self.is_version_already_published(data)
 
-        self.log.debug('npm version has changed "%s"', data[pipeline_data.NPM_VERSION_CHANGED])
+        self.log.debug('npm version has changed "%s"',
+                       data[pipeline_data.NPM_VERSION_CHANGED])
         return data
 
     def is_version_already_published(self, data):
@@ -37,17 +39,18 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         name = data[pipeline_data.NPM_PACKAGE_NAME]
         version = data[pipeline_data.NPM_PACKAGE_VERSION]
         try:
-            version = nvm.exec_npm_command(data, f'view {name}@"{version}" version', '-json')
+            version = nvm.exec_npm_command(
+                data, f'view {name}@"{version}" version', '-json')
             self.log.info("Version exists '%s'", version)
 
             if version is None:
                 self.log.info("Version exists is None '%s'", version)
                 return False
         except PipelineException as npm_ex:
-            self.log.info("faild to read find any version for %s %s. \n %s", name, version, npm_ex)
+            self.log.info(
+                "faild to read find any version for %s %s. \n %s", name, version, npm_ex)
         self.log.info("Version exists is True '%s'")
         return True
-
 
     def get_latest_version(self, data):
         '''
@@ -60,9 +63,8 @@ class NpmVersionChangedStep(AbstractPipelineStep):
 
         except PipelineException as npm_ex:
             self.log.info("Could not find any previous versions. %s", npm_ex)
-            
-        return None
 
+        return None
 
     def get_latest_version_for_major_minor(self, data):
         '''
@@ -77,10 +79,12 @@ class NpmVersionChangedStep(AbstractPipelineStep):
             #   "7.9.0",
             #   "7.9.6"
             # ]
-            versions = nvm.exec_npm_command(data, f'view {name}@"{version}" version', '-json')
+            versions = nvm.exec_npm_command(
+                data, f'view {name}@"{version}" version', '-json')
             # The versions array from npm is sorted so that the last element is the latest version.
             result = versions[-1]
-            self.log.info("Latest published version for %s %s is '%s'", name, version, result)
+            self.log.info(
+                "Latest published version for %s %s is '%s'", name, version, result)
             return result
 
         except PipelineException as npm_ex:
@@ -88,15 +92,14 @@ class NpmVersionChangedStep(AbstractPipelineStep):
 
         return None
 
-
     def get_major_minor(self, data):
         '''
         Gets the major minor didgits = "[1.2].3"
-        '''        
+        '''
         version = data[pipeline_data.NPM_PACKAGE_VERSION]
         patch_version_index = version.rfind(".")
         result = version[:patch_version_index]
-        self.log.info("Major.minor specified in package.json version '%s' is '%s", version, result)
+        self.log.info(
+            "Major.minor specified in package.json version '%s' is '%s", version, result)
 
         return result
-    
