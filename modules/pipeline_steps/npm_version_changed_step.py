@@ -113,7 +113,7 @@ class NpmVersionChangedStep(AbstractPipelineStep):
             self.log.info(
                 "Latest published version is '%s'", result)
 
-        except IndexError as e:
+        except:
             self.log.info("Could not find any previous versions.")
 
         return result
