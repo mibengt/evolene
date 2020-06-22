@@ -26,7 +26,7 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         data[pipeline_data.NPM_LATEST_VERSION] = latest
         data[pipeline_data.NPM_LATEST_MAJOR_MINOR] = latest_major_minor
         data[pipeline_data.NPM_VERSION_CHANGED] = (current_version != latest)
-        self.is_version_already_published(data)
+        t = self.is_version_already_published(data)
 
         self.log.debug('npm version has changed "%s"',
                        data[pipeline_data.NPM_VERSION_CHANGED])
