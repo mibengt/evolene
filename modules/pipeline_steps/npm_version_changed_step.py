@@ -24,11 +24,11 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         latest = self.get_latest_version(data)
         latest_major_minor = self.get_latest_version_for_major_minor(data)
 
-        self.log.info("Setting exist NPM_LATEST_VERSION")
+        self.log.info("Setting NPM_LATEST_VERSION")
         data[pipeline_data.NPM_LATEST_VERSION] = latest
-        self.log.info("Setting exist NPM_LATEST_MAJOR_MINOR")
+        self.log.info("Setting NPM_LATEST_MAJOR_MINOR")
         data[pipeline_data.NPM_LATEST_MAJOR_MINOR] = latest_major_minor
-        self.log.info("Setting exist NPM_VERSION_CHANGED")
+        self.log.info("Setting NPM_VERSION_CHANGED")
         data[pipeline_data.NPM_VERSION_CHANGED] = (current_version != latest)
         t = self.is_version_already_published(data)
 
@@ -55,9 +55,9 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         try:
             result = nvm.exec_npm_command(
                 data, f'view {name}@"{version}" version', '-json')
-        except PipelineException as npm_ex:
+        except:
             self.log.info(
-                "faild to read find any version for %s %s. \n %s", name, version, npm_ex)
+                "faild to read find any version for %s %s. \n %s", name, version)
         return result
 
     def get_latest_version(self, data):

@@ -32,10 +32,16 @@ def run_npm_script(data, script_name):
     ).replace('\n', '').strip()
 
 def exec_npm_command(data, command, flags=''):
+    result = ''
     npm_base = get_npm_base(data)
-    return process.run_with_output(
+    command = f'{npm_base} {command} {flags}'
+    print(command)
+    output = process.run_with_output(
         f'{npm_base} {command} {flags}'
-    ).replace('\n', '').strip()
+    )
+    if output:
+        result = output.replace('\n', '').strip()
+    return result
 
 def exec_nvm_command(command):
     nvm_source = get_nvm_source()
