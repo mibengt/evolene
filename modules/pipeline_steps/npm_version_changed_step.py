@@ -1,5 +1,6 @@
 __author__ = 'tinglev'
 
+import json 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import environment
 from modules.util.exceptions import PipelineException
@@ -84,7 +85,9 @@ class NpmVersionChangedStep(AbstractPipelineStep):
             #   "7.9.0",
             #   "7.9.6"
             # ]
-            result = nvm.exec_npm_command( data, f'view {name}@"{version}" version', '-json')
+            cli_result = nvm.exec_npm_command( data, f'view {name}@"{version}" version', '-json')
+            result = json.loads(cli_result)
+
             self.log.info(
                 "Latest published versions for %s %s is '%s'", name, version, result)
 
