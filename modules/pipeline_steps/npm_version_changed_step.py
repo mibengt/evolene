@@ -100,17 +100,21 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         '''
         Gets the latest version for a specific major.minor version from npm registry.
         '''
+        result = None
         try:
             versions = self.get_versions_for_major_minor(data)
+            if not versions:
+                return result
+
             result = versions[-1] # last element
             self.log.info(
                 "Latest published version is '%s'", result)
-            return result
 
         except IndexError as e:
             self.log.info("Could not find any previous versions.")
 
-        return None
+        return result
+
 
     def get_major_minor(self, data):
         '''
@@ -120,6 +124,6 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         patch_version_index = version.rfind(".")
         result = version[:patch_version_index]
         self.log.info(
-            "Major.minor specified in package.json version '%s' is '%s", version, result)
+            "Major.minor specified in package.json version '%s' is '%s'", version, result)
 
         return result
