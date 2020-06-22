@@ -34,11 +34,9 @@ def run_npm_script(data, script_name):
 def exec_npm_command(data, command, flags=''):
     result = ''
     npm_base = get_npm_base(data)
-    command = f'{npm_base} {command} {flags}'
-    print(command)
-    output = process.run_with_output(
-        f'{npm_base} {command} {flags}'
-    )
+    npm_command = f'{npm_base} {command} {flags}'
+    print(npm_command)
+    output = process.run_with_output(npm_command)
     if output:
         result = output.replace('\n', '').strip()
     return result
