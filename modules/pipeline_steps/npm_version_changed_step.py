@@ -24,8 +24,11 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         latest = self.get_latest_version(data)
         latest_major_minor = self.get_latest_version_for_major_minor(data)
 
+        self.log.info("Setting exist NPM_LATEST_VERSION")
         data[pipeline_data.NPM_LATEST_VERSION] = latest
+        self.log.info("Setting exist NPM_LATEST_MAJOR_MINOR")
         data[pipeline_data.NPM_LATEST_MAJOR_MINOR] = latest_major_minor
+        self.log.info("Setting exist NPM_VERSION_CHANGED")
         data[pipeline_data.NPM_VERSION_CHANGED] = (current_version != latest)
         t = self.is_version_already_published(data)
 
