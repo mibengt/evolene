@@ -25,8 +25,8 @@ class NpmVersionChangedStep(AbstractPipelineStep):
     def run_step(self, data):
         data[pipeline_data.NPM_MAJOR_MINOR_LATEST] = self.get_latest_version(data)
         if self.use_automatic_publish(data):
-            self.log.info(f'Will automatic puublish with increased patch version based on major.minor in package.json.')
-            return increase_version(data)
+            self.log.info(f'Will automatic publish with increased patch version based on major.minor in package.json.')
+            return self.increase_version(data)
         else:
             self.log.info('No automatic publish, using version in package.json')
             return self.static_version(data)
