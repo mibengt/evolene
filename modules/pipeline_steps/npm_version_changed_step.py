@@ -188,6 +188,6 @@ class NpmVersionChangedStep(AbstractPipelineStep):
                 "Latest published versions for %s %s is '%s'", name, major_minor, result)
 
         except:
-            self.log.info("Found no previous versions.")
+            self.log.info("Found no previous versions for %s.", major_minor)
 
         return result

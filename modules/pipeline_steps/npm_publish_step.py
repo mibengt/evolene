@@ -30,7 +30,7 @@ class NpmPublishStep(AbstractPipelineStep):
 
     def run_step(self, data):
 
-        data = add_build_information(data)
+        data = self.add_build_information(data)
 
         self.write_updated_package_json(data)
 
