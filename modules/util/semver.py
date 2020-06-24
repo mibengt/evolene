@@ -17,12 +17,13 @@ def get_patch(version):
         raise PipelineException('No version passed to get patch from.')
 
     if version.count('.') == 1:
-        return start_version
+        return result
 
     try:
         patch_version_index = version.rfind(".") + 1
         patch_version = version[patch_version_index:]
         result = int(patch_version)
+        
     except:
         raise PipelineException(f"Could not get the patch version from '{version}'.")
 
@@ -35,7 +36,7 @@ def get_next_patch(version):
     Defaults to 0 if no patch is found in the version string. 1.2 -> 1.2.0
     '''
     patch = get_patch(version)
-    if not patch:
+    if patch is None:
         return 0
 
     return patch + 1
