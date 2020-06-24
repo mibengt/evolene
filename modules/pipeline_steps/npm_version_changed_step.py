@@ -73,6 +73,7 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         '''
 
         next_version = semver.get_next(self.get_version_to_increment(data))
+        self.log.info(f'Automatic publish will use {next_version}')
 
         data[pipeline_data.NPM_PACKAGE_VERSION] = next_version
         data[pipeline_data.PACKAGE_JSON]["version"] = next_version
@@ -195,7 +196,7 @@ class NpmVersionChangedStep(AbstractPipelineStep):
                     result.append(list_or_string)
 
             self.log.info(
-                "Latest published versions for %s %s is '%s'", name, major_minor, result)
+                "Published versions for npm view %s@'%s' version -json are %s", name, major_minor, result)
 
         except:
             self.log.info("Found no previous versions for %s.", major_minor)
