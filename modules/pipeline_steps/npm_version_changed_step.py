@@ -146,10 +146,11 @@ class NpmVersionChangedStep(AbstractPipelineStep):
 
             if versions:
                 result = versions[-1] # last element
-                self.log.info("Latest published version is '%s'", result)
+                
+            self.log.info("Latest published version is '%s'", result)
 
         except:
-            self.log.info("Could not find any previous versions.")
+            self.log.info("Could not find any previous published versions.")
 
         return result
 
@@ -181,8 +182,17 @@ class NpmVersionChangedStep(AbstractPipelineStep):
             #   "7.9.0",
             #   "7.9.6"
             # ]
+            # Note! that if there is only on version matching the result will be a
+            # string not an array.
+            #
             cli_result = nvm.exec_npm_command(data, f'view {name}@"{major_minor}" version', '-json')
-            result = json.loads(cli_result)
+            list_or_string = json.loads(cli_result)
+
+            if list_or_string:
+                if isinstance(list_or_string, list):
+                    result = list_or_string
+                else:
+                    result.append(result)
 
             self.log.info(
                 "Latest published versions for %s %s is '%s'", name, major_minor, result)

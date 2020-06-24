@@ -52,7 +52,7 @@ class NpmVersionChangedStepTests(unittest.TestCase):
             "0.0.8"
         ]
 
-        #self.assertEqual(version_step.get_latest_version(data), "0.0.8")
+        self.assertEqual(version_step.get_latest_version(data), "0.0.8")
 
     def test_get_latest_version_is_none_when_no_previous_exits(self):
 
@@ -67,7 +67,6 @@ class NpmVersionChangedStepTests(unittest.TestCase):
         NpmVersionChangedStep.get_versions.return_value = []
 
         self.assertIsNone(version_step.get_latest_version(data))
-
 
 
     # def test_get_major_minor_from_packagejson(self):
