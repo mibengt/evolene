@@ -106,13 +106,11 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         version = data[pipeline_data.NPM_PACKAGE_VERSION]
         found_version = self.get_version(data, name, version)
 
-        self.log.info("%s in npm registry of type %s.", found_version, type(found_version))
-
         if found_version:
             result = True
             self.log.info("%s %s is already published on npm registry.", name, found_version)
-
-        self.log.info("%s %s does not exist in the npm registry.", name, version)
+        else:
+            self.log.info("%s %s does not exist in the npm registry.", name, version)
 
         return result
 

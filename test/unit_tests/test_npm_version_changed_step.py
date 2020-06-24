@@ -77,10 +77,6 @@ class NpmVersionChangedStepTests(unittest.TestCase):
                 pipeline_data.NPM_PACKAGE_VERSION: '2.0.0'
         }
 
-        version_step.get_version = mock.MagicMock()   
-        version_step.get_version.return_value = "2.0.0"
-#        self.assertEqual(version_step.version_exists(data), True)
-
         version_step.get_version = mock.MagicMock()
         version_step.get_version.return_value = None
         self.assertEqual(version_step.version_exists(data), False)
