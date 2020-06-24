@@ -45,8 +45,8 @@ class NpmPublishStep(AbstractPipelineStep):
             self.publish(data)
             slack.on_npm_publish(data[pipeline_data.NPM_PACKAGE_NAME], data[pipeline_data.NPM_PACKAGE_VERSION], data)
         else:
-            self.log.debug('Version hasnt changed, skipping publish')
-            slack.on_npm_no_publish(data[pipeline_data.NPM_PACKAGE_NAME], data[pipeline_data.NPM_PACKAGE_VERSION])
+            self.log.debug('Skipping npm publish, no version change.')
+            #slack.on_npm_no_publish(data[pipeline_data.NPM_PACKAGE_NAME], data[pipeline_data.NPM_PACKAGE_VERSION])
                                     
         return data
 
