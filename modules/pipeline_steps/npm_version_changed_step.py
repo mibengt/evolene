@@ -192,7 +192,7 @@ class NpmVersionChangedStep(AbstractPipelineStep):
                 if isinstance(list_or_string, list):
                     result = list_or_string
                 else:
-                    result.append(result)
+                    result.append(list_or_string)
 
             self.log.info(
                 "Latest published versions for %s %s is '%s'", name, major_minor, result)
