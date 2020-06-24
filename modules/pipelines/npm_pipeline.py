@@ -48,8 +48,6 @@ class NpmPipeline(object):
             NpmVersionStep(),
             # Read the npm package name from package.json
             NpmPackageNameStep(),
-            # Write information about the build to a file in the package.
-            NpmBuildEnvironmentToFileStep(),
             # Check if the latest published version differs from this one
             NpmVersionChangedStep(),
             # Login to npm
@@ -60,6 +58,8 @@ class NpmPipeline(object):
             NpmInstallStep(),
             # Run npm test
             NpmTestStep(),
+            # Write information about the build to a file in the package.
+            NpmBuildEnvironmentToFileStep(),
             # Run npm build
             NpmBuildStep(),
             # Run package audit
