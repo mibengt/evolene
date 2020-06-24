@@ -23,10 +23,17 @@ class NpmVersionChangedStep(AbstractPipelineStep):
 
 
     def run_step(self, data):
+        '''
+        Determins if publishing is based on static version i package.json or 
+        if the version should be auto incremented by Evolene.
+        '''
+        
         data[pipeline_data.NPM_MAJOR_MINOR_LATEST] = self.get_latest_version(data)
+
         if self.use_automatic_publish(data):
             self.log.info(f'Will automatic publish with increased patch version based on major.minor in package.json.')
             return self.increase_version(data)
+        
         else:
             self.log.info('No automatic publish, using version in package.json')
             return self.static_version(data)
@@ -34,12 +41,15 @@ class NpmVersionChangedStep(AbstractPipelineStep):
 
     def static_version(self, data):
         '''
-        Use the version in package.json
+        Use the version in package.json.
+        1. Look in the npm registry to see if the version is al
         '''
         data[pipeline_data.NPM_VERSION_CHANGED] = False
         if not self.version_exists(data):
             data[pipeline_data.NPM_VERSION_CHANGED] = True
+
         return data
+
 
     def increase_version(self, data):
         '''
@@ -62,7 +72,7 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         6. In the publish step the package.json is overwitten with the PACKAGE_JSON content.
         '''
 
-        next_version = semver.get_next(data[pipeline_data.NPM_PACKAGE_VERSION])
+        next_version = semver.get_next(self.get_version_to_increment(data))
 
         data[pipeline_data.NPM_PACKAGE_VERSION] = next_version
         data[pipeline_data.PACKAGE_JSON]["version"] = next_version
@@ -70,6 +80,20 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         data[pipeline_data.NPM_VERSION_CHANGED] = True
 
         return data
+
+
+    def get_version_to_increment(self, data):
+        '''
+        Get the latest published version major.minor.patch from npm,
+        or if this is a new branch, only return the major.minor version
+        from the package.json
+        '''
+        published_version = data[pipeline_data.NPM_MAJOR_MINOR_LATEST]
+
+        if published_version:
+            return published_version
+
+        return semver.get_major_minor(data[pipeline_data.NPM_PACKAGE_VERSION])
 
 
     def version_exists(self, data):
