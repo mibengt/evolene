@@ -104,10 +104,11 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         result = True
         name = data[pipeline_data.NPM_PACKAGE_NAME]
         version = data[pipeline_data.NPM_PACKAGE_VERSION]
+        found_version = self.get_version(data, name, version)
 
-        if not self.get_version(data, name, version):
+        if not found_version:
             result = False
-            self.log.info("%s %s is already published on npm.", name, version)
+            self.log.info("%s %s is already published on npm registry.", name, found_version)
 
         self.log.info("%s %s does not exist in the npm registry.", name, version)
 
@@ -162,11 +163,9 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         '''
         result = None
         try:
-            result = nvm.exec_npm_command(
-                data, f'view {name}@"{version}" version', '-json')
+            result = nvm.exec_npm_command(data, f'view {name}@"{version}" version', '-json')
         except:
-            self.log.info(
-                "faild to read find any version for %s %s. \n %s", name, version)
+            self.log.info("Faild to read find any version for %s %s. \n %s", name, version)
 
         return result
 
