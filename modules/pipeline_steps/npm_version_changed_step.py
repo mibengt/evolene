@@ -1,6 +1,6 @@
 __author__ = 'tinglev'
 
-import json 
+import json, sys
 
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import environment
@@ -101,15 +101,15 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         '''
         Is the version already published?
         '''
-        result = True
+        result = False
         name = data[pipeline_data.NPM_PACKAGE_NAME]
         version = data[pipeline_data.NPM_PACKAGE_VERSION]
         found_version = self.get_version(data, name, version)
 
-        self.log.info("%s in npm registry.", found_version)
+        self.log.info("%s in npm registry of type %s.", found_version, type(found_version))
 
-        if not found_version:
-            result = False
+        if found_version:
+            result = True
             self.log.info("%s %s is already published on npm registry.", name, found_version)
 
         self.log.info("%s %s does not exist in the npm registry.", name, version)
@@ -165,9 +165,11 @@ class NpmVersionChangedStep(AbstractPipelineStep):
         '''
         result = None
         try:
-            result = nvm.exec_npm_command(data, f'view {name}@"{version}" version', '-json')
+            result = str(nvm.exec_npm_command(data, f'view {name}@"{version}" version', '-json'))
         except:
-            self.log.info("Faild to read find any version for %s %s. \n %s", name, version)
+            self.log.error("Faild to read find any version for %s %s. \n %s", name, version)
+
+        self.log.debug("Got version %s %s", name, version)
 
         return result
 

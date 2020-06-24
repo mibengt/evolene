@@ -68,6 +68,23 @@ class NpmVersionChangedStepTests(unittest.TestCase):
 
         self.assertIsNone(version_step.get_latest_version(data))
 
+    def test_version_exists(self):
+
+        version_step = NpmVersionChangedStep()
+
+        data = {
+                pipeline_data.NPM_PACKAGE_NAME: '@kth/npm-template',
+                pipeline_data.NPM_PACKAGE_VERSION: '2.0.0'
+        }
+
+        version_step.get_version = mock.MagicMock()   
+        version_step.get_version.return_value = "2.0.0"
+#        self.assertEqual(version_step.version_exists(data), True)
+
+        version_step.get_version = mock.MagicMock()
+        version_step.get_version.return_value = None
+        self.assertEqual(version_step.version_exists(data), False)
+
 
     # def test_get_major_minor_from_packagejson(self):
 
