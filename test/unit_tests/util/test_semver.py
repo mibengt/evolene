@@ -27,7 +27,7 @@ class SemverTests(unittest.TestCase):
         self.assertEquals(semver.get_major_minor("2.2"), "2.2")
 
     def test_get_next(self):
-        #self.assertEquals(semver.get_next("0.1.0"), "0.1.1")
+        self.assertEquals(semver.get_next("0.1.0"), "0.1.1")
         self.assertEquals(semver.get_next("1.2.3"), "1.2.4")
         self.assertEquals(semver.get_next("2.2.3"), "2.2.4")
         self.assertEquals(semver.get_next("2.2"), "2.2.0")
