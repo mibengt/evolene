@@ -20,9 +20,7 @@ def get_nvm_exec_base(data):
 
 def get_npm_base(data):
     nvm_base = get_nvm_exec_base(data)
-    print(f'NVM Base: {nvm_base}')
     project_path = environment.get_project_root()
-    print(f'project_path: {project_path}')
     return (
         f'{nvm_base} npm --prefix {project_path}'
     )
@@ -37,7 +35,6 @@ def exec_npm_command(data, command, flags=''):
     result = ''
     npm_base = get_npm_base(data)
     npm_command = f'{npm_base} {command} {flags}'
-    print(f'NPM Command: {npm_command}')
     output = process.run_with_output(npm_command)
     if output:
         result = output.replace('\n', '').strip()
