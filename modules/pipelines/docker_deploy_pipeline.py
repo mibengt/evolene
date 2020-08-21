@@ -1,6 +1,7 @@
 __author__ = 'tinglev'
 
 import logging
+from modules.pipeline_steps.docker_login_step import DockerLoginStep
 import sys
 from modules.pipeline_steps.docker_version import DockerVersion
 from modules.pipeline_steps.setup_step import SetupStep
@@ -24,6 +25,7 @@ from modules.pipeline_steps.done_step import DoneStep
 from modules.pipeline_steps.docker_slim_step import DockerSlimStep
 from modules.util.exceptions import PipelineException
 from modules.util import environment, print_util, slack, pipeline, pipeline_data
+from modules.pipeline_steps.docker_login_step import DockerLoginStep
 
 class DockerDeployPipeline(object):
 
@@ -35,6 +37,8 @@ class DockerDeployPipeline(object):
             DockerVersion(),
             # Configure pipeline
             SetupStep(),
+            # Login to docker registry
+            DockerLoginStep(),
             # Check the content of docker.conf
             ReadConfFileStep('docker.conf', [environment.IMAGE_NAME, pipeline_data.IMAGE_VERSION]),
             # Create new image version major.minor.path_githash

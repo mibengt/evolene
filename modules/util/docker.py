@@ -1,5 +1,6 @@
 __author__ = 'tinglev'
 
+from os import environ
 from modules.util import process
 from modules.util import environment
 from modules.util.exceptions import PipelineException
@@ -58,6 +59,12 @@ def run_integration_tests(compose_test_file, data):
 
 def run_dry_run_compose(compose_test_file, data):
     return run_test(compose_test_file, data)
+
+def login():
+    host = environment.get_registry_host()
+    user = environment.get_registry_user()
+    pwd = environment.get_registry_password()
+    return process.run_with_output(f'docker login -u {user} -p {pwd} {host}')
 
 def run_test(compose_test_file, data):
     image_id = data[pipeline_data.LOCAL_IMAGE_ID]
