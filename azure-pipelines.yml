@@ -34,7 +34,7 @@ steps:
   - bash: tar xvf dist/$LATEST_DIST -C dist
     displayName: 'Create tar of latest dist'
 
-  - bash: echo "##vso[task.setvariable variable=LATEST_DIR]LATEST_DIR=${LATEST_DIST/.tar.gz/}"
+  - bash: echo "##vso[task.setvariable variable=LATEST_DIR]${LATEST_DIST/.tar.gz/}"
     displayName: 'Create LATEST_DIR variable'
 
   - bash: rm -rf dist/latest
@@ -44,7 +44,7 @@ steps:
     displayName: 'Create symbolic link to latest build'
 
   - bash: cd dist/$LATEST_DIR
-    displayName: 'cd into latest_dur'
+    displayName: 'cd into latest_dir'
 
   - bash: pipenv install
     displayName: 'Run pipenv install for latest dist'
