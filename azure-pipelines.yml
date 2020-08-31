@@ -10,5 +10,11 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- bash: ./create-dist.sh
-  displayName: 'Create dist'
+  - task: UsePythonVersion@0
+    inputs:
+      # Set our python version
+      versionSpec: '3.6'
+      addToPath: true
+      architecture: 'x64'
+  - bash: ./create-dist.sh
+    displayName: 'Create dist'
