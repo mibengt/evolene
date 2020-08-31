@@ -25,3 +25,15 @@ steps:
 
   - bash: ./create_dist.sh
     displayName: 'Create dist'
+
+  - bash: echo "##vso[task.setvariable variable=LATEST_DIST]$(ls -tp dist | grep -v / | head -1)"
+
+# -- BUILD CONFIG FROM JENKINS BELOW
+#./create_dist.sh
+#LATEST_DIST=$(ls -tp dist | grep -v / | head -1)
+#tar xvf dist/$LATEST_DIST -C dist
+#LATEST_DIR=${LATEST_DIST/.tar.gz/}
+#rm -rf dist/latest
+#ln -s dist/$LATEST_DIR dist/latest
+#cd dist/$LATEST_DIR
+#pipenv install
