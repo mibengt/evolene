@@ -16,5 +16,12 @@ steps:
       versionSpec: '3.6'
       addToPath: true
       architecture: 'x64'
-  - bash: ./create-dist.sh
+
+        # Upgrade pip
+  - bash: pip install --upgrade pip
+
+  # Install pipenv
+  - bash: pip install pipenv
+
+  - bash: ./create_dist.sh
     displayName: 'Create dist'
