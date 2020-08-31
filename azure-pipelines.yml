@@ -43,5 +43,8 @@ steps:
   - bash: ln -s dist/$LATEST_DIR dist/latest
     displayName: 'Create symbolic link to latest build'
 
-  - bash: cd dist/$LATEST_DIR && pipenv install
-    displayName: 'pipenv install for latest dist'
+  - bash: cd dist/$LATEST_DIR
+    displayName: 'cd into latest_dur'
+
+  - bash: pipenv install
+    displayName: 'Run pipenv install for latest dist'
