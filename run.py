@@ -1,6 +1,7 @@
 __author__ = 'tinglev@kth.se'
 
 import os
+from os import environ
 import sys
 import logging
 from modules.pipelines.docker_deploy_pipeline import DockerDeployPipeline
@@ -22,7 +23,8 @@ def select_and_run_pipeline():
         pipeline = NpmPipeline()
         pipeline.run_pipeline()
         return
-    message = 'No suitable configuration file (docker.conf or npm.conf) found for project'
+    workspace = environment.get_project_root()
+    message = f'No docker.conf or npm.conf found for project ${workspace}'
     slack.send_to_slack(message)
     logger.error(message)
     sys.exit(1)
