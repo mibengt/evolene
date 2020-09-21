@@ -24,7 +24,7 @@ def select_and_run_pipeline():
         pipeline.run_pipeline()
         return
     workspace = environment.get_project_root()
-    message = f'No docker.conf or npm.conf found for project ${workspace}'
+    message = f'No docker.conf or npm.conf found for project {workspace}'
     slack.send_to_slack(message)
     logger.error(message)
     sys.exit(1)
