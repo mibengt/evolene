@@ -5,8 +5,7 @@ import sys
 import logging
 from modules.pipelines.docker_deploy_pipeline import DockerDeployPipeline
 from modules.pipelines.npm_pipeline import NpmPipeline
-from modules.util import environment
-from modules.util import file_util
+from modules.util import environment, file_util, slack
 import modules.util.log as log
 
 def select_and_run_pipeline():
@@ -23,9 +22,9 @@ def select_and_run_pipeline():
         pipeline = NpmPipeline()
         pipeline.run_pipeline()
         return
-    logger.error(
-        'No suitable configuration file (docker.conf or npm.conf) found for project'
-    )
+    message = 'No suitable configuration file (docker.conf or npm.conf) found for project'
+    slack.send_to_slack(message)
+    logger.error(message)
     sys.exit(1)
 
 def main():
