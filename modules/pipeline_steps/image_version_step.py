@@ -4,6 +4,7 @@ from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import environment
 from modules.util import image_version_util
 from modules.util import pipeline_data
+import re
 
 class ImageVersionStep(AbstractPipelineStep):
 
@@ -29,7 +30,11 @@ class ImageVersionStep(AbstractPipelineStep):
         if not image_version_util.is_major_minor_only(image_version):
             self.handle_step_error('IMAGE_VERSION in docker.conf is `{}`, must be "Major.Minor"'
                                    .format(image_version))
-        return "{}.{}".format(image_version, patch_version)
+        branch_name = environment.get_git_branch()
+        if not branch_name in ('master', 'main'):
+            return "{}+{}.{}".format(image_version, slugify(branch_name), patch_version)
+        else:
+            return "{}.{}".format(image_version, patch_version)
 
     def append_commit_hash(self, sem_ver):
         return '{}_{}'.format(sem_ver, environment.get_git_commit_clamped())
@@ -39,3 +44,11 @@ class ImageVersionStep(AbstractPipelineStep):
         if len(str(commit_hash)) > length:
             commit_hash = commit_hash[:length]
         return commit_hash
+
+def slugify(name):
+    """Take some name (any string) and return a version-slug-safe variant of it."""
+    # This could be done better with an external dependency,
+    # but branch-names are probably ascii anyway.
+    # "feature/slånbärsöl" will become "feature.sl.nb.rs.l", so it errs on the safe side.
+    # If the result is an empty string, substitute "unknown"
+    return re.sub('[^a-z0-9]+', '.', name.lower()).strip('.') or 'unknown'
