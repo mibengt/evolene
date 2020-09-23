@@ -32,7 +32,7 @@ class ImageVersionStep(AbstractPipelineStep):
                                    .format(image_version))
         branch_name = environment.get_git_branch()
         if not branch_name in ('master', 'main'):
-            return "{}+{}.{}".format(image_version, slugify(branch_name), patch_version)
+            return "{}-{}.{}".format(slugify(branch_name), image_version, patch_version)
         else:
             return "{}.{}".format(image_version, patch_version)
 
