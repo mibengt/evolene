@@ -168,7 +168,7 @@ module.exports = {
   dockerImage: "kthregistryv2.sys.kth.se/tamarack:2.3.40_f2486d7",
   gitCommit: "f2486d79abf3af26225aa1dbde0fddfcd702c7e6",
   gitBranch: "origin/master",
-  gitUrl: "git@github.com:KTH/tamarack.git"
+  gitUrl: "git@github.com:KTH/tamarack.git",
 };
 ```
 
@@ -323,25 +323,27 @@ NODE_VERSION=10.14.2
 
 4. 🎉 Done!
 
+Every time you push Evolene will run `npm run-script build`. After that Evolene will check ot see if the `version` in `package.json` have been updated. If it does not previously exists in the npm registry, a new version with this version number is published to [npm](https://registry.npmjs.org/).
 
-Every time you push Evolene will run `npm run-script build`. After that Evolene will check ot see if the `version` in `package.json` have been updated. If it does not previously exists in the npm registry, a new version with  this version number is published to [npm](https://registry.npmjs.org/).
-
- Reminder: If you forget to update the version Evolene will run `npm run-script build`, but without publishing to the registy.
+Reminder: If you forget to update the version Evolene will run `npm run-script build`, but without publishing to the registy.
 
 ### Automaticly publish all builds
+
 You can configure your npm packages to publish to npm registy on every commit. This is done by adding a `"automaticPublish": "true"` in the root of the **package.json**. This will make Evolene look in the npm registry for the latest published version that matches "major.minor" and incrementing the patch version by one.
 
-````json
+```json
 {
   "version": "0.1.1",
   "automaticPublish": "true",
    ...
 }
-  ```
+
+```
 
 ![Published package are shown in Slack](https://github.com/KTH/evolene/blob/master/images/npm.png)
 
 ### Build information added to NPM packages automatically
+
 Inside every npm-package there is a js-module file `/build-information.js` that contains:
 
 ```javascript
