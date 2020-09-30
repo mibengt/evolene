@@ -335,7 +335,6 @@ You can configure your npm packages to publish to npm registy on every commit. T
 {
   "version": "0.1.1",
   "automaticPublish": "true",
-   ...
 }
 
 ```
