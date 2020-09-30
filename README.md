@@ -333,13 +333,13 @@ You can configure your npm packages to publish to npm registy on every commit. T
 
 ```json
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "automaticPublish": "true",
 }
 
 ```
 
-Example: If you have version: 1.0.1, Evolene will look for the latest version 1.0, in this example 1.0.9. Increment patch version to 10, and push 1.0.10.
+Example: If you have version: 1.0.2, Evolene will look for the latest version 1.0, in this example 1.0.9. Increment patch version to 10, and push 1.0.10.
 
 ![Published package are shown in Slack](https://github.com/KTH/evolene/blob/master/images/npm.png)
 
