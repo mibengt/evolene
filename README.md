@@ -239,7 +239,7 @@ the Docker Compose file via `$LOCAL_IMAGE_ID`.
 One way is then to mount your tests directly into the docker images and run your tests on
 that very image.
 
-On your local machine you can run the same test using `ID=$(docker build -q .) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-unit-tests.yml up --abort-on-container-exit --always-recreate-deps`.
+On your local machine you can run the same test using `ID=$(docker build -q .) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-unit-tests.yml up --build --abort-on-container-exit --always-recreate-deps --force-recreate`.
 
 ```yaml
 version: "3"
@@ -262,7 +262,7 @@ the Docker Compose file via `$LOCAL_IMAGE_ID`.
 One way is then to start up your service and from other container run queries against
 our server.
 
-On your local machine you can run the same test using `ID=$(docker build -q .) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-integration-tests.yml up --abort-on-container-exit --always-recreate-deps`.
+On your local machine you can run the same test using `ID=$(docker build -q .) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-integration-tests.yml up --build --abort-on-container-exit --always-recreate-deps --force-recreate`.
 
 ```yaml
 version: "3"
