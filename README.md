@@ -293,7 +293,7 @@ services:
 
 # Publish NPM packages
 
-Besides from working with docker images, evolene also supports building and publishing npm packages.
+Besides from working with docker images, Evolene also supports building and publishing npm packages.
 
 ## How to trigger
 
@@ -323,9 +323,21 @@ NODE_VERSION=10.14.2
 
 4. 🎉 Done!
 
-5. **Publishing to npm is now automatic** Every time you push Evolene will run `npm run-script build`. After that Evolene will check ot see if the `version` in `package.json` have been updated. If it does not previously exists in the npm registry, a new version with
-   this version number is published to [npm](https://registry.npmjs.org/).
-   Reminder: If you forget to update the version Evolene will run `npm run-script build`, but without publishing to the registy.
+
+Every time you push Evolene will run `npm run-script build`. After that Evolene will check ot see if the `version` in `package.json` have been updated. If it does not previously exists in the npm registry, a new version with  this version number is published to [npm](https://registry.npmjs.org/).
+
+ Reminder: If you forget to update the version Evolene will run `npm run-script build`, but without publishing to the registy.
+
+### Automaticly publish all builds
+You can configure your npm packages to publish to npm registy on every commit. This is done by adding a `"automaticPublish": "true"` in the root of the **package.json**. This will make Evolene look in the npm registry for the latest published version that matches "major.minor" and incrementing the patch version by one.
+
+````json
+{
+  "version": "0.1.1",
+  "automaticPublish": "true",
+   ...
+}
+  ```
 
 ![Published package are shown in Slack](https://github.com/KTH/evolene/blob/master/images/npm.png)
 
