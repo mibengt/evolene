@@ -70,7 +70,9 @@ def run_test(compose_test_file, data):
     image_id = data[pipeline_data.LOCAL_IMAGE_ID]
     cmd = (f'LOCAL_IMAGE_ID={image_id} '
            f'docker-compose --file {compose_test_file} up '
+           f'--build '
            f'--abort-on-container-exit '
            f'--always-recreate-deps '
            f'--force-recreate')
+
     return process.run_with_output(cmd)
