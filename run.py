@@ -18,12 +18,14 @@ def select_and_run_pipeline():
     has_npm_conf = os.path.isfile(npm_conf)
 
     if has_docker_conf:
-        pipeline = DockerDeployPipeline()
-        pipeline.run_pipeline()
+        logger.info("Has docker.conf")
+        docker_pipeline = DockerDeployPipeline()
+        docker_pipeline.run_pipeline()
 
     if has_npm_conf:
-        pipeline = NpmPipeline()
-        pipeline.run_pipeline()
+        logger.info("Has npm.conf")
+        npm_pipeline = NpmPipeline()
+        npm_pipeline.run_pipeline()
 
     if has_docker_conf is False and has_npm_conf is False:
         workspace = environment.get_project_root()
