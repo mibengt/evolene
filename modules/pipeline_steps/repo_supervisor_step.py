@@ -76,7 +76,7 @@ class RepoSupervisorStep(AbstractPipelineStep):
     def format_filnames(self, filenames):
         result = ''
         for filename in filenames:
-            result = "{}{}\n".format(result, filename)
+            result = "{}{}\n".format(result, str(filename))
         return result
 
     def get_ignore_patterns(self):
