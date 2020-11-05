@@ -1,5 +1,4 @@
-__author__ = 'tinglev'
-
+s__author__ = 'tinglev'
 import re
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import environment
