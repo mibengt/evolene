@@ -38,9 +38,10 @@ class UnitTestStep(AbstractPipelineStep):
             )
             self.log.debug('Output from unit tests was: %s', output)
         except Exception as ex:
-            raise PipelineException(
-                self.get_error_message(data), self.get_slack_message(ex))
-
+             self.handle_step_error(
+                    f'Test failed for *{image_version_util.get_image(data)}* see <:jenkins: full test log|{environment.get_build_url()}>.',
+                    self.get_slack_message(ex)
+                )
     def get_error_message(self, data):
         return f'Test failed for *{image_version_util.get_image(data)}* see <:jenkins: full test log|{environment.get_build_url()}>.'
 
