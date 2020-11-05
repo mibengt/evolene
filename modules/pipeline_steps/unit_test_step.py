@@ -46,7 +46,8 @@ class UnitTestStep(AbstractPipelineStep):
     def get_stack_trace_shortend(self, exception):
         error = str(exception)
         error = self.remove_possible_npm_standard_msg(error)
-        error = self.remove_possible_ansibe_colors(error)
+        error = self.remove_possible_ansi_colors(error)
+        error = self.remove_docker_compose_output(error)
 
         return str(error).replace('`', ' ')[-1000:]
 
@@ -64,8 +65,14 @@ class UnitTestStep(AbstractPipelineStep):
         '''
         return error[:error.find("npm ERR!")]
 
-    def remove_possible_ansibe_colors(self, text):
+    def remove_possible_ansi_colors(self, error):
+        '''
+        When output is done in terminal with ANSI colors, texts get harder to read, we remove this
+        encoding.
 
+        [33mintegration-tests_1_193822f6013a |[0m    [0;0m'http://web:3000/kth-azure-app/robots.txt' does not contain pattern 'UseXXXXXXXr-agent: *'.
+        [33mintegration-tests_1_193822f6013a |[0m 
+        '''
         ansi_escape = re.compile(r'''
             \x1B  # ESC
             (?:   # 7-bit C1 Fe (except CSI)
@@ -78,4 +85,15 @@ class UnitTestStep(AbstractPipelineStep):
             )
             ''', re.VERBOSE)
         
-        return ansi_escape.sub('', text)
+        return ansi_escape.sub('', error)
+
+    def remove_docker_compose_output(self, error):
+        '''
+        Running tests in Docker Compse adds extra container info we dont need to see.
+
+        web_1_1b99cff96784 |   1 passing (473ms)
+        web_1_1b99cff96784 |   1 failing
+
+        '''
+        text_matcher = re.compile(r'[|].+', re.VERBOSE)
+        return text_matcher.sub('', error)
