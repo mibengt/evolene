@@ -1,5 +1,6 @@
 __author__ = 'tinglev'
 
+import re
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import environment
 from modules.util import docker
@@ -44,4 +45,38 @@ class UnitTestStep(AbstractPipelineStep):
                 )
 
     def get_stack_trace_shortend(self, exception):
-        return str(exception).replace('`', ' ')[-1000:]
+        error = str(exception)
+        error = self.remove_possible_npm_standard_msg(error)
+        error = self.remove_possible_ansibe_colors(error)
+
+        return str(error).replace('`', ' ')[-1000:]
+
+    def remove_possible_npm_standard_msg(self, error):
+        '''
+        When system exiting is not 0, npm adds crap to the output. We remove this.
+        
+        npm ERR! code ELIFECYCLE
+        npm ERR! errno 1
+        npm ERR! kth-azure-app@0.1.0 test-integration: `URL_PREFIX=http://localhost:3000/kth-azure-app ENV_TEST=SECRET_VALUE_ON__MONITOR ./tests/integration-tests/basic.sh`
+        npm ERR! Exit status 1
+        npm ERR!
+        npm ERR! Failed at the kth-azure-app@0.1.0 test-integration script.
+        npm ERR! This is
+        '''
+        return error[:error.find("npm ERR!")]
+
+    def remove_possible_ansibe_colors(self, text):
+
+        ansi_escape = re.compile(r'''
+            \x1B  # ESC
+            (?:   # 7-bit C1 Fe (except CSI)
+                [@-Z\\-_]
+            |     # or [ for CSI, followed by a control sequence
+                \[
+                [0-?]*  # Parameter bytes
+                [ -/]*  # Intermediate bytes
+                [@-~]   # Final byte
+            )
+            ''', re.VERBOSE)
+        
+        return ansi_escape.sub('', text)
