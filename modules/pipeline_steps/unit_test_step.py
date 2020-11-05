@@ -95,4 +95,4 @@ class UnitTestStep(AbstractPipelineStep):
         web_1_1b99cff96784 |   1 failing
 
         '''
-        return re.findall(r'[|].+', error)
+        return error
