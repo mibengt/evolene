@@ -41,10 +41,10 @@ class IntegrationTestStep(AbstractPipelineStep):
             )
             self.log.debug('Output from integration tests was: %s', output)
         except Exception as ex:
-            raise PipelineException(str(ex), self.get_slack_message(ex, data))
+            raise PipelineException(self.get_error_message(data), self.get_slack_message(ex))
 
-    def get_slack_message(self, exception, data):
-        return '*{}* s integration tests failed: \n```...\n{}```\n:jenkins: {}console'.format(
-            image_version_util.get_image(data),
-            str(exception).replace('`', ' ')[-1000:],
-            environment.get_build_url())
+    def get_error_message(self, data):
+        return f'Test failed for *{image_version_util.get_image(data)}* see <:jenkins: full test log|{environment.get_build_url()}>.'
+
+    def get_slack_message(self, exception):
+        return str(exception).replace('`', ' ')[-1000:]
