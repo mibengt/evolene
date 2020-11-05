@@ -95,6 +95,7 @@ class UnitTestStep(AbstractPipelineStep):
         web_1_1b99cff96784 |   1 failing
 
         '''
-        text_matcher = re.compile(r'^\w+ \|', re.VERBOSE)
+        return error
+        #text_matcher = re.compile(r"^\w+ \| [*]", re.VERBOSE)
 
-        return text_matcher.sub('', error)
+        #return text_matcher.sub('', error)
