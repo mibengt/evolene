@@ -34,9 +34,6 @@ PULL_REQUEST_TEST = 'PULL_REQUEST_TEST'
 SLIM = 'SLIM'
 SLIM_ENV = 'SLIM_ENV'
 
-def get_change_title():
-    return os.environ.get('CHANGE_TITLE')
-
 def get_slim():
     return os.environ.get(SLIM)
 

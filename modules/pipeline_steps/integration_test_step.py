@@ -6,7 +6,6 @@ from modules.util import docker
 from modules.util.exceptions import PipelineException
 from modules.util import file_util
 from modules.util import image_version_util
-from modules.util import environment
 
 class IntegrationTestStep(AbstractPipelineStep):
 
@@ -44,7 +43,7 @@ class IntegrationTestStep(AbstractPipelineStep):
             self.log.debug('Output from integration tests was: %s', output)
         except Exception as ex:
              self.handle_step_error(
-                    f'\n:rotating_light: <!here> Integration test(s)) failed for *{image_version_util.get_image(data)}* see :jenkins: <{environment.get_build_url()}|full console log here>\n {environment.get_change_title()}.',
+                    f'\n:rotating_light: <!here> {image_version_util.get_image(data)} *integration test(s) failed*, see <{environment.get_build_url()}|:jenkins: Jenkins console log here>.',
                     self.get_stack_trace_shortend(ex),
                 )
 
