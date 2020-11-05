@@ -39,7 +39,7 @@ class UnitTestStep(AbstractPipelineStep):
             self.log.debug('Output from unit tests was: %s', output)
         except Exception as ex:
              self.handle_step_error(
-                    f'\n:rotating_light: Test failed for *{image_version_util.get_image(data)}* see :jenkins: <{environment.get_build_url()}|full console log here>.',
+                    f'\n:rotating_light: <!here> Test failed for *{image_version_util.get_image(data)}* see :jenkins: <{environment.get_build_url()}|full console log here>.',
                     self.get_stack_trace_shortend(ex),
                 )
 

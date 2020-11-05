@@ -6,6 +6,7 @@ from modules.util import docker
 from modules.util.exceptions import PipelineException
 from modules.util import file_util
 from modules.util import image_version_util
+from modules.util import environment
 
 class IntegrationTestStep(AbstractPipelineStep):
 
@@ -27,6 +28,7 @@ class IntegrationTestStep(AbstractPipelineStep):
 
         return data
 
+
     def run_integration_tests(self, data):
         try:
             self.log.info(
@@ -41,10 +43,10 @@ class IntegrationTestStep(AbstractPipelineStep):
             )
             self.log.debug('Output from integration tests was: %s', output)
         except Exception as ex:
-            raise PipelineException(self.get_error_message(data), self.get_slack_message(ex))
+             self.handle_step_error(
+                    f'\n:rotating_light: <!here> Integration test(s)) failed for *{image_version_util.get_image(data)}* see :jenkins: <{environment.get_build_url()}|full console log here>\n {environment.get_change_title()}.',
+                    self.get_stack_trace_shortend(ex),
+                )
 
-    def get_error_message(self, data):
-        return f'Test failed for *{image_version_util.get_image(data)}* see <:jenkins: full test log|{environment.get_build_url()}>.'
-
-    def get_slack_message(self, exception):
+    def get_stack_trace_shortend(self, exception):
         return str(exception).replace('`', ' ')[-1000:]
