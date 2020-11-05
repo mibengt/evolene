@@ -29,9 +29,27 @@ class UnitTestStepTests(unittest.TestCase):
         Aborting on container exit...'''
 
         step = UnitTestStep()
+
+        excepted = '''
+        
+          1 passing (480ms)
+          1 failing
+        
+          1) Template handling
+               Path '/_monitor' should contain 'No env value for ENV_TEST is set.' when env 'ENV_TEST' is not set.:
+             AssertionError: expected '\n  - ENV_TEST: No env value for ENV_TEST is set. - Should return the cluster name.\n  - API Call: kth-azure-app - Should always return this applications name.\n  ' to include 'No env FAILJRED value for ENV_TEST is set'
+              at Context.<anonymous> (/tests/unit-tests/test-app.js:22:23)
+              at processTicksAndRejections (internal/process/task_queues.js:93:5)
+        
+        
+        
+        npm ERR! Test failed.  See above for more details.
+        kth-azure-app_web_1_1b99cff96784 exited with code 1
+        Aborting on container exit...
+        '''
         clean_text = step.remove_docker_compose_output(ci_output)
 
-        #self.assertNotIn('web_1_1b99cff96784', clean_text)
+        #self.assertNotIn(excepted, clean_text)
         
 
 
