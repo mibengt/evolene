@@ -40,9 +40,8 @@ class UnitTestStep(AbstractPipelineStep):
         except Exception as ex:
              self.handle_step_error(
                     f'\n:rotating_light: Test failed for *{image_version_util.get_image(data)}* see <{environment.get_build_url()}|:jenkins: full test log>.',
-                    self.get_slack_message(ex),
-                    ex
+                    self.get_stack_trace_shortend(ex),
                 )
 
-    def get_slack_message(self, exception):
+    def get_stack_trace_shortend(self, exception):
         return str(exception).replace('`', ' ')[-1000:]
