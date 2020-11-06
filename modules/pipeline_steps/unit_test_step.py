@@ -67,7 +67,7 @@ class UnitTestStep(AbstractPipelineStep):
 
     def remove_possible_ansi_colors(self, error):
         '''
-        When output is done in terminal with ANSI colors, texts get harder to read, we remove this
+        When output is done in terminal with ANSI colors (like [0m    [0;0m'), texts get harder to read, we remove this
         encoding.
 
         [33mintegration-tests_1_193822f6013a |[0m    [0;0m'http://web:3000/kth-azure-app/robots.txt' does not contain pattern 'UseXXXXXXXr-agent: *'.
@@ -95,7 +95,5 @@ class UnitTestStep(AbstractPipelineStep):
         web_1_1b99cff96784 |   1 failing
 
         '''
-        return error
-        #text_matcher = re.compile(r"^\w+ \| [*]", re.VERBOSE)
-
-        #return text_matcher.sub('', error)
+        text_matcher = re.compile(r"[^\s]+ \|[\s]+", flags=re.MULTILINE)
+        return text_matcher.sub('', error)

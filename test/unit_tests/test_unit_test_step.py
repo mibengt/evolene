@@ -50,7 +50,8 @@ class UnitTestStepTests(unittest.TestCase):
         '''
         clean_text = step.remove_docker_compose_output(ci_output)
 
-        #self.assertNotIn(excepted, clean_text)
+        self.assertFalse('web_1_1b99cff96784 | ' in clean_text)
+        self.assertTrue('1 failing' in clean_text)
         
 
 
