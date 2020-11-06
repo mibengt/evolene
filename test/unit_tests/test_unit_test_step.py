@@ -26,7 +26,8 @@ class UnitTestStepTests(unittest.TestCase):
         web_1_1b99cff96784 | 
         web_1_1b99cff96784 | npm ERR! Test failed.  See above for more details.
         web_1_1b99cff96784 | kth-azure-app_web_1_1b99cff96784 exited with code 1
-        Aborting on container exit...'''
+        Aborting on container exit...
+        '''
 
         step = UnitTestStep()
 
