@@ -60,5 +60,4 @@ class UnitTestStepTests(unittest.TestCase):
 
         clean_text = step.get_stack_trace_shortend(ci_output)
 
-        print(clean_text)
         self.assertFalse('npm ERR!' in clean_text)
