@@ -3,7 +3,6 @@ __author__ = 'tinglev'
 from modules.util import docker
 from modules.pipeline_steps.abstract_pipeline_step import AbstractPipelineStep
 from modules.util import environment
-from modules.util import docker
 
 class DockerLoginStep(AbstractPipelineStep):
 

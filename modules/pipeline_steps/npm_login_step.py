@@ -34,10 +34,10 @@ class NpmLoginStep(AbstractPipelineStep):
                f'{self.get_docker_image()} '
                f'> {self.get_output_file()}')
         try:
-            result = process.run_with_output(cmd)
+            result = process.run_with_output(cmd, False)
         except PipelineException as docker_ex:
             self.handle_step_error(
-                'Exception when trying to get auth token from npm via docker',
+                'NPM login failed. Exception when trying to get auth token from npm via docker',
                 docker_ex
             )
         self.log.debug('Output from npm login was: "%s"', result)

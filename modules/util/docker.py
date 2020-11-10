@@ -64,7 +64,7 @@ def login():
     host = environment.get_registry_host()
     user = environment.get_registry_user()
     pwd = environment.get_registry_password()
-    return process.run_with_output(f'docker login -u {user} -p {pwd} {host}')
+    return process.run_with_output(f'docker login -u {user} -p {pwd} {host}', False)
 
 def run_test(compose_test_file, data):
     image_id = data[pipeline_data.LOCAL_IMAGE_ID]
