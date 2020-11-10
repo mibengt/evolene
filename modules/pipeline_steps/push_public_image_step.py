@@ -23,6 +23,8 @@ class PushPublicImageStep(AbstractPipelineStep):
             self.push_image(data)
             self.push_image_only_semver(data)
             self.push_latest(data)
+        else:
+            self.log.info('Skipping to push to public registry')
         return data
 
     def push_latest(self, data):
