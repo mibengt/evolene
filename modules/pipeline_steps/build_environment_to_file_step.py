@@ -34,7 +34,7 @@ class BuildEnvironmentToFileStep(AbstractPipelineStep):
 
     def get_output(self, data):
         output_file = self.get_ouput_file()
-        self.log.info(output_file)
+
         if str(output_file).endswith(".js"):
             return self.to_js_module(data)
         if str(output_file).endswith(".json"):
