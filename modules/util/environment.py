@@ -150,3 +150,9 @@ def get_docker_build_args():
 
 def get_pull_request_test():
     return os.environ.get(PULL_REQUEST_TEST)
+
+def get_env_with_default_value(name, default_value):
+    value = os.environ.get(name)
+    if not value:
+        return default_value
+    return value.strip()
