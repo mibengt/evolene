@@ -27,14 +27,20 @@ class ImageVersionStep(AbstractPipelineStep):
         return environment.get_build_number()
 
     def get_sem_ver(self, image_version, patch_version):
+
         if not image_version_util.is_major_minor_only(image_version):
             self.handle_step_error('IMAGE_VERSION in docker.conf is `{}`, must be "Major.Minor"'
                                    .format(image_version))
-        branch_name = environment.get_git_branch()
-        if not branch_name in ('master', 'main'):
-            return "{}-{}.{}".format(slugify(branch_name), image_version, patch_version)
-        else:
-            return "{}.{}".format(image_version, patch_version)
+        return "{}.{}".format(image_version, patch_version)
+        
+        # if not image_version_util.is_major_minor_only(image_version):
+        #     self.handle_step_error('IMAGE_VERSION in docker.conf is `{}`, must be "Major.Minor"'
+        #                            .format(image_version))
+        # branch_name = environment.get_git_branch()
+        # if not branch_name in ('master', 'main'):
+        #     return "{}-{}.{}".format(slugify(branch_name), image_version, patch_version)
+        # else:
+        #     return "{}.{}".format(image_version, patch_version)
 
     def append_commit_hash(self, sem_ver):
         return '{}_{}'.format(sem_ver, environment.get_git_commit_clamped())
